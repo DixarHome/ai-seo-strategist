@@ -26,10 +26,6 @@
             padding: 20px;
             margin: 0;
         }
-        a {
-          
-          color: #2C3A4D;
-        }
         h1 {
             color: #028900;
         }
@@ -56,6 +52,7 @@
         }
         label {
             color: #2C3A4D;
+            font-size: 1.3em;
         }
         button {
             background: #028900;
@@ -101,12 +98,12 @@
         <form id="login-form">
           <div id="alert-box" class="custom-alert"></div>
              <h1>Log In</h1>
-                <label for="username-email">Username or Email</label>
+                <label for="username-email">Email</label>
                 <input type="text" id="username-email" name="usernameEmail" required>
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
             <button type="submit">Login</button>
-            <a href="/register" class="link">Don't have an account? Register here</a>
+            <p>Don't have an account? Register <a href="/register" class="link">here</a></p>
         </form>
     <script src="login.js"></script>
 </body>
