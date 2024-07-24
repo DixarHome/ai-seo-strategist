@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softcoin Tasks</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        #tasks-container {
+            width: 90%;
+            max-width: 600px;
+            margin: 20px 0;
+            padding: 20px;
+            padding-top: 5px;
+            border-radius: 8px;
+            padding-bottom: 80px;
+        }
+
+        body.dark-mode .tasks {
+            color: #e0e0e0;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            margin-top: 0;
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin: 20px 0 10px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .task {
+            display: flex;
+            flex-direction: column;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        body.dark-mode .task {
+            background-color: #444;
+            border-color: #555;
+        }
+
+        .task span {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .task .reward {
+            font-size: 14px;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        body.dark-mode .task .reward {
+            color: #ccc;
+        }
+
+        .task button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .task button:disabled {
+            background-color: #ddd;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .custom-alert {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .custom-alert button {
+            margin-top: 10px;
+            background-color: #555;
+            border: none;
+            padding: 10px;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .custom-alert button:hover {
+            background-color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div id="tasks-container">
+        <h1>Tasks</h1>
+        <div id="active-tasks">
+            <h2 class="section-title">Active</h2>
+        <div id="daily-check-in" class="task">
+            <span>Daily Check-In</span>
+            <p id="daily-check-in-message"></p>
+            <button id="daily-check-in-btn">Claim</button>
+        </div>
+            <!-- Active tasks will be inserted here -->
+        </div>
+        <div id="completed-tasks">
+            <h2 class="section-title">Completed</h2>
+            <!-- Completed tasks will be inserted here -->
+        </div>
+    </div>
+    <div id="custom-alert" class="custom-alert">
+        <span id="custom-alert-message"></span>
+        <button onclick="closeCustomAlert()">Close</button>
+    </div>
+        <div id="nav-placeholder"></div>
+    <div id="cherry-placeholder"></div>
+    <script src="cherry.js"></script>
+
+    <script src="navigation.js" defer></script>
+    <script src="dark-mode.js"></script>
+    <script src="tasks.js"></script>
+    <script src="daily.js"></script>
+</body>
+</html>
