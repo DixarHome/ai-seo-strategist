@@ -3,7 +3,7 @@
   "functions": {
     "server.js": {
       "runtime": "@vercel/node",
-      "maxDuration": 900
+      "maxDuration": 60
     }
   },
   "routes": [
