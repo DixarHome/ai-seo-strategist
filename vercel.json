@@ -6,12 +6,20 @@
       "use": "@vercel/node"
     }
   ],
+  "functions": {
+    "server.js": {
+      "maxDuration": 900
+    }
+  },
   "routes": [
     {
       "src": "/favicon.ico",
       "dest": "/public/favicon.ico"
     },
-    { "src": "/api/(.*)", "dest": "/server.js" },
+    {
+      "src": "/api/(.*)",
+      "dest": "/server.js"
+    },
     {
       "src": "/(.*)",
       "dest": "/server.js"
