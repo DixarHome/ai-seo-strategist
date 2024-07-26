@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 showAlert('Registration successful', 'success');
-                window.location.href = 'login.html'; // Redirect to the login page
+                window.location.href = '/login'; // Redirect to the login page
             } else {
                 showAlert(data.message || 'Registration failed', 'danger');
             }

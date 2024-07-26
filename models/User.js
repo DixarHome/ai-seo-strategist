@@ -14,7 +14,16 @@ const userSchema = new mongoose.Schema({
     level: { type: Number, default: 1 },
     miningSessionCount: { type: Number, default: 0 },
     referralCount: { type: Number, default: 0 },
-    claimedTasks: { type: [String], default: [] } // Add this line
+    lastCheckIn: { type: Date, default: null },
+    // Other fields as necessary
+
+    claimedTasks: { type: [String], default: [] }, // Add this line
+    verificationToken: { type: String },
+    isVerified: { type: Boolean, default: false },
+    resetToken: {
+        token: String,
+        expires: Date
+    }
 });
 
 const User = mongoose.model('User', userSchema);

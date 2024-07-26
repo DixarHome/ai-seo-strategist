@@ -16,6 +16,11 @@
             flex-direction: column;
             align-items: center;
             overflow-y: auto;
+            padding-bottom: 350px;
+        }
+        
+        h2 {
+            text-align: center;
         }
 
         #tasks-container {
@@ -126,11 +131,6 @@
         <h1>Tasks</h1>
         <div id="active-tasks">
             <h2 class="section-title">Active</h2>
-        <div id="daily-check-in" class="task">
-            <span>Daily Check-In</span>
-            <p id="daily-check-in-message"></p>
-            <button id="daily-check-in-btn">Claim</button>
-        </div>
             <!-- Active tasks will be inserted here -->
         </div>
         <div id="completed-tasks">
@@ -143,12 +143,10 @@
         <button onclick="closeCustomAlert()">Close</button>
     </div>
         <div id="nav-placeholder"></div>
-    <div id="cherry-placeholder"></div>
-    <script src="cherry.js"></script>
-
-    <script src="navigation.js" defer></script>
-    <script src="dark-mode.js"></script>
+        <div id="cherry-placeholder"></div>
+        <script src="cherry.js"></script>
+        <script src="navigation.js" defer></script>
+        <script src="dark-mode.js"></script>
     <script src="tasks.js"></script>
-    <script src="daily.js"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@ const path = require('path');
 const cors = require('cors');
 const connectToDatabase = require('./utils/db');
 const User = require('./models/User');
-const redisClient = require('./cache');
+const authRoutes = require('./routes/auth'); // Import authentication routes
 
 dotenv.config();
 
@@ -17,29 +17,14 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const authRoutes = require('./routes/auth');
+// Use authentication routes
 app.use('/api/auth', authRoutes);
 
-const cache = async (req, res, next) => {
-    const { username } = req.body || req.params;
-
-    if (!username) return next();
-
-    try {
-        const cachedData = await redisClient.get(username);
-        if (cachedData) {
-            return res.status(200).json(JSON.parse(cachedData));
-        }
-        next();
-    } catch (error) {
-        console.error('Redis error:', error);
-        next();
-    }
-};
-
-app.get('/api/referrals/:username', cache, async (req, res) => {
+app.get('/api/referrals/:username', async (req, res) => {
     const { username } = req.params;
+
     try {
+        console.log('Fetching referrals for:', username); // Debugging
         const user = await User.findOne({ username }).populate('referrals');
         if (!user) return res.status(404).json({ message: 'User not found' });
 
@@ -48,13 +33,11 @@ app.get('/api/referrals/:username', cache, async (req, res) => {
             coinBalance: ref.coinBalance
         }));
 
-        const referralBonus = user.referrals.length * 50000;
-        const miningRewards = referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0);
+        const referralBonus = user.referrals.length * 50000; // 50,000 SFT for each referred friend
+        const miningRewards = referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0); // 20% mining rewards
         const totalEarnings = referralBonus + miningRewards;
 
         const response = { referrals, totalEarnings };
-        await redisClient.set(username, JSON.stringify(response), 'EX', 3600);
-
         res.status(200).json(response);
     } catch (error) {
         console.error('Error fetching referrals:', error);
@@ -77,7 +60,7 @@ app.post('/api/startMining', async (req, res) => {
             miningStartTime: user.miningStartTime,
             coinBalance: user.coinBalance,
             level: user.level,
-            miningSessionCount: user.miningSessionCount || 0
+            miningSessionCount: user.miningSessionCount || 0 // Ensure miningSessionCount is included and handled if undefined
         });
     } catch (error) {
         res.status(500).json({ message: 'Error starting mining' });
@@ -91,7 +74,7 @@ app.post('/api/miningStatus', async (req, res) => {
         if (!user) return res.status(404).json({ message: 'User not found' });
 
         const currentTime = Date.now();
-        const rewardIntervals = [2, 3, 4, 5, 6].map(h => h * 60 * 60 * 1000);
+        const rewardIntervals = [2 * 60 * 60 * 1000, 3 * 60 * 60 * 1000, 4 * 60 * 60 * 1000, 5 * 60 * 60 * 1000, 6 * 60 * 60 * 1000];
         const rewards = [15000, 30000, 60000, 120000, 240000];
         const miningEndTime = new Date(user.miningStartTime).getTime() + rewardIntervals[user.level - 1];
 
@@ -99,9 +82,8 @@ app.post('/api/miningStatus', async (req, res) => {
             user.coinBalance += rewards[user.level - 1];
             user.isMining = false;
             user.miningStartTime = null;
-            user.miningSessionCount = (user.miningSessionCount || 0) + 1;
+            user.miningSessionCount = (user.miningSessionCount || 0) + 1; // Ensure miningSessionCount is incremented properly
             await user.save();
-
             return res.status(200).json({
                 miningComplete: true,
                 coinBalance: user.coinBalance,
@@ -114,7 +96,7 @@ app.post('/api/miningStatus', async (req, res) => {
             miningStartTime: user.miningStartTime,
             coinBalance: user.coinBalance,
             level: user.level,
-            miningSessionCount: user.miningSessionCount || 0
+            miningSessionCount: user.miningSessionCount || 0 // Ensure miningSessionCount is included and handled if undefined
         });
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving mining status' });
@@ -141,72 +123,21 @@ app.post('/api/upgradeLevel', async (req, res) => {
     }
 });
 
+// Endpoint to update the user's balance
 app.post('/api/updateBalance', async (req, res) => {
     const { username, reward } = req.body;
-
-    // Log the request payload
-    console.log(`Update Balance Request: username=${username}, reward=${reward}`);
-
     try {
         const user = await User.findOne({ username });
-        if (!user) {
-            console.log('User not found');
-            return res.status(404).json({ message: 'User not found' });
-        }
-
+        if (!user) return res.status(404).json({ message: 'User not found' });
         user.coinBalance += reward;
         await user.save();
-
-        console.log('Balance updated successfully');
         res.status(200).json({ message: 'Balance updated' });
     } catch (error) {
-        // Log the error details
-        console.error('Error updating balance:', error);
         res.status(500).json({ message: 'Error updating balance' });
     }
 });
 
-app.get('/api/miningSessionCount/:username', async (req, res) => {
-    const { username } = req.params;
-    try {
-        const user = await User.findOne({ username });
-        if (!user) return res.status(404).json({ message: 'User not found' });
-
-        res.status(200).json({ miningSessionCount: user.miningSessionCount });
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching mining session count' });
-    }
-});
-
-app.get('/api/referralCount/:username', async (req, res) => {
-    const { username } = req.params;
-    try {
-        const user = await User.findOne({ username });
-        if (!user) return res.status(404).json({ message: 'User not found' });
-
-        res.status(200).json({ referralCount: user.referralCount });
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching referral count' });
-    }
-});
-
-// Add API endpoint to check task status
-app.get('/api/taskStatus/:username/:taskId', async (req, res) => {
-    const { username, taskId } = req.params;
-    try {
-        const user = await User.findOne({ username });
-        if (!user) return res.status(404).json({ message: 'User not found' });
-
-        const claimedTasks = user.claimedTasks || [];
-        const claimed = claimedTasks.includes(taskId);
-
-        res.status(200).json({ claimed });
-    } catch (error) {
-        res.status(500).json({ message: 'Error checking task status' });
-    }
-});
-
-// Add API endpoint to claim a task
+// Endpoint to claim a task reward
 app.post('/api/claimTask', async (req, res) => {
     const { username, taskId, reward } = req.body;
     try {
@@ -225,7 +156,73 @@ app.post('/api/claimTask', async (req, res) => {
 
         res.status(200).json({ message: 'Task claimed successfully' });
     } catch (error) {
+        console.error('Error claiming task:', error);
         res.status(500).json({ message: 'Error claiming task' });
+    }
+});
+
+app.get('/api/taskStatus/:username/:taskId', async (req, res) => {
+    const { username, taskId } = req.params;
+    try {
+        const user = await User.findOne({ username });
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        const claimedTasks = user.claimedTasks || [];
+        const claimed = claimedTasks.includes(taskId);
+
+        res.status(200).json({ claimed });
+    } catch (error) {
+        res.status(500).json({ message: 'Error checking task status' });
+    }
+});
+
+app.get('/api/miningSessionCount/:username', async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        const user = await User.findOne({ username });
+
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        res.status(200).json({ miningSessionCount: user.miningSessionCount });
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching mining session count' });
+    }
+});
+
+app.get('/api/referralCount/:username', async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        const user = await User.findOne({ username });
+
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        res.status(200).json({ referralCount: user.referralCount });
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching referral count' });
+    }
+});
+
+app.get('/api/userData/:username', async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        const user = await User.findOne({ username }).populate('referrals');
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        const referralBonus = user.referrals.length * 50000; // 50,000 SFT for each referred friend
+        const miningRewards = user.referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0); // 20% mining rewards
+        const totalEarnings = user.coinBalance + referralBonus + miningRewards;
+
+        res.status(200).json({
+            coinBalance: totalEarnings,
+            level: user.level,
+            miningSessionCount: user.miningSessionCount || 0
+        });
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        res.status(500).json({ message: 'Error fetching user data' });
     }
 });
 
@@ -234,10 +231,9 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Internal server error.' });
 });
 
-const routes = ['friends', 'tasks', 'market', 'softie', 'more', 'upgrades', 'login', 'register', 'join-softcoin', 'goals'];
-routes.forEach(route => {
-    app.get(`/${route}`, (req, res) => {
-        res.sendFile(path.join(__dirname, 'public', `${route}.html`));
+['friends', 'tasks', 'market', 'softie', 'more', 'upgrades', 'login', 'register', 'join-softcoin', 'reset-password', 'verification'].forEach(file => {
+    app.get(`/${file}`, (req, res) => {
+        res.sendFile(path.join(__dirname, 'public', `${file}.html`));
     });
 });
 

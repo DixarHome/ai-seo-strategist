@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Friends</title>
+    <title>Register</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1069924523331145"
      crossorigin="anonymous"></script>
@@ -21,10 +21,12 @@
             color: #f0f0f0;
         }
         p {
-            font-size: 1.5em;
+            
             color: #2C3A4D;
             padding: 20px;
             margin: 0;
+            text-align: center;
+            font-size: 12px;
         }
         h1 {
             color: #028900;
@@ -86,6 +88,30 @@
             width: 40%;
             margin-right: 25px;
         }
+.password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-container input[type="password"],
+        .password-container input[type="text"] {
+            width: 100%;
+            padding-right: 70px; /* Adjust for space for the "Show/Hide" text */
+            box-sizing: border-box;
+            font-size: 1em; /* Adjust as needed */
+            height: 40px; /* Ensure consistent input height */
+        }
+
+.toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 1em; /* Adjust as needed for size */
+            color: #028900;
+            user-select: none;
+        }
     </style>
 </head>
 <body>
@@ -99,8 +125,15 @@
         <input type="text" id="full-name" placeholder="Full Name" required>
         <input type="text" id="username" placeholder="Username" required>
         <input type="email" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+        <div class="password-container">
+            <input type="password" id="password" placeholder="Password" required>
+            <span class="toggle-password" data-target="#password">Show</span>
+        </div>
+
+        <div class="password-container">
+            <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+            <span class="toggle-password" data-target="#confirm-password">Show</span>
+        </div>
         <input type="text" id="referral-username" placeholder="Referral Username (Optional)">
         <button type="submit">Register</button>
         <p>Already have an account? Log in <a href="/login" class="link">here</a></p>
@@ -114,6 +147,28 @@
             if (referrer) {
                 document.getElementById('referral-username').value = referrer;
             }
+        });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const referrer = urlParams.get('ref');
+            if (referrer) {
+                document.getElementById('referral-username').value = referrer;
+            }
+        });
+
+        // Toggle password visibility
+        document.querySelectorAll('.toggle-password').forEach(toggle => {
+            toggle.addEventListener('click', function () {
+                const targetInput = document.querySelector(this.getAttribute('data-target'));
+                if (targetInput.type === 'password') {
+                    targetInput.type = 'text';
+                    this.textContent = 'Hide';
+                } else {
+                    targetInput.type = 'password';
+                    this.textContent = 'Show';
+                }
+            });
         });
     </script>
 </body>

@@ -3,14 +3,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!username) return window.location.href = '/register';
 
     const taskDetails = {
-        "mine2-btn": { name: "Complete 2 mining sessions", target: 2, reward: 10000 },
-        "mine20-btn": { name: "Complete 20 mining sessions", target: 20, reward: 100000 },
-        "mine100-btn": { name: "Complete 100 mining sessions", target: 100, reward: 1000000 },
+        "follow-btn": { name: "Follow Softcoin on X", target: 1, reward: 30000 },
+        "join-btn": { name: "Join Softcoin telegram channel", target: 1, reward: 30000 },
         "refer2-btn": { name: "Invite 2 friends", target: 2, reward: 30000 },
         "refer5-btn": { name: "Invite 5 friends", target: 5, reward: 50000 },
         "refer10-btn": { name: "Invite 10 friends", target: 10, reward: 100000 },
-        "follow-btn": { name: "Follow Softcoin on X", target: 1, reward: 30000 },
-        "join-btn": { name: "Join Softcoin telegram channel", target: 1, reward: 30000 }
+        "mine2-btn": { name: "Complete 2 mining sessions", target: 2, reward: 10000 },
+        "mine20-btn": { name: "Complete 20 mining sessions", target: 20, reward: 100000 },
+        "mine100-btn": { name: "Complete 100 mining sessions", target: 100, reward: 1000000 }
     };
 
     // Function to fetch user referral count
@@ -45,11 +45,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, taskId, reward })
             });
+
+            // The server should return { success: true } on successful claim
             const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Failed to claim reward');
-            return true;
+
+            if (response.ok && data.success) {
+                return true;
+            } else {
+                console.error(data.message || 'Failed to claim reward');
+                return false;
+            }
         } catch (error) {
-            console.error(error);
+            console.error('Error claiming task:', error);
             return false;
         }
     }
@@ -118,7 +125,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             localStorage.removeItem(taskId + '-initiated');
             moveTaskToCompleted(taskId);
         } else {
-            showCustomAlert('Failed to claim reward. Please try again.');
+            showCustomAlert('Reward claimed successfully!');
         }
     }
 

@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
-const User = require('../models/User'); // Adjust the path according to your project structure
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const User = require('../models/User'); // Adjust the path according to your project structure
 
-// User registration endpoint
 // User registration endpoint
 router.post('/register', async (req, res) => {
     const { fullName, username, email, password, referralUsername } = req.body;
@@ -38,6 +36,8 @@ router.post('/register', async (req, res) => {
             referrer = await User.findOne({ username: referralUsername });
         }
 
+        const verificationToken = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
         const newUser = new User({
             fullName,
             username,
@@ -45,7 +45,9 @@ router.post('/register', async (req, res) => {
             password: hashedPassword,
             referralUsername,
             referredBy: referrer ? referrer._id : null,
-            coinBalance: 50000 // Initial bonus for the referred friend
+            coinBalance: 50000, // Initial bonus for the referred friend
+            verificationToken, // Save the verification token
+            isVerified: false, // Set the user as unverified initially
         });
 
         await newUser.save();
@@ -56,27 +58,103 @@ router.post('/register', async (req, res) => {
             await referrer.save();
         }
 
-        res.status(201).json({ message: 'User registered successfully' });
+        // Send verification email
+        await sendVerificationEmail(email, verificationToken);
+
+        res.status(201).json({ message: 'User registered successfully. Please check your email to verify your account.' });
     } catch (error) {
         console.error('Error during registration:', error);
         res.status(500).json({ message: 'Error registering user' });
     }
 });
 
+
 router.post('/login', async (req, res) => {
     const { usernameEmail, password } = req.body;
 
     try {
         const user = await User.findOne({ $or: [{ username: usernameEmail }, { email: usernameEmail }] });
+
         if (!user || !(await bcrypt.compare(password, user.password))) {
             return res.status(400).json({ message: 'Invalid username/email or password' });
         }
 
+        if (!user.isVerified) {
+            return res.status(400).json({ message: 'Please verify your email to log in' });
+        }
+
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(200).json({ message: 'Login successful', token, username: user.username });
-    } catch {
+    } catch (error) {
+        console.error('Error logging in user:', error);
         res.status(500).json({ message: 'Error logging in user' });
     }
 });
+
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+
+// Endpoint to initiate password reset
+router.post('/forgot-password', async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        user.resetPasswordToken = resetToken;
+        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+        await user.save();
+
+        const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
+        await sendEmail(email, 'Password Reset', `Please use the following link to reset your password: ${resetLink}`);
+
+        res.status(200).json({ message: 'Password reset link sent to your email.' });
+    } catch (error) {
+        console.error('Error initiating password reset:', error);
+        res.status(500).json({ message: 'Error initiating password reset' });
+    }
+});
+
+// Endpoint to handle password reset
+router.post('/reset-password', async (req, res) => {
+    const { token, newPassword } = req.body;
+
+    try {
+        const user = await User.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
+        if (!user) return res.status(400).json({ message: 'Invalid or expired token' });
+
+        user.password = await bcrypt.hash(newPassword, 10);
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        await user.save();
+
+        res.status(200).json({ message: 'Password reset successful' });
+    } catch (error) {
+        console.error('Error resetting password:', error);
+        res.status(500).json({ message: 'Error resetting password' });
+    }
+});
+
+// Helper function to send emails
+async function sendEmail(to, subject, text) {
+    const transporter = nodemailer.createTransport({
+        service: 'Zoho',
+        auth: {
+            user: 'noreply@softcoin.world',
+            pass: 'Fameshow1?' // Use environment variables for security
+        }
+    });
+
+    const mailOptions = {
+        from: 'noreply@softcoin.world',
+        to,
+        subject,
+        text
+    };
+
+    await transporter.sendMail(mailOptions);
+}
 
 module.exports = router;
