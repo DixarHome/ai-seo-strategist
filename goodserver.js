@@ -2,10 +2,9 @@ const express = require('express');
 const dotenv = require('dotenv');
 const path = require('path');
 const cors = require('cors');
-const connectToDatabase = require('./utils/db');
-const User = require('./models/User');
-const redisClient = require('./cache'); // Import Redis client
-const authRoutes = require('./routes/auth'); // Import authentication routes
+const connectToDatabase = require('../utils/db');
+const User = require('../models/User');
+const authRoutes = require('../routes/auth'); // Import authentication routes
 
 dotenv.config();
 
@@ -16,39 +15,12 @@ connectToDatabase().then(() => console.log('MongoDB connected'));
 
 app.use(express.json());
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Use authentication routes
 app.use('/api/auth', authRoutes);
 
-// Cache middleware
-const cache = async (req, res, next) => {
-    const { username } = req.body || req.params; // Use req.params for GET requests
-
-    if (!username) {
-        // If username is not defined, skip caching
-        return next();
-    }
-
-    try {
-        console.log('Checking cache for:', username); // Debugging
-        const cachedData = await redisClient.get(username);
-
-        if (cachedData) {
-            console.log('Cache hit:', username); // Debugging
-            return res.status(200).json(JSON.parse(cachedData));
-        }
-
-        console.log('Cache miss:', username); // Debugging
-        next();
-    } catch (error) {
-        console.error('Redis error:', error);
-        next();
-    }
-};
-
-// Apply cache middleware to referral endpoint
-app.get('/api/referrals/:username', cache, async (req, res) => {
+app.get('/api/referrals/:username', async (req, res) => {
     const { username } = req.params;
 
     try {
@@ -66,8 +38,6 @@ app.get('/api/referrals/:username', cache, async (req, res) => {
         const totalEarnings = referralBonus + miningRewards;
 
         const response = { referrals, totalEarnings };
-        await redisClient.set(username, JSON.stringify(response), 'EX', 60 * 60); // Cache for 1 hour
-
         res.status(200).json(response);
     } catch (error) {
         console.error('Error fetching referrals:', error);
@@ -168,51 +138,41 @@ app.post('/api/updateBalance', async (req, res) => {
 });
 
 // Endpoint to claim a task reward
-// server.js
 app.post('/api/claimTask', async (req, res) => {
     const { username, taskId, reward } = req.body;
-
     try {
         const user = await User.findOne({ username });
-        const task = await Task.findOne({ taskId });
+        if (!user) return res.status(404).json({ message: 'User not found' });
 
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        if (!task) {
-            return res.status(404).json({ message: 'Task not found' });
-        }
-
-        if (task.claimed) {
+        const claimedTasks = user.claimedTasks || [];
+        if (claimedTasks.includes(taskId)) {
             return res.status(400).json({ message: 'Task already claimed' });
         }
 
-        task.claimed = true;
-        user.balance += reward;
-
-        await task.save();
+        user.coinBalance += reward;
+        claimedTasks.push(taskId);
+        user.claimedTasks = claimedTasks;
         await user.save();
 
-        res.json({ message: 'Reward claimed successfully' });
+        res.status(200).json({ message: 'Task claimed successfully' });
     } catch (error) {
         console.error('Error claiming task:', error);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Error claiming task' });
     }
 });
 
 app.get('/api/taskStatus/:username/:taskId', async (req, res) => {
     const { username, taskId } = req.params;
-
     try {
-        const task = await Task.findOne({ username, taskId });
-        if (!task) {
-            return res.status(404).json({ claimed: false });
-        }
-        res.json({ claimed: task.claimed });
+        const user = await User.findOne({ username });
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        const claimedTasks = user.claimedTasks || [];
+        const claimed = claimedTasks.includes(taskId);
+
+        res.status(200).json({ claimed });
     } catch (error) {
-        console.error('Error fetching task status:', error);
-        res.status(500).json({ claimed: false });
+        res.status(500).json({ message: 'Error checking task status' });
     }
 });
 
@@ -249,14 +209,14 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Internal server error.' });
 });
 
-['friends', 'tasks', 'market', 'softie', 'more', 'upgrades', 'login', 'register', 'join-softcoin'].forEach(file => {
+['friends', 'tasks', 'market', 'softie', 'more', 'upgrades', 'login', 'register', 'join-softcoin', 'reset-password', 'verification'].forEach(file => {
     app.get(`/${file}`, (req, res) => {
-        res.sendFile(path.join(__dirname, 'public', `${file}.html`));
+        res.sendFile(path.join(__dirname, '../public', `${file}.html`));
     });
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
 app.listen(port, () => {

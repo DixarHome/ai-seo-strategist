@@ -1,7 +1,9 @@
+// script.js
+
 document.addEventListener("DOMContentLoaded", () => {
     let coinBalance = 0;
     let currentLevel = 1;
-    let miningSessionCount = 0; // Initialize the mining session count
+    let miningSessionCount = 0;
     const rewardIntervals = [2 * 60 * 60 * 1000, 3 * 60 * 60 * 1000, 4 * 60 * 60 * 1000, 5 * 60 * 60 * 1000, 6 * 60 * 60 * 1000];
     const rewards = [15000, 30000, 60000, 120000, 240000];
     let timerInterval;
@@ -14,10 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const statusMessageEl = document.getElementById('status-message');
     const timerEl = document.getElementById('timer');
     const miningLevelEl = document.getElementById('mining-level');
-    const miningSessionCountEl = document.getElementById('mining-session-count'); // Element to display session count
+    const miningSessionCountEl = document.getElementById('mining-session-count');
     const bars = document.querySelectorAll('.bar');
 
-    // Function to start mining
     async function startMining() {
         try {
             const response = await fetch('/api/startMining', {
@@ -45,27 +46,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Function to update the coin balance on the UI
     function updateCoinBalance() {
         coinBalanceEl.textContent = `${coinBalance.toLocaleString()} SFT`;
     }
 
-    // Function to update the mining level on the UI
     function updateMiningLevel() {
         miningLevelEl.textContent = currentLevel;
     }
 
-    // Function to update the mining session count on the UI
     function updateMiningSessionCount() {
         miningSessionCountEl.textContent = `Sessions Completed: ${miningSessionCount}`;
     }
 
-    // Function to update the status message on the UI
     function updateStatusMessage(message) {
         statusMessageEl.textContent = message;
     }
 
-    // Function to start the timer for the next reward
     function startTimer(miningStartTime, level) {
         const endTime = new Date(miningStartTime).getTime() + rewardIntervals[level - 1];
 
@@ -78,12 +74,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 toggleBarsAnimation(false);
                 mineBtn.disabled = false;
 
-                // Update balance with the reward amount
                 coinBalance += rewards[level - 1];
                 updateCoinBalance();
-                updateCoinBalanceWithReferralEarnings(); // Update balance with referral earnings after mining complete
-                miningSessionCount += 1; // Increment session count
-                updateMiningSessionCount(); // Update session count on UI
+                updateCoinBalanceWithReferralEarnings();
+                miningSessionCount += 1;
+                updateMiningSessionCount();
             } else {
                 const hours = Math.floor((remainingTime / (1000 * 60 * 60)) % 24);
                 const minutes = Math.floor((remainingTime / (1000 * 60)) % 60);
@@ -100,7 +95,6 @@ document.addEventListener("DOMContentLoaded", () => {
         timerInterval = setInterval(updateTimer, 1000);
     }
 
-    // Function to update the mining status
     async function updateMiningStatus() {
         try {
             const response = await fetch('/api/miningStatus', {
@@ -130,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 updateStatusMessage("Mining complete!");
                 mineBtn.disabled = false;
                 toggleBarsAnimation(false);
-                updateCoinBalanceWithReferralEarnings(); // Update balance with referral earnings after mining complete
+                updateCoinBalanceWithReferralEarnings();
             } else {
                 updateStatusMessage("Mining not started");
                 mineBtn.disabled = false;
@@ -141,28 +135,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Bars animation control
     function toggleBarsAnimation(active) {
         bars.forEach(bar => {
             bar.style.animationPlayState = active ? 'running' : 'paused';
         });
     }
 
-    // Function to fetch and update balance with referral earnings
     async function updateCoinBalanceWithReferralEarnings() {
         try {
             const response = await fetch(`/api/referrals/${username}`);
             const data = await response.json();
-            coinBalance = data.totalEarnings;
-            updateCoinBalance();
+            if (data && data.referrals) {
+                const referralBonus = data.referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0);
+                const totalCoinBalance = coinBalance + referralBonus;
+                coinBalanceEl.textContent = `${totalCoinBalance.toLocaleString()} SFT`;
+            }
         } catch (error) {
-            updateStatusMessage("Failed to update balance with referral earnings");
+            console.error("Error fetching referral earnings:", error);
         }
     }
 
-    // Event listener for mining button
     mineBtn.addEventListener('click', startMining);
 
-    // Initial setup
+    // Update the mining status and coin balance on page load
     updateMiningStatus();
 });

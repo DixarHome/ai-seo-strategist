@@ -45,10 +45,16 @@ app.get('/api/referrals/:username', async (req, res) => {
     }
 });
 
+// server.js
+
+// Import necessary modules and set up the server as usual
+
+// Other existing routes...
+
 app.post('/api/startMining', async (req, res) => {
     const { username } = req.body;
     try {
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ username }).populate('referrals');
         if (!user) return res.status(404).json({ message: 'User not found' });
         if (user.isMining) return res.status(400).json({ message: 'Mining already in progress' });
 
@@ -56,11 +62,14 @@ app.post('/api/startMining', async (req, res) => {
         user.miningStartTime = new Date();
         await user.save();
 
+        const referralBonus = user.referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0);
+        const totalCoinBalance = user.coinBalance + referralBonus;
+
         res.status(200).json({
             miningStartTime: user.miningStartTime,
-            coinBalance: user.coinBalance,
+            coinBalance: totalCoinBalance,
             level: user.level,
-            miningSessionCount: user.miningSessionCount || 0 // Ensure miningSessionCount is included and handled if undefined
+            miningSessionCount: user.miningSessionCount || 0
         });
     } catch (error) {
         res.status(500).json({ message: 'Error starting mining' });
@@ -70,7 +79,7 @@ app.post('/api/startMining', async (req, res) => {
 app.post('/api/miningStatus', async (req, res) => {
     const { username } = req.body;
     try {
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ username }).populate('referrals');
         if (!user) return res.status(404).json({ message: 'User not found' });
 
         const currentTime = Date.now();
@@ -82,21 +91,19 @@ app.post('/api/miningStatus', async (req, res) => {
             user.coinBalance += rewards[user.level - 1];
             user.isMining = false;
             user.miningStartTime = null;
-            user.miningSessionCount = (user.miningSessionCount || 0) + 1; // Ensure miningSessionCount is incremented properly
+            user.miningSessionCount = (user.miningSessionCount || 0) + 1;
             await user.save();
-            return res.status(200).json({
-                miningComplete: true,
-                coinBalance: user.coinBalance,
-                miningSessionCount: user.miningSessionCount,
-                level: user.level
-            });
         }
+
+        const referralBonus = user.referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0);
+        const totalCoinBalance = user.coinBalance + referralBonus;
 
         res.status(200).json({
             miningStartTime: user.miningStartTime,
-            coinBalance: user.coinBalance,
+            coinBalance: totalCoinBalance,
             level: user.level,
-            miningSessionCount: user.miningSessionCount || 0 // Ensure miningSessionCount is included and handled if undefined
+            miningSessionCount: user.miningSessionCount || 0,
+            miningComplete: !user.isMining
         });
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving mining status' });
@@ -201,28 +208,6 @@ app.get('/api/referralCount/:username', async (req, res) => {
         res.status(200).json({ referralCount: user.referralCount });
     } catch (error) {
         res.status(500).json({ message: 'Error fetching referral count' });
-    }
-});
-
-app.get('/api/userData/:username', async (req, res) => {
-    const { username } = req.params;
-
-    try {
-        const user = await User.findOne({ username }).populate('referrals');
-        if (!user) return res.status(404).json({ message: 'User not found' });
-
-        const referralBonus = user.referrals.length * 50000; // 50,000 SFT for each referred friend
-        const miningRewards = user.referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0); // 20% mining rewards
-        const totalEarnings = user.coinBalance + referralBonus + miningRewards;
-
-        res.status(200).json({
-            coinBalance: totalEarnings,
-            level: user.level,
-            miningSessionCount: user.miningSessionCount || 0
-        });
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-        res.status(500).json({ message: 'Error fetching user data' });
     }
 });
 
