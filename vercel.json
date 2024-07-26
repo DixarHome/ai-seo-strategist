@@ -1,11 +1,19 @@
 {
   "version": 2,
-  "functions": {
-    "api/server.js": {
-      "runtime": "vercel/nodejs16.x",
-      "maxDuration": 60
+  "builds": [
+    {
+      "src": "public/favicon.ico",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "api/server.js",
+      "use": "@vercel/node",
+      "config": {
+        "runtime": "nodejs16.x",
+        "maxDuration": 60
+      }
     }
-  },
+  ],
   "routes": [
     {
       "src": "/favicon.ico",
