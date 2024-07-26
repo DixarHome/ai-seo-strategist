@@ -2,7 +2,7 @@
   "version": 2,
   "functions": {
     "api/server.js": {
-      "runtime": "now_php@1.0.0",
+      "runtime": "@vercel/node",
       "maxDuration": 60
     }
   },
