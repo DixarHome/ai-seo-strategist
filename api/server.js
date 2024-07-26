@@ -2,9 +2,9 @@ const express = require('express');
 const dotenv = require('dotenv');
 const path = require('path');
 const cors = require('cors');
-const connectToDatabase = require('./utils/db');
-const User = require('./models/User');
-const authRoutes = require('./routes/auth'); // Import authentication routes
+const connectToDatabase = require('../utils/db');
+const User = require('../models/User');
+const authRoutes = require('../routes/auth'); // Import authentication routes
 
 dotenv.config();
 
@@ -15,7 +15,7 @@ connectToDatabase().then(() => console.log('MongoDB connected'));
 
 app.use(express.json());
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Use authentication routes
 app.use('/api/auth', authRoutes);
@@ -233,12 +233,12 @@ app.use((err, req, res, next) => {
 
 ['friends', 'tasks', 'market', 'softie', 'more', 'upgrades', 'login', 'register', 'join-softcoin', 'reset-password', 'verification'].forEach(file => {
     app.get(`/${file}`, (req, res) => {
-        res.sendFile(path.join(__dirname, 'public', `${file}.html`));
+        res.sendFile(path.join(__dirname, '../public', `${file}.html`));
     });
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
 app.listen(port, () => {
