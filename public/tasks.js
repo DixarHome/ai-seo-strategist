@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
             const response = await fetch(`/api/taskStatus/${username}/${taskId}`);
             const data = await response.json();
-            return data.claimed;
+            return data.success && data.claimed;
         } catch (error) {
             console.error('Error fetching task status:', error);
             return false;
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             localStorage.removeItem(taskId + '-initiated');
             moveTaskToCompleted(taskId);
         } else {
-            showCustomAlert('Reward claimed successfully!');
+            showCustomAlert('Failed to claim reward. Please try again.');
         }
     }
 

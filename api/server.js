@@ -145,6 +145,7 @@ app.post('/api/updateBalance', async (req, res) => {
 });
 
 // Endpoint to claim a task reward
+// Endpoint to claim a task reward
 app.post('/api/claimTask', async (req, res) => {
     const { username, taskId, reward } = req.body;
     try {
@@ -153,7 +154,7 @@ app.post('/api/claimTask', async (req, res) => {
 
         const claimedTasks = user.claimedTasks || [];
         if (claimedTasks.includes(taskId)) {
-            return res.status(400).json({ message: 'Task already claimed' });
+            return res.status(400).json({ success: false, message: 'Task already claimed' });
         }
 
         user.coinBalance += reward;
@@ -161,25 +162,27 @@ app.post('/api/claimTask', async (req, res) => {
         user.claimedTasks = claimedTasks;
         await user.save();
 
-        res.status(200).json({ message: 'Task claimed successfully' });
+        res.status(200).json({ success: true, message: 'Task claimed successfully' });
     } catch (error) {
         console.error('Error claiming task:', error);
-        res.status(500).json({ message: 'Error claiming task' });
+        res.status(500).json({ success: false, message: 'Error claiming task' });
     }
 });
 
+// Endpoint to check the status of a task
 app.get('/api/taskStatus/:username/:taskId', async (req, res) => {
     const { username, taskId } = req.params;
     try {
         const user = await User.findOne({ username });
-        if (!user) return res.status(404).json({ message: 'User not found' });
+        if (!user) return res.status(404).json({ success: false, message: 'User not found' });
 
         const claimedTasks = user.claimedTasks || [];
         const claimed = claimedTasks.includes(taskId);
 
-        res.status(200).json({ claimed });
+        res.status(200).json({ success: true, claimed });
     } catch (error) {
-        res.status(500).json({ message: 'Error checking task status' });
+        console.error('Error checking task status:', error);
+        res.status(500).json({ success: false, message: 'Error checking task status' });
     }
 });
 
