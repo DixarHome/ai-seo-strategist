@@ -5,19 +5,20 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User'); // Adjust the path according to your project structure
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+require('dotenv').config(); // Add this line to load environment variables from the .env file
 
 // Function to send emails
 async function sendEmail(to, subject, text) {
     const transporter = nodemailer.createTransport({
         service: 'Zoho',
         auth: {
-            user: 'noreply@softcoin.world',
-            pass: 'Fameshow1?' // Use environment variables for security
+            user: process.env.EMAIL,
+            pass: process.env.PASSWORD
         }
     });
 
     const mailOptions = {
-        from: 'noreply@softcoin.world',
+        from: process.env.EMAIL,
         to,
         subject,
         text
@@ -120,6 +121,7 @@ router.get('/verify-email', async (req, res) => {
         res.status(500).json({ message: 'Error verifying email' });
     }
 });
+
 // User login endpoint
 router.post('/login', async (req, res) => {
     const { usernameEmail, password } = req.body;
