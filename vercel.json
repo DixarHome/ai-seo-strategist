@@ -1,15 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "public/favicon.ico",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "api/server.js",
-      "use": "@vercel/node"
-    }
-  ],
   "routes": [
     {
       "src": "/favicon.ico",
@@ -17,16 +7,15 @@
     },
     {
       "src": "/api/(.*)",
-      "dest": "/api/server.js"
+      "dest": "/api/server.js",
+      "methods": ["GET", "POST"],
+      "headers": {
+        "x-vercel-max-duration": "900"
+      }
     },
     {
       "src": "/(.*)",
       "dest": "/api/server.js"
     }
-  ],
-  "functions": {
-    "api/server.js": {
-      "maxDuration": 900
-    }
-  }
+  ]
 }
