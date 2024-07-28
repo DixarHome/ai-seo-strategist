@@ -1,12 +1,13 @@
 const express = require('express');
-const dotenv = require('dotenv');
 const path = require('path');
 const cors = require('cors');
 const connectToDatabase = require('../utils/db');
 const User = require('../models/User');
 const authRoutes = require('../routes/auth'); // Import authentication routes
 
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 const app = express();
 const port = process.env.PORT || 3000;

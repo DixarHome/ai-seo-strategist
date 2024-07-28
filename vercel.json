@@ -1,5 +1,10 @@
 {
   "version": 2,
+  "functions": {
+    "api/server.js": {
+      "maxDuration": 60
+    }
+  },
   "routes": [
     {
       "src": "/favicon.ico",
@@ -7,11 +12,7 @@
     },
     {
       "src": "/api/(.*)",
-      "dest": "/api/server.js",
-      "methods": ["GET", "POST"],
-      "headers": {
-        "x-vercel-max-duration": "900"
-      }
+      "dest": "/api/server.js"
     },
     {
       "src": "/(.*)",
