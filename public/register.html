@@ -10,19 +10,15 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: white;
-            color: #333;
+            background-color: #041f4c;
+            color: #f0f0f0;
             transition: background-color 0.3s, color 0.3s;
             padding-top: 20px;
             font-size: 10px;
         }
-        .dark-mode {
-            background-color: #121212;
-            color: #f0f0f0;
-        }
+
         p {
-            
-            color: #2C3A4D;
+            color: #fff;
             padding: 20px;
             margin: 0;
             text-align: center;
@@ -36,12 +32,12 @@
             padding: 0;
         }
         form {
-            max-width: 80%;
+            width: 80%;
             margin: 0 auto;
             padding: 20px;
-            background: white;
+            padding-top: 10px;
+            background: #041f4c;
             border-radius: 20px;
-            
         }
         input, button {
             width: 100%;
@@ -50,9 +46,11 @@
             border: 1px solid #ccc;
             border-radius: 3px;
             box-sizing: border-box;
+            background: #fff;
         }
         label {
-            color: #2C3A4D;
+            color: #fff;
+            font-size: 1.3em;
         }
         button {
             background: #028900;
@@ -62,6 +60,10 @@
         }
         button:hover {
             background: #015900;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
         }
         .custom-alert {
             display: none;
@@ -81,6 +83,58 @@
             border-color: #f5c6cb;
         }
         .toggle-container {
+            text-align: center;
+            margin: 1em 0;
+        }
+        img {
+            width: 40%;
+            margin-right: 25px;
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            background-color: white;
+            border-radius: 10px;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #ccc;
+            border-top-color: #028900;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+.toggle-container {
             text-align: center;
             margin: 1em 0;
         }
@@ -112,6 +166,9 @@
             color: #028900;
             user-select: none;
         }
+    a {
+      color: #20c3f4;
+    }
     </style>
 </head>
 <body>
@@ -119,6 +176,7 @@
         <img src="iconns/softword.png" alt="Softcoin Logo">
         <p>Welcome</p>
     </header>
+    <p id="registration-message"></p>
     <form id="registration-form">
         <div id="alert-box" class="custom-alert"></div>
         <h1>Register</h1>

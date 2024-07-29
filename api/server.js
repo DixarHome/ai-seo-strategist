@@ -220,7 +220,7 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Internal server error.' });
 });
 
-['friends', 'tasks', 'market', 'softie', 'more', 'upgrades', 'login', 'register', 'join-softcoin', 'reset-password', 'verification', 'explore' ].forEach(file => {
+['friends', 'tasks', 'softie', 'more', 'upgrades', 'login', 'register', 'reset-password', 'verification', 'home' ].forEach(file => {
     app.get(`/${file}`, (req, res) => {
         res.sendFile(path.join(__dirname, '../public', `${file}.html`));
     });

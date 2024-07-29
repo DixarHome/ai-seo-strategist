@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
-            background-color: #ffffff;
-            color: #333;
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
@@ -21,14 +19,11 @@
             align-items: center;
             width: 90%;
             padding: 20px 20px;
-            background-color: #fff;
+            background-color: #041f4c;
             position: fixed;
             top: 0;
             left: 0;
             z-index: 1000;
-        }
-        body.dark-mode header {
-            background-color: #131923;
             color: #fff;
         }
         .logo {
@@ -42,13 +37,11 @@
         }
         .logo span {
             font-size: 2em;
-            color: #030c52;
+            color: #fff;
             font-weight: bold;
             margin-left: 50px;
         }
-        body.dark-mode .logo span {
-          color: #fff;
-        }
+
         .hamburger {
             cursor: pointer;
             display: flex;
@@ -60,20 +53,18 @@
         .hamburger div {
             width: 100%;
             height: 3px;
-            background-color: #252945;
+            background-color: #fff;
         }
-        body.dark-mode .hamburger div {
-             background-color: #fff;
-        }
+
         .menu {
             display: none;
             position: absolute;
             top: 60px;
             right: 20px;
-            background-color: #030c52;
+            background-color: rgb(44,58,77);
             border-radius: ;
             z-index: 1000;
-            width: 30%;
+            width: 50%;
         }
         .menu a {
             display: block;
@@ -99,63 +90,37 @@
          }
 
          .balance-card {
-            background-color: #f0f0f0;
-            border: 1px solid #0f2340;
+            background-color: #2f0341;
+            border: 1px solid #dfdade;
             border-radius: 8px;
             margin-bottom: 20px;
             padding: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
           }
          .lock {
-            background-image: url('design/3.png'); /* Set the image URL */
+            background-image: url('images/lock2.png'); /* Set the image URL */
             background-size: cover; /* Ensure the image covers the entire card */
             background-position: center; /* Center the image */
     
           }
          .unlock {
-            background-image: url('design/2.png'); /* Set the image URL */
+            background-image: url('images/unlock2.png'); /* Set the image URL */
             background-size: cover; /* Ensure the image covers the entire card */
             background-position: center; /* Center the image */
-    
           }
-          body.dark-mode .lock {
-            background-image: url('design/5.png'); /* Set the image URL */
-            background-size: cover; /* Ensure the image covers the entire card */
-            background-position: center; /* Center the image */
-    
-          }
-         body.dark-mode .unlock {
-            background-image: url('design/4.png'); /* Set the image URL */
-            background-size: cover; /* Ensure the image covers the entire card */
-            background-position: center; /* Center the image */
-    
-          }
-
-         body.dark-mode .balance-card {
-            background-color: #2f0341;
-            border-color: #dfdade;
-           }
 
          .balance-card h2 {
-            color: #06439b;
+            color: #20fbfc;
             margin: 0;
             font-size: 1em;
            }
 
-         body.dark-mode .balance-card h2 {
-            color: #20fbfc;
-           }
-
          .balance-amount {
            font-size: 24px;
-           color: #120f37;
+           color: #fff;
            margin: 0;
            }
            
-        body.dark-mode .balance-amount {
-           color: #ffffff;
-        }
-
         .deposit-btn, .withdraw-btn, .swap-btn, .user-menu {
            background-color: #30a200;
            border: none;
@@ -175,8 +140,8 @@
            margin: 0;
          }
        .profits {
-           background-color: #f0f0f0;
-           border: 1px solid #0f2340;
+           background-color: #2f0341;
+           border: 1px solid #dfdade;
            border-radius: 8px;
            padding: 10px;
            display: flex;
@@ -189,13 +154,7 @@
             padding: 0;
             font-weight: bold;
             font-size: 0.8em;
-        }
-        body.dark-mode .profits p {
             color: #b2b2b2;
-        }
-        body.dark-mode .profits {
-            background-color: #2f0341;
-            border-color: #dfdade;
         }
         .hamster-section {
             margin-top: 20px;
@@ -205,17 +164,13 @@
         }
 
         .many {
-            color: #0f2340;
+            color: #fff;
             margin-top: 20px;
             padding: 0 10px;
             width: 80%;
             text-align: center;
         }
-        body.dark-mode .many {
-            color: #fff;
-        }
-
-        body.dark-mode .hamster-section h2 {
+       .hamster-section h2 {
             color: #fff;
         }
 
@@ -227,7 +182,7 @@
             scroll-snap-type: x mandatory;
         }
         .hamster-card {
-            background-color: #f0f0f0;
+            background-color: #02640e;
             border: 1px solid #ddd;
             border-radius: 8px;
             flex: 0 0 auto;
@@ -237,28 +192,17 @@
             padding: 20px;
         }
 
-        body.dark-mode .hamster-card {
-            background-color: #02640e;
-        }
-
         .hamster-card img {
             width: 100%;
             border-radius: 8px;
         }
         .hamster-card h3 {
-            color: #333;
-            font-size: 2em;
-        }
-
-        body.dark-mode .hamster-card h3 {
             color: #fff;
+            font-size: 2em;
         }
 
         .hamster-card p {
             margin: 10px 0;
-        }
-
-        body.dark-mode .hamster-card p {
             color: #fff;
         }
     </style>
@@ -355,7 +299,6 @@
         <div id="cherry-placeholder"></div>
         <script src="cherry.js"></script>
         <script src="navigation.js" defer></script>
-        <script src="dark-mode.js"></script>
     <script>
         // JavaScript to toggle menu visibility
         const hamburgerMenu = document.getElementById('hamburger-menu');

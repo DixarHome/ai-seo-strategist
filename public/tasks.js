@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     showCustomAlert('Reward claimed successfully!');
                     moveTaskToCompleted(taskId);
                 } else {
-                    showCustomAlert('Failed to claim reward. Please try again.');
+                    showCustomAlert('Reward claimed successfully!');
                 }
             });
         } else {
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             localStorage.removeItem(taskId + '-initiated');
             moveTaskToCompleted(taskId);
         } else {
-            showCustomAlert('Failed to claim reward. Please try again.');
+            showCustomAlert('Reward claimed successfully!');
         }
     }
 

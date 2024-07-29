@@ -2,8 +2,8 @@
 body {
     margin: 0;
     font-family: 'poppins', sans-serif;
-    background-color: #f4f4f4;
-    color: #2C3A4D;
+    background-color: #041f4c;
+    color: #e0e0e0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -15,11 +15,6 @@ body {
     overflow-y: auto;
     padding-bottom: 50px;
     font-size: 12px;
-}
-
-body.dark-mode {
-    background-color: #131923;
-    color: #e0e0e0;
 }
 
 #top-bar {
@@ -112,13 +107,10 @@ input:checked + .slider:before {
 #coin-balance {
     font-size: 30px;
     margin: 20px 5px 0;
-    color: #2C3A4D; /* Light theme color */
+    color: white; /* Light theme color */
     padding: 0;
 }
 
-body.dark-mode #coin-balance {
-    color: white; /* Dark theme color */
-}
 #mine-btn #level {
     text-align: right;
     align-self: right;
@@ -205,35 +197,6 @@ body.dark-mode #coin-balance {
     animation: loadingBar 7200s linear forwards; /* 2 hours (7200 seconds) */
 }
 
-@keyframes loadingBar {
-    from {
-        width: 0%;
-    }
-    to {
-        width: 100%;
-    }
-}
-
-body.dark-mode .bar:nth-child(1) { background-color: #e74c3c; animation-delay: 0s; }
-.bar
-(2) { background-color: #e67e22; animation-delay: 0.2s; }
-.bar
-(3) { background-color: #f1c40f; animation-delay: 0.4s; }
-.bar
-(4) { background-color: #2ecc71; animation-delay: 0.6s; }
-.bar
-(5) { background-color: #1abc9c; animation-delay: 0.8s; }
-.bar
-(6) { background-color: #3498db; animation-delay: 1s; }
-.bar
-(7) { background-color: #9b59b6; animation-delay: 1.2s; }
-.bar
-(8) { background-color: #34495e; animation-delay: 1.4s; }
-.bar
-(9) { background-color: #16a085; animation-delay: 1.6s; }
-.bar
-(10) { background-color: #27ae60; animation-delay: 1.8s; }
-
 #timer {
   padding-bottom: 0;
   color: #028900;
@@ -258,11 +221,11 @@ p {
   padding: 10px 0;
   display: flex;
   justify-content: space-around;
-  background: white;
-  backdrop-filter: blur(50px);
+  background: rgba(44, 58, 77, 0.8);
+  backdrop-filter: blur(10px);
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid #444;
   z-index: 1000;
 }
 
@@ -298,33 +261,6 @@ p {
 #bottom-nav .nav-item.active span {
   color: #028900;
 }
-
-body.dark-mode #bottom-nav {
-  background: rgba(44, 58, 77, 0.8);
-  backdrop-filter: blur(10px);
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  border-top: 1px solid #444;
-}
-
-body.dark-mode #bottom-nav .nav-item {
-  color: lightgray;
-}
-
-body.dark-mode #bottom-nav .nav-item img {
-  filter: brightness(0) invert(0.8); /* This makes the icon light gray */
-  fill: lightgray; /* Ensure fill property is set to light gray */
-}
-
-body.dark-mode #bottom-nav .nav-item.active img {
-  filter: none; /* This resets the filter to show the original icon color */
-  fill: blue; /* Change fill color to blue for active icon */
-}
-
-body.dark-mode #bottom-nav .nav-item.active span {
-  color: #028900;
-}
-
 
 /* Slideshow Container */
 #slideshow-container {
@@ -435,22 +371,18 @@ body.dark-mode #bottom-nav .nav-item.active span {
     height: 100%;
     overflow: hidden;
     padding-bottom: 0;
-    background-color: #05080494;
+    background-color: rgba(44,58,77,0.627);
     
     
-}
-body.dark-mode .cherry-modal-content {
-    background-color: #0b0e14;
-    color: #fff;
 }
 
 .cherry-modal {
-    color: #2C3A4D;
+    color: #fff;
     font-size: 10px;
 }
 
 .cherry-modal-content {
-    background-color: #fff;
+    background-color: rgb(44,58,77);
     margin: 15% auto; 
     padding: 20px;
     border: 1px solid #0b0e14;
@@ -461,6 +393,9 @@ body.dark-mode .cherry-modal-content {
     text-align: left;
     transform: scale(0);
     animation: spreadOut 0.8s forwards; /* Add animation */
+}
+#cherry-message a {
+    color: #20c3f4;
 }
 #cherry-message p, #cherry-message button {
     font-size: 10px;
@@ -498,7 +433,7 @@ body.dark-mode .cherry-modal-content {
 
 .cherry-close:hover,
 .cherry-close:focus {
-    color: black;
+    color: #fff;
     text-decoration: none;
     cursor: pointer;
 }
