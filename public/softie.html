@@ -3,30 +3,367 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coming Soon</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1069924523331145"
-     crossorigin="anonymous"></script>
+    <title>Softie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
-.coming-soon {
-    text-align: center;
-    margin-top: 80%;
-}
+        body {
+            background-color: #ffffff;
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            padding: 20px 20px;
+            background-color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        body.dark-mode header {
+            background-color: #131923;
+            color: #fff;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            width: 30px;
+            border-radius: 50px;
+            margin-right: 10px;
+        }
+        .logo span {
+            font-size: 2em;
+            color: #030c52;
+            font-weight: bold;
+            margin-left: 50px;
+        }
+        body.dark-mode .logo span {
+          color: #fff;
+        }
+        .hamburger {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 15px;
+            height: 15px;
+        }
+        .hamburger div {
+            width: 100%;
+            height: 3px;
+            background-color: #252945;
+        }
+        body.dark-mode .hamburger div {
+             background-color: #fff;
+        }
+        .menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background-color: #030c52;
+            border-radius: ;
+            z-index: 1000;
+            width: 30%;
+        }
+        .menu a {
+            display: block;
+            padding: 10px 20px;
+            color: #e0e1dd;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .menu a:hover {
+            background-color: #f2f3f2;
+            color: #0d1b2a;
+        }
+        .menu-active {
+            display: block;
+        }
+        .balance-section {
+            margin-top: 90px;
+        }
 
-.coming-soon h1 {
-    font-size: 1em;
-    color: lightgrey;
-}
+        .balance-section, .menu-section, .hamster-section {
+            padding: 10px;
+            width: 80%;
+         }
+
+         .balance-card {
+            background-color: #f0f0f0;
+            border: 1px solid #0f2340;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          }
+         .lock {
+            background-image: url('design/3.png'); /* Set the image URL */
+            background-size: cover; /* Ensure the image covers the entire card */
+            background-position: center; /* Center the image */
+    
+          }
+         .unlock {
+            background-image: url('design/2.png'); /* Set the image URL */
+            background-size: cover; /* Ensure the image covers the entire card */
+            background-position: center; /* Center the image */
+    
+          }
+          body.dark-mode .lock {
+            background-image: url('design/5.png'); /* Set the image URL */
+            background-size: cover; /* Ensure the image covers the entire card */
+            background-position: center; /* Center the image */
+    
+          }
+         body.dark-mode .unlock {
+            background-image: url('design/4.png'); /* Set the image URL */
+            background-size: cover; /* Ensure the image covers the entire card */
+            background-position: center; /* Center the image */
+    
+          }
+
+         body.dark-mode .balance-card {
+            background-color: #2f0341;
+            border-color: #dfdade;
+           }
+
+         .balance-card h2 {
+            color: #06439b;
+            margin: 0;
+            font-size: 1em;
+           }
+
+         body.dark-mode .balance-card h2 {
+            color: #20fbfc;
+           }
+
+         .balance-amount {
+           font-size: 24px;
+           color: #120f37;
+           margin: 0;
+           }
+           
+        body.dark-mode .balance-amount {
+           color: #ffffff;
+        }
+
+        .deposit-btn, .withdraw-btn, .swap-btn, .user-menu {
+           background-color: #30a200;
+           border: none;
+           border-radius: 4px;
+           color: white;
+           cursor: pointer;
+           padding: 5px 20px;
+           margin: 5px 0;
+         }
+
+       .actions {
+           display: flex;
+           justify-content: space-between;
+         }
+       .menu-section {
+           padding: 0;
+           margin: 0;
+         }
+       .profits {
+           background-color: #f0f0f0;
+           border: 1px solid #0f2340;
+           border-radius: 8px;
+           padding: 10px;
+           display: flex;
+           justify-content: space-between;
+           margin: 0;
+           padding: 0 10px;
+        }
+       .profits p {
+            margin: 5px;
+            padding: 0;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+        body.dark-mode .profits p {
+            color: #b2b2b2;
+        }
+        body.dark-mode .profits {
+            background-color: #2f0341;
+            border-color: #dfdade;
+        }
+        .hamster-section {
+            margin-top: 20px;
+            padding: 0 10px;
+            width: 90%;
+            padding-bottom: 100px;
+        }
+
+        .many {
+            color: #0f2340;
+            margin-top: 20px;
+            padding: 0 10px;
+            width: 80%;
+            text-align: center;
+        }
+        body.dark-mode .many {
+            color: #fff;
+        }
+
+        body.dark-mode .hamster-section h2 {
+            color: #fff;
+        }
+
+        .hamster-cards-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 20px 0px;
+            scroll-snap-type: x mandatory;
+        }
+        .hamster-card {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            flex: 0 0 auto;
+            width: 200px;
+            scroll-snap-align: start;
+            text-align: center;
+            padding: 20px;
+        }
+
+        body.dark-mode .hamster-card {
+            background-color: #02640e;
+        }
+
+        .hamster-card img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        hamster-card h3 {
+            color: #333;
+            font-size: 18px;
+        }
+
+        body.dark-mode .hamster-card h3 {
+            color: #fff;
+        }
+
+        .hamster-card p {
+            margin: 10px 0;
+        }
+
+        body.dark-mode .hamster-card p {
+            color: #fff;
+        }
     </style>
 </head>
 <body>
-    <div class="coming-soon">
-        <h1>Coming Soon</h1>
+    <header>
+    <div class="logo">
+        <span>Softie</span>
     </div>
-    <div id="cherry-placeholder"></div>
-    <script src="cherry.js" defer></script>
-    <div id="nav-placeholder"></div>
-    <script src="navigation.js"></script>
-    <script src="dark-mode.js"></script>
+    <div class="hamburger" id="hamburger-menu">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <nav class="menu" id="menu">
+        <a href="#">Learn More</a>
+        <a href="#">Income Calculator</a>
+        <a href="#">Make Deposit</a>
+        <a href="#">Withdrawal</a>
+    </nav>
+</header>
+    <section class="balance-section">
+        <div class="balance-card lock">
+            <h2>Commitment:</h2>
+            <p class="balance-amount">0.00 USD</p>
+            <button class="deposit-btn">Make Deposit</button>
+        </div>
+        <div class="balance-card unlock">
+            <h2>Earning Balance:</h2>
+            <p class="balance-amount">0.00 USD</p>
+            <div class="actions">
+                <button class="withdraw-btn">Withdrawal</button>
+            </div>
+        </div>
+        <div class="profits">
+            <p>Level: <span id="softie-level"></span></p>
+            <p>Daily profit: <span>0 USD</span></p>
+        </div>
+    </section>
+    <section class="many">
+        <h2>Make A Commitment</h2>
+        <p>Become a Softcoin Stakeholder (Softie) by Depositing at least $2 in your Commitment Account. <br><br>And as a Stakeholder you are entitled to a daily return of up to 10% of your commitment till TGE. <br><br>Commitments will be unlocked and returned in full to Stakeholders after Token Generation Event (TGE).</p>
+        
+    </section>
+    
+    <section class="hamster-section">
+        
+        <div class="hamster-cards-container">
+            <div class="hamster-card">
+                <img src="design/1.gif" alt="Softie Level 1">
+                <h3>Amateur</h3>
+                <p>$2 - $20 Commitment</p>
+                <p>5% Return</p>
+                <p>Up To $1/Day</p>
+            </div>
+            <div class="hamster-card">
+                <img src="design/2.gif" alt="Softie Level 2">
+                <h3>Junior</h3>
+                <p>$21 - $100 Commitment</p>
+                <p>6% Daily Returns</p>
+                <p>Up To $6/Day</p>
+            </div>
+            <div class="hamster-card">
+                <img src="design/3.gif" alt="Softie Level 3">
+                <h3>Pro</h3>
+                <p>$101 - $500 Commitment</p>
+                <p>7% Daily Returns</p>
+                <p>Up To $35/Day</p>
+            </div>
+            <div class="hamster-card">
+                <img src="design/4.gif" alt="Softie Level 4">
+                <h3>Expert</h3>
+                <p>$501 - $2000 Commitment</p>
+                <p>8% Daily Returns</p>
+                <p>Up To $160/Day</p>
+            </div>
+            <div class="hamster-card">
+                <img src="design/5.gif" alt="Softie Level 5">
+                <h3>Master</h3>
+                <p>$2001 - $5000 Commitment</p>
+                <p>9% Daily Returns</p>
+                <p>Up To $450/Day</p>
+            </div>
+            <div class="hamster-card">
+                <img src="design/6.gif" alt="Softie Level 6">
+                <h3>Legend</h3>
+                <p>$5001+ Commitment</p>
+                <p>10% Daily Returns</p>
+                <p>Unlimited Earnings</p>
+            </div>
+        </div>
+        </section>
+        <div id="nav-placeholder"></div>
+        <div id="cherry-placeholder"></div>
+        <script src="cherry.js"></script>
+        <script src="navigation.js" defer></script>
+        <script src="dark-mode.js"></script>
+    <script>
+        // JavaScript to toggle menu visibility
+        const hamburgerMenu = document.getElementById('hamburger-menu');
+        const menu = document.getElementById('menu');
+
+        hamburgerMenu.addEventListener('click', () => {
+            menu.classList.toggle('menu-active');
+        });
+    </script>
 </body>
 </html>
