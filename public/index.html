@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Softcoin</title>
     <link rel="stylesheet" href="styles.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1069924523331145"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1069924523331145" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <meta name="description" content="Cryptocurrency Mining and Earning Platform.">
@@ -18,122 +17,104 @@
     <meta property="og:url" content="https://www.softcoin.world" />
     <meta property="og:image" content="https://www.softcoin.world/explore.png" />
     <meta property="og:description" content="Start mining Softcoin and earn up to $500 daily!" />
-    
-    <!-- Optional additional Open Graph tags -->
     <meta property="og:site_name" content="Softcoin" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    
-    <!-- Twitter Card meta tags (optional, for better Twitter integration) -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Softcoin" />
     <meta name="twitter:description" content="Start mining Softcoin and earn up to $500 daily!" />
     <meta name="twitter:image" content="https://www.softcoin.world/explore.png" />
     <style>
         body {
-          
-          overflow-y: hidden;
-          padding-bottom: 0;
+            overflow-y: hidden;
+            padding-bottom: 0;
         }
     </style>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body>
+<body x-data="softcoinApp">
 
     <div id="top-bar">
         <div id="user-info">
             <img src="softcoin.png" alt="Avatar" id="avatar">
-            <span>Hello, <span id="user-name">User Name</span>!</span>
+            <span>Hello, <span id="user-name" x-text="username">User Name</span>!</span>
         </div>
         <div id="controls">
-           <label class="switch">
-                <input type="checkbox" id="dark-mode-toggle">
+            <label class="switch">
+                <input type="checkbox" id="dark-mode-toggle" @change="toggleDarkMode">
                 <span class="slider"></span>
             </label>
-            <button onclick="upgrades()" id="upgrade-btn"><i class="fas fa-arrow-up"></i> Upgrades</button>
+            <button @click="upgrades()" id="upgrade-btn"><i class="fas fa-arrow-up"></i> Upgrades</button>
         </div>
     </div>
 
-    <!-- Slideshow Container -->
     <div id="slideshow-container">
-      <div class="slide">
-          <a href="/join-softcoin"><img src="explore.png" alt="Slide 2"></a>
-        </div>
-        <div class="slide">
-            <a href="/market"><img src="iconns/banner.png" alt="Slide 2"></a>
-        </div>
-        <div class="slide">
-            <a href="/friends"><img src="iconns/slide2.png" alt="Slide 3"></a>
-        </div>
+        <template x-for="slide in slides" :key="slide.id">
+            <div class="slide" x-show="currentSlide === slide.id">
+                <a :href="slide.link"><img :src="slide.image" :alt="slide.alt"></a>
+            </div>
+        </template>
     </div>
 
-    <strong><p id="coin-balance">0 SFT</p></strong>
+    <strong><p id="coin-balance" x-text="coinBalance">0 SFT</p></strong>
     <p id="status-message"></p>
     <div id="sound-wave-container" disabled>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
+        <template x-for="n in 10">
+            <div class="bar"></div>
+        </template>
     </div>
-    <!-- Add this element somewhere in your HTML to display the session count -->
-<div id="mining-session-count">Sessions Completed: 0</div>
-    <p id="timer-text">Mining stops in: <span id="timer">00:00:00</span></p>
-    <button id="mine-btn">Start Mining<span id="level">Level: <span id="mining-level">1</span></span></button>
-    
+    <div id="mining-session-count" x-text="'Sessions Completed: ' + miningSessions">Sessions Completed: 0</div>
+    <p id="timer-text">Mining stops in: <span id="timer" x-text="timer">00:00:00</span></p>
+    <button id="mine-btn" @click="startMining()">Start Mining<span id="level">Level: <span id="mining-level" x-text="miningLevel">1</span></span></button>
 
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('softcoinApp', () => ({
+                username: localStorage.getItem('username') || 'User',
+                slides: [
+                    { id: 1, link: '/join-softcoin', image: 'explore.png', alt: 'Slide 1' },
+                    { id: 2, link: '/market', image: 'iconns/banner.png', alt: 'Slide 2' },
+                    { id: 3, link: '/friends', image: 'iconns/slide2.png', alt: 'Slide 3' },
+                ],
+                currentSlide: 1,
+                miningLevel: 1,
+                miningSessions: 0,
+                timer: '00:00:00',
+                coinBalance: '0 SFT',
 
-    <div id="nav-placeholder"></div>
-    <div id="cherry-placeholder"></div>
+                init() {
+                    if (!localStorage.getItem('username')) {
+                        window.location.href = '/register';
+                    }
+
+                    this.startSlideShow();
+                },
+
+                startSlideShow() {
+                    setInterval(() => {
+                        this.currentSlide = (this.currentSlide % this.slides.length) + 1;
+                    }, 10000);
+                },
+
+                upgrades() {
+                    window.location.href = '/upgrades';
+                },
+
+                startMining() {
+                    // Implement mining logic
+                },
+
+                toggleDarkMode() {
+                    // Implement dark mode logic
+                }
+            }));
+        });
+    </script>
+
     <script src="cherry.js"></script>
-
     <script src="navigation.js" defer></script>
     <script src="dark-mode.js"></script>
     <script src="script.js" defer></script>
-    <script defer>
-        document.addEventListener("DOMContentLoaded", () => {
-            // Check if username is stored in localStorage
-            const username = localStorage.getItem('username');
-
-            // If username is not found, redirect to register.html
-            if (!username) {
-                window.location.href = '/register';
-            } else {
-                // Display the username in the element with id="user-name"
-                document.getElementById('user-name').textContent = username;
-            }
-
-            // Add any additional scripts here (if needed)
-        });
-    </script>
-    <script defer>
-        function upgrades() {
-            window.location.href = '/upgrades'; // Replace with your target URL
-        }
-    </script>
-    <script>
-        // Slideshow script
-        let slideIndex = 0;
-        showSlides();
-
-        function showSlides() {
-            let slides = document.getElementsByClassName("slide");
-            for (let i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";  
-            }
-            slideIndex++;
-            if (slideIndex > slides.length) {slideIndex = 1}    
-            slides[slideIndex-1].style.display = "block";  
-            setTimeout(showSlides, 10000); // Change image every 3 seconds
-        }
-    </script>
-
-    
-
 </body>
 </html>
