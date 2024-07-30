@@ -42,7 +42,7 @@
         </div>
         <div id="controls">
             <label class="switch">
-                <input type="checkbox" id="dark-mode-toggle" @change="toggleDarkMode">
+                <input type="checkbox" x-model="darkMode">
                 <span class="slider"></span>
             </label>
             <button @click="upgrades()" id="upgrade-btn"><i class="fas fa-arrow-up"></i> Upgrades</button>
@@ -68,6 +68,9 @@
     <p id="timer-text">Mining stops in: <span id="timer" x-text="timer">00:00:00</span></p>
     <button id="mine-btn" @click="startMining()">Start Mining<span id="level">Level: <span id="mining-level" x-text="miningLevel">1</span></span></button>
 
+    <!-- Navigation Placeholder -->
+    <div id="nav-placeholder"></div>
+
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('softcoinApp', () => ({
@@ -82,6 +85,8 @@
                 miningSessions: 0,
                 timer: '00:00:00',
                 coinBalance: '0 SFT',
+                darkMode: localStorage.getItem('darkMode') === 'true',
+                activeTab: window.location.pathname,
 
                 init() {
                     if (!localStorage.getItem('username')) {
@@ -89,6 +94,17 @@
                     }
 
                     this.startSlideShow();
+
+                    // Set dark mode on init
+                    if (this.darkMode) {
+                        document.body.classList.add('dark-mode');
+                    }
+
+                    // Watch for changes in darkMode
+                    this.$watch('darkMode', value => {
+                        document.body.classList.toggle('dark-mode', value);
+                        localStorage.setItem('darkMode', value);
+                    });
                 },
 
                 startSlideShow() {
@@ -103,10 +119,6 @@
 
                 startMining() {
                     // Implement mining logic
-                },
-
-                toggleDarkMode() {
-                    // Implement dark mode logic
                 }
             }));
         });
@@ -114,7 +126,6 @@
 
     <script src="cherry.js"></script>
     <script src="navigation.js" defer></script>
-    <script src="dark-mode.js"></script>
     <script src="script.js" defer></script>
 </body>
 </html>
