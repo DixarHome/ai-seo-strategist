@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1069924523331145"
      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.2.2/cdn.min.js" defer></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -21,7 +22,6 @@
             color: #f0f0f0;
         }
         p {
-            
             color: #2C3A4D;
             padding: 20px;
             margin: 0;
@@ -41,7 +41,6 @@
             padding: 20px;
             background: white;
             border-radius: 20px;
-            
         }
         input, button {
             width: 100%;
@@ -88,7 +87,7 @@
             width: 40%;
             margin-right: 25px;
         }
-.password-container {
+        .password-container {
             position: relative;
             width: 100%;
         }
@@ -102,7 +101,7 @@
             height: 40px; /* Ensure consistent input height */
         }
 
-.toggle-password {
+        .toggle-password {
             position: absolute;
             right: 10px;
             top: 50%;
@@ -114,7 +113,7 @@
         }
     </style>
 </head>
-<body>
+<body x-data="{ showPassword: false, showConfirmPassword: false }">
     <header>
         <img src="iconns/softword.png" alt="Softcoin Logo">
         <p>Welcome</p>
@@ -126,13 +125,13 @@
         <input type="text" id="username" placeholder="Username" required>
         <input type="email" id="email" placeholder="Email" required>
         <div class="password-container">
-            <input type="password" id="password" placeholder="Password" required>
-            <span class="toggle-password" data-target="#password">Show</span>
+            <input :type="showPassword ? 'text' : 'password'" id="password" placeholder="Password" required>
+            <span class="toggle-password" @click="showPassword = !showPassword" x-text="showPassword ? 'Hide' : 'Show'"></span>
         </div>
 
         <div class="password-container">
-            <input type="password" id="confirm-password" placeholder="Confirm Password" required>
-            <span class="toggle-password" data-target="#confirm-password">Show</span>
+            <input :type="showConfirmPassword ? 'text' : 'password'" id="confirm-password" placeholder="Confirm Password" required>
+            <span class="toggle-password" @click="showConfirmPassword = !showConfirmPassword" x-text="showConfirmPassword ? 'Hide' : 'Show'"></span>
         </div>
         <input type="text" id="referral-username" placeholder="Referral Username (Optional)">
         <button type="submit">Register</button>
@@ -147,28 +146,6 @@
             if (referrer) {
                 document.getElementById('referral-username').value = referrer;
             }
-        });
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const referrer = urlParams.get('ref');
-            if (referrer) {
-                document.getElementById('referral-username').value = referrer;
-            }
-        });
-
-        // Toggle password visibility
-        document.querySelectorAll('.toggle-password').forEach(toggle => {
-            toggle.addEventListener('click', function () {
-                const targetInput = document.querySelector(this.getAttribute('data-target'));
-                if (targetInput.type === 'password') {
-                    targetInput.type = 'text';
-                    this.textContent = 'Hide';
-                } else {
-                    targetInput.type = 'password';
-                    this.textContent = 'Show';
-                }
-            });
         });
     </script>
 </body>
