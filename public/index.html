@@ -70,15 +70,16 @@
 
     <!-- Navigation Placeholder -->
     <div id="nav-placeholder"></div>
+    <div id="cherry-placeholder"></div>
 
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('softcoinApp', () => ({
                 username: localStorage.getItem('username') || 'User',
                 slides: [
-                    { id: 1, link: '/join-softcoin', image: 'explore.png', alt: 'Slide 1' },
-                    { id: 2, link: '/market', image: 'iconns/banner.png', alt: 'Slide 2' },
-                    { id: 3, link: '/friends', image: 'iconns/slide2.png', alt: 'Slide 3' },
+                    { id: 1, link: '/join-softcoin', image: '/explore.png', alt: 'Slide 1' },
+                    { id: 2, link: '/market', image: '/iconns/banner.png', alt: 'Slide 2' },
+                    { id: 3, link: '/friends', image: '/iconns/slide2.png', alt: 'Slide 3' },
                 ],
                 currentSlide: 1,
                 miningLevel: 1,
