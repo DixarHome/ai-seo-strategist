@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const data = await response.json();
             if (data.success) {
                 showCustomAlert(`Successfully upgraded to level ${level}`, () => {
-                    window.location.href = '/';
+                    window.location.href = '/home';
                 });
             } else {
                 showCustomAlert(data.message);

@@ -205,6 +205,9 @@
             margin: 10px 0;
             color: #fff;
         }
+        a {
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -220,26 +223,26 @@
     <nav class="menu" id="menu">
         <a href="#">Learn More</a>
         <a href="#">Income Calculator</a>
-        <a href="#">Make Deposit</a>
+        <a href="/payment">Make Deposit</a>
         <a href="#">Withdrawal</a>
     </nav>
 </header>
     <section class="balance-section">
         <div class="balance-card lock">
             <h2>Commitment:</h2>
-            <p class="balance-amount">0.00 USD</p>
-            <button class="deposit-btn">Make Deposit</button>
+            <p class="balance-amount" id="commitment-balance">0.00 USD</p>
+            <button onclick="deposit()" class="deposit-btn">Make Deposit</button>
         </div>
         <div class="balance-card unlock">
             <h2>Earning Balance:</h2>
-            <p class="balance-amount">0.00 USD</p>
+            <p class="balance-amount" id="earning-balance">0.00 USD</p>
             <div class="actions">
-                <button class="withdraw-btn">Withdrawal</button>
+                <a href="#" class="withdraw-btn">Withdrawal</a>
             </div>
         </div>
         <div class="profits">
             <p>Level: <span id="softie-level"></span></p>
-            <p>Daily profit: <span>0 USD</span></p>
+            <p>Daily profit: <span id="daily-profit">0 USD</span></p>
         </div>
     </section>
     <section class="many">
@@ -299,6 +302,7 @@
         <div id="cherry-placeholder"></div>
         <script src="cherry.js"></script>
         <script src="navigation.js" defer></script>
+    <script src="softie.js"></script>
     <script>
         // JavaScript to toggle menu visibility
         const hamburgerMenu = document.getElementById('hamburger-menu');
@@ -307,6 +311,11 @@
         hamburgerMenu.addEventListener('click', () => {
             menu.classList.toggle('menu-active');
         });
+    </script>
+    <script defer>
+        function deposit() {
+            window.location.href = '/payment'; // Replace with your target URL
+        }
     </script>
 </body>
 </html>

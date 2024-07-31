@@ -9,10 +9,6 @@
      crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <meta name="description" content="Cryptocurrency Mining and Earning Platform.">
-    <meta name="keywords" content="Softcoin, cryptocurrency, mining">
-    <meta name="author" content="SoftCoin">
-    <link rel="icon" href="icons/softcoin.png" type="image/x-icon">
     <meta property="og:title" content="Softcoin" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.softcoin.world" />
@@ -32,9 +28,64 @@
     <meta name="twitter:image" content="https://www.softcoin.world/explore.png" />
     <style>
         body {
-          
-          overflow-y: hidden;
-          padding-bottom: 0;
+            overflow-y: hidden;
+            padding-bottom: 0;
+        }
+        #notification-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        #notification-icon .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            display: none; /* Hide initially */
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 0px;
+        }
+        .modal h3 {
+            color: black;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 600px;
+            height: 78%;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -45,15 +96,28 @@
             <img src="softcoin.png" alt="Avatar" id="avatar">
             <span>Hello, <span id="user-name">User Name</span>!</span>
         </div>
+        <div id="notification-icon">
+            <i class="fas fa-bell"></i>
+            <span class="badge" id="notification-count"></span>
+        </div>
         <div id="controls">
             <button onclick="upgrades()" id="upgrade-btn"><i class="fas fa-arrow-up"></i> Upgrades</button>
         </div>
     </div>
-
+   
+    <!-- Notification Modal -->
+    <div id="notification-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Notifications</h3>
+            <div id="notification-list"></div>
+        </div>
+    </div>
+    
     <!-- Slideshow Container -->
     <div id="slideshow-container">
-      <div class="slide">
-          <a href="/softie"><img src="images/explore.png" alt="Slide 2"></a>
+        <div class="slide">
+            <a href="/softie"><img src="images/explore.png" alt="Slide 2"></a>
         </div>
         <div class="slide">
             <a href="/softie"><img src="images/earn.png" alt="Slide 2"></a>
@@ -77,13 +141,10 @@
         <div class="bar"></div>
         <div class="bar"></div>
     </div>
-    <!-- Add this element somewhere in your HTML to display the session count -->
-<div id="mining-session-count">Sessions Completed: 0</div>
+    <div id="mining-session-count">Sessions Completed: 0</div>
     <p id="timer-text">Mining stops in: <span id="timer">00:00:00</span></p>
     <button id="mine-btn">Start Mining<span id="level">Level: <span id="mining-level">1</span></span></button>
     
-
-
     <div id="nav-placeholder"></div>
     <div id="cherry-placeholder"></div>
     <script src="cherry.js"></script>
@@ -92,27 +153,63 @@
     <script src="script.js" defer></script>
     <script defer>
         document.addEventListener("DOMContentLoaded", () => {
-            // Check if username is stored in localStorage
             const username = localStorage.getItem('username');
-
-            // If username is not found, redirect to register.html
             if (!username) {
                 window.location.href = '/register';
             } else {
-                // Display the username in the element with id="user-name"
                 document.getElementById('user-name').textContent = username;
             }
-
-            // Add any additional scripts here (if needed)
         });
-    </script>
-    <script defer>
+
         function upgrades() {
-            window.location.href = '/upgrades'; // Replace with your target URL
+            window.location.href = '/upgrades';
         }
     </script>
+    
     <script>
-        // Slideshow script
+    // Assuming you have a WebSocket server running on the same server as your app
+    const socket = new WebSocket(`ws://${window.location.host}`);
+
+    socket.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        if (data.username === localStorage.getItem('username')) {
+            const notification = data.notification;
+            // Display the notification (update badge and modal list)
+            updateNotifications(notification);
+        }
+    };
+
+    function updateNotifications(notification) {
+        // Update the badge count
+        const badge = document.getElementById('notification-count');
+        let count = parseInt(badge.textContent) || 0;
+        if (count < 9) {
+            badge.textContent = count + 1;
+            badge.style.display = 'inline';
+        }
+
+        // Add the notification to the modal list
+        const notificationList = document.getElementById('notification-list');
+        const notificationItem = document.createElement('div');
+        notificationItem.className = 'notification-item';
+        notificationItem.innerHTML = `<strong>${notification.title}</strong>: ${notification.message}`;
+        notificationList.appendChild(notificationItem);
+    }
+
+    document.getElementById('notification-icon').onclick = function() {
+        const modal = document.getElementById('notification-modal');
+        modal.style.display = "block";
+        document.getElementById('notification-count').style.display = 'none'; // Reset badge
+    };
+
+    document.querySelector('.close').onclick = function() {
+        const modal = document.getElementById('notification-modal');
+        modal.style.display = "none";
+    };
+</script>
+
+
+    <script>
         let slideIndex = 0;
         showSlides();
 
@@ -124,11 +221,8 @@
             slideIndex++;
             if (slideIndex > slides.length) {slideIndex = 1}    
             slides[slideIndex-1].style.display = "block";  
-            setTimeout(showSlides, 10000); // Change image every 3 seconds
+            setTimeout(showSlides, 10000);
         }
     </script>
-
-    
-
 </body>
 </html>

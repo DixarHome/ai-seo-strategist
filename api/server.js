@@ -1,9 +1,11 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const http = require('http');  // Import the HTTP module
+const WebSocket = require('ws');
 const connectToDatabase = require('../utils/db');
 const User = require('../models/User');
-const authRoutes = require('../routes/auth'); // Import authentication routes
+const authRoutes = require('../routes/auth');
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -18,39 +20,70 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Use authentication routes
 app.use('/api/auth', authRoutes);
 
-app.get('/api/referrals/:username', async (req, res) => {
-    const { username } = req.params;
+// Create HTTP server instance
+const server = http.createServer(app);
 
-    try {
-        console.log('Fetching referrals for:', username); // Debugging
-        const user = await User.findOne({ username }).populate('referrals');
-        if (!user) return res.status(404).json({ message: 'User not found' });
+// Set up WebSocket server
+const wss = new WebSocket.Server({ server });
 
-        const referrals = user.referrals.map(ref => ({
-            username: ref.username,
-            coinBalance: ref.coinBalance
-        }));
-
-        const referralBonus = user.referrals.length * 50000; // 50,000 SFT for each referred friend
-        const miningRewards = referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0); // 20% mining rewards
-        const totalEarnings = referralBonus + miningRewards;
-
-        const response = { referrals, totalEarnings };
-        res.status(200).json(response);
-    } catch (error) {
-        console.error('Error fetching referrals:', error);
-        res.status(500).json({ message: 'Error fetching referrals' });
-    }
+wss.on('connection', (ws) => {
+  console.log('Client connected');
+  ws.on('message', (message) => {
+    console.log(`Received message: ${message}`);
+  });
+  ws.on('close', () => {
+    console.log('Client disconnected');
+  });
 });
 
-// server.js
+// Function to notify a user via WebSocket
+function notifyUser(username, notification) {
+  User.findOne({ username })
+    .populate('notifications')
+    .then((user) => {
+      if (user) {
+        // Send notification to client
+        wss.clients.forEach((client) => {
+          if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify({ username, notification }));
+          }
+        });
+      }
+    });
+}
 
-// Import necessary modules and set up the server as usual
+// Route to fetch referrals and send notifications
+app.get('/api/referrals/:username', async (req, res) => {
+  const { username } = req.params;
 
-// Other existing routes...
+  try {
+    const user = await User.findOne({ username }).populate('referrals');
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    const referrals = user.referrals.map(ref => ({
+      username: ref.username,
+      coinBalance: ref.coinBalance
+    }));
+
+    const referralBonus = user.referrals.length * 50000; // 50,000 SFT for each referred friend
+    const miningRewards = referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0);
+    const totalEarnings = referralBonus + miningRewards;
+
+    res.status(200).json({ referrals, totalEarnings });
+
+    // Notify the user about the referrals
+    notifyUser(username, {
+      title: 'Referrals Updated',
+      message: `You have ${user.referrals.length} new referrals!`
+    });
+
+  } catch (error) {
+    console.error('Error fetching referrals:', error);
+    res.status(500).json({ message: 'Error fetching referrals' });
+  }
+});
 
 app.post('/api/startMining', async (req, res) => {
     const { username } = req.body;
@@ -220,7 +253,7 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Internal server error.' });
 });
 
-['friends', 'tasks', 'softie', 'more', 'upgrades', 'login', 'register', 'reset-password', 'verification', 'home' ].forEach(file => {
+['friends', 'tasks', 'softie', 'more', 'upgrades', 'login', 'register', 'reset-password', 'verification', 'home', 'payment' ].forEach(file => {
     app.get(`/${file}`, (req, res) => {
         res.sendFile(path.join(__dirname, '../public', `${file}.html`));
     });

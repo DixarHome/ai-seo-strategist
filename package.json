@@ -19,12 +19,11 @@
     "mongoose": "^8.5.1",
     "nodemailer": "^6.9.14",
     "redis": "^4.6.15",
-    "util": "^0.12.5"
+    "socket.io": "^4.7.5",
+    "util": "^0.12.5",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"
-  },
-  "engines": {
-    "node": "18.x"
   }
 }

@@ -3,112 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deposit Page</title>
+    <title>Make A Deposit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
-body {
-    font-family: Arial, sans-serif;
-    background-color: #ff7a00;
-    color: white;
-    margin: 0;
-    padding: 0;
-}
-
-.container {
-    width: 70%;
-    margin: 0;
-    padding: 10px;
-    background-color: #ff9500;
-}
-
-h1, h2 {
-    text-align: center;
-    color: white;
-}
-
-.deposit-info, .deposits, .contact, .footer {
-    margin: 0;
-    padding: 20px;
-    background-color: #ffba59;
-    border-radius: 10px;
-}
-
-.deposit-info p, .deposits .deposit, .contact p, .footer p {
-    margin: 10px 0;
-}
-
-.address {
-    background-color: white;
-    color: black;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
-}
-
-.amount {
-    color: yellow;
-    font-weight: bold;
-}
-
-.contact a, .footer a {
-    color: #ffeb3b;
-}
-
-.footer {
-    text-align: center;
-    font-size: 0.9em;
-}
-
-@media (max-width: 600px) {
-    .container {
-        width: 95%;
-    }
-}
-
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            max-width: 600px;
+            margin: 0;
+            padding: 8px;
+            border-radius: 10px;
+            padding-bottom: 100px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #fff;
+        }
+        .crypto-options {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            flex-wrap: nowrap;
+        }
+        .crypto-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .crypto-option img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 5px;
+            padding: 5px;
+        }
+        .crypto-option.selected {
+            background-color: #63f871;
+            border-radius: 5px;
+        }
+        .wallet-address, .amount-input, .conversion-result {
+            margin-bottom: 20px;
+        }
+        .amount-input input, .wallet-address input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .conversion-result {
+            font-size: 15px;
+            color: #fff;
+        }
+        .wallet-address {
+            display: flex;
+            align-items: center;
+        }
+        .wallet-address input {
+            flex: 1;
+        }
+        .wallet-address button {
+            margin-left: 10px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #63f871;
+            border: none;
+            border-radius: 8px;
+        }
+        .deposit-history {
+            margin-top: 30px;
+        }
+        .deposit-history h2 {
+            text-align: center;
+        }
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        p {
+            text-align: center;
+        }
+        .instructions {
+            width: 80%;
+            text-align: left;
+            align-items: center;
+            margin: 2.5em;
+        }
+        #prehamble {
+            color: #00f300;
+            text-align: center;
+        }
+        .instructions p {
+            text-align: left;
+        }
+        h3 {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 0;
+        }
+        ul {
+            margin-left: 0;
+            padding-left: 20px;
+            font-size: 1.2em;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>MAKE A DEPOSIT METHOD</h1>
-        <h2>TETHER (TRC-20)</h2>
-
-        <div class="deposit-info">
-            <p>Send a money to the TRON_TRС20 address:</p>
-            <div class="address">TM9bzvVmJdw(...)</div>
-            <p>Minimal deposit: <strong>30.000000 USDT</strong></p>
-            <p>Minimum in site currency: <strong>30 USD</strong></p>
-        </div>
-
-        <h2>MY LAST DEPOSITS</h2>
-        <div class="deposits">
-            <div class="deposit">
-                <span>Status: </span>
-                <span>Sum: </span><span class="amount">30.00 USD</span>
-                <span>Time: 29 Jul 2024 - 06:19:32</span>
+        <h1>Make Deposit</h1>
+        <p>Choose Your Preferred Payment Option</p>
+        <h2 id="crypto-name"></h2>
+        <div class="crypto-options">
+            <div class="crypto-option" data-crypto="USDT" data-wallet="YourUSDTWalletAddress">
+                <img src="crypto/usdt.png" alt="USDT">
             </div>
-            <div class="deposit">
-                <span>Sum: </span><span class="amount">30.00 USD</span>
-                <span>Time: 28 Jul 2024 - 15:02:40</span>
+            <div class="crypto-option" data-crypto="BNB" data-wallet="YourBNBWalletAddress">
+                <img src="crypto/bnb.png" alt="BNB">
             </div>
-            <div class="deposit">
-                <span>Sum: </span><span class="amount">30.00 USD</span>
-                <span>Time: 28 Jul 2024 - 14:43:14</span>
+            <div class="crypto-option" data-crypto="BTC" data-wallet="YourBTCWalletAddress">
+                <img src="crypto/btc.png" alt="BTC">
             </div>
-            <div class="deposit">
-                <span>Sum: </span><span class="amount">100.00 USD</span>
-                <span>Time: 28 Jul 2024 - 14:39:16</span>
+            <div class="crypto-option" data-crypto="ETH" data-wallet="YourETHWalletAddress">
+                <img src="crypto/eth.png" alt="ETH">
             </div>
         </div>
-
-        <div class="contact">
-            <p>Email support: <a href="mailto:support@hamster-combo.biz">support@hamster-combo.biz</a></p>
-            <p>Telegram news: <a href="https://t.me/hamster_combo_biz">@hamster_combo_biz</a></p>
+        
+        <div class="amount-input">
+            <label for="usd-amount">Amount in USD:</label>
+            <input type="number" id="usd-amount" placeholder="Enter amount in USD">
+        </div>
+        
+        <div class="conversion-result">
+            Equivalent in <span id="selected-crypto">Cryptocurrency</span>: <span id="crypto-amount">0.00</span>
         </div>
 
-        <div class="footer">
-            <p>Economic game with the withdrawal of real money.</p>
-            <p>© 2024 <a href="https://hamster-combo.biz">hamster-combo.biz</a>. All rights reserved.</p>
+        <div class="wallet-address">
+            <label for="wallet">Wallet Address:</label>
+            <input type="text" id="wallet" readonly>
+            <button id="copy-wallet-btn">Copy</button>
+        </div>
+        
+        <div class="amount-input">
+            <label for="transaction-id">Transaction ID:</label>
+            <input type="number" id="transaction-id" placeholder="Enter Transaction ID">
+        </div>
+        
+        <div class="instructions">
+            <h3>Instructions</h3>
+            <p id="prehamble">Read these instructions carefully before submission</p>
+            <ul>
+            <li>Only send the crypto selected to the provided wallet address</li>
+            <li>Ensure you copied the right address</li>
+            <li>Send the payment before clicking the submit button</li>
+            <li>The processing can take between 2 to 24 hour, please be patient.</li>
+            </ul>
+        </div>
+        
+        <button class="submit-btn">Submit Payment</button>
+
+        <div class="deposit-history">
+            <h2>Deposit History</h2>
+            <div class="history-item">
+            </div>
+            <!-- More history items -->
         </div>
     </div>
+    <div id="nav-placeholder"></div>
+        <div id="cherry-placeholder"></div>
+        <script src="cherry.js"></script>
+        <script src="navigation.js" defer></script>
+    <script src="payment.js"></script>
 </body>
 </html>

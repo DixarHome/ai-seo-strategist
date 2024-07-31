@@ -159,4 +159,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Update the mining status and coin balance on page load
     updateMiningStatus();
+    
+    
 });
+
+

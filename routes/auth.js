@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User'); // Adjust the path according to your project structure
+const Notification = require('../models/Notification'); // Import the Notification model
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 require('dotenv').config(); // Add this line to load environment variables from the .env file
@@ -87,7 +88,22 @@ router.post('/register', async (req, res) => {
             referrer.referrals.push(newUser._id);
             referrer.coinBalance += 50000; // Bonus for the referrer
             await referrer.save();
-        }
+
+// After creating a notification for the referrer
+
+    const notification = new Notification({
+        user: referrer._id,
+        title: 'New Referral Registered',
+        message: `${newUser.username} has registered using your referral.`
+    });
+
+    await notification.save();
+
+    // Add the notification to the user's notifications array
+    referrer.notifications.push(notification._id);
+    await referrer.save();
+}
+
 
         // Send verification email
         await sendVerificationEmail(email, verificationToken);
