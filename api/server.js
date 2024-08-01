@@ -1,11 +1,10 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const http = require('http');  // Import the HTTP module
-const WebSocket = require('ws');
 const connectToDatabase = require('../utils/db');
 const User = require('../models/User');
 const authRoutes = require('../routes/auth');
+const Notification = require('../models/Notification'); // Add this line
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -22,67 +21,70 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/api/auth', authRoutes);
 
-// Create HTTP server instance
-const server = http.createServer(app);
+// Endpoint to fetch notifications
+app.get('/api/notifications/:username', async (req, res) => {
+    const { username } = req.params;
 
-// Set up WebSocket server
-const wss = new WebSocket.Server({ server });
+    try {
+        const user = await User.findOne({ username }).populate('notifications');
+        if (!user) return res.status(404).json({ message: 'User not found' });
 
-wss.on('connection', (ws) => {
-  console.log('Client connected');
-  ws.on('message', (message) => {
-    console.log(`Received message: ${message}`);
-  });
-  ws.on('close', () => {
-    console.log('Client disconnected');
-  });
+        const notifications = user.notifications.map(notification => ({
+            id: notification._id,
+            title: notification.title,
+            message: notification.message,
+            read: notification.read,
+            date: notification.date
+        }));
+
+        res.status(200).json(notifications);
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+        res.status(500).json({ message: 'Error fetching notifications' });
+    }
 });
 
-// Function to notify a user via WebSocket
-function notifyUser(username, notification) {
-  User.findOne({ username })
-    .populate('notifications')
-    .then((user) => {
-      if (user) {
-        // Send notification to client
-        wss.clients.forEach((client) => {
-          if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify({ username, notification }));
-          }
-        });
-      }
-    });
-}
+// Endpoint to mark notification as read
+app.post('/api/notifications/markRead', async (req, res) => {
+    const { notificationId } = req.body;
 
-// Route to fetch referrals and send notifications
+    try {
+        const notification = await Notification.findById(notificationId);
+        if (!notification) return res.status(404).json({ message: 'Notification not found' });
+
+        notification.read = true;
+        await notification.save();
+
+        res.status(200).json({ success: true });
+    } catch (error) {
+        console.error('Error marking notification as read:', error);
+        res.status(500).json({ message: 'Error marking notification as read' });
+    }
+});
+
 app.get('/api/referrals/:username', async (req, res) => {
-  const { username } = req.params;
+    const { username } = req.params;
 
-  try {
-    const user = await User.findOne({ username }).populate('referrals');
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    try {
+        console.log('Fetching referrals for:', username); // Debugging
+        const user = await User.findOne({ username }).populate('referrals');
+        if (!user) return res.status(404).json({ message: 'User not found' });
 
-    const referrals = user.referrals.map(ref => ({
-      username: ref.username,
-      coinBalance: ref.coinBalance
-    }));
+        const referrals = user.referrals.map(ref => ({
+            username: ref.username,
+            coinBalance: ref.coinBalance
+        }));
 
-    const referralBonus = user.referrals.length * 50000; // 50,000 SFT for each referred friend
-    const miningRewards = referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0);
-    const totalEarnings = referralBonus + miningRewards;
+        const referralBonus = user.referrals.length * 50000; // 50,000 SFT for each referred friend
+        const miningRewards = referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0); // 20% mining rewards
+        const totalEarnings = referralBonus + miningRewards;
 
-    res.status(200).json({ referrals, totalEarnings });
-
-    // Notify the user about the referrals
-    notifyUser(username, {
-      title: 'Referrals Updated',
-      message: `You have ${user.referrals.length} new referrals!`
-    });
-
-  } catch (error) {
-    console.error('Error fetching referrals:', error);
-    res.status(500).json({ message: 'Error fetching referrals' });
-  }
+        const response = { referrals, totalEarnings };
+        res.status(200).json(response);
+    } catch (error) {
+        console.error('Error fetching referrals:', error);
+        res.status(500).json({ message: 'Error fetching referrals' });
+    }
 });
 
 app.post('/api/startMining', async (req, res) => {
@@ -253,7 +255,7 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Internal server error.' });
 });
 
-['friends', 'tasks', 'softie', 'more', 'upgrades', 'login', 'register', 'reset-password', 'verification', 'home', 'payment' ].forEach(file => {
+['friends', 'tasks', 'softie', 'more', 'upgrades', 'login', 'register', 'reset-password', 'verification', 'home', 'payment','whitepaper' ].forEach(file => {
     app.get(`/${file}`, (req, res) => {
         res.sendFile(path.join(__dirname, '../public', `${file}.html`));
     });

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Softcoin - Explore the Future of Cryptocurrency</title>
-        <meta name="description" content="Cryptocurrency Mining and Earning Platform.">
+    <meta name="description" content="Cryptocurrency Mining and Earning Platform.">
     <meta name="keywords" content="Softcoin, cryptocurrency, mining">
     <meta name="author" content="SoftCoin">
     <link rel="icon" href="icons/softcoin.png" type="image/x-icon">
@@ -14,14 +14,10 @@
     <meta property="og:url" content="https://www.softcoin.world" />
     <meta property="og:image" content="https://www.softcoin.world/explore.png" />
     <meta property="og:description" content="Start mining Softcoin and earn up to $500 daily!" />
-    
-
     <meta property="og:site_name" content="Softcoin" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    
-
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Softcoin" />
     <meta name="twitter:description" content="Start mining Softcoin and earn up to $500 daily!" />
@@ -49,19 +45,21 @@
             background-position: center, center;
             background-attachment: fixed;
             overflow-y: auto;
-            padding: 0px;
             overflow-x: hidden;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
         }
 
         .container {
             display: flex;
-            align-items: flex-start; /* Align to the left */
+            align-items: flex-start;
             flex-direction: column;
             width: 100%;
             max-width: 1200px;
             margin: 0;
             background: #030c52a0;
-            padding: 0 20px; /* Add padding to avoid horizontal overflow */
+            padding: 0 20px;
             margin-top: 40px;
         }
 
@@ -126,30 +124,6 @@
             color: #fff;
         }
 
-        h4 {
-            text-align: center;
-            margin-top: 20px;
-            color: #e0e1dd;
-            padding: 30px;
-            font-size: 1.2em;
-        }
-
-        @media (min-width: 769px) {
-            .content {
-                flex-direction: row;
-            }
-
-            .content h3, .image {
-                flex: 1;
-            }
-
-            .image img {
-                width: auto;
-                height: 100%;
-            }
-        }
-
-        /* Typing effect */
         .typing-animation {
             display: inline-block;
             white-space: nowrap;
@@ -176,137 +150,136 @@
                 border-color: #02ff00;
             }
         }
-        .tokenomics img {
-            width: 90%;
-            margin: 1.2em;
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
         }
-        .tokenomics {
+
+        .logo {
+            display: flex;
             align-items: center;
         }
-        .features {
+
+        .logo img {
+            width: 30px;
+            border-radius: 50px;
+            margin-right: 10px;
+        }
+
+        .logo span {
+            font-size: 1em;
+            color: #030c52;
+            vertical-align: middle;
+        }
+
+        .hamburger {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 20px;
+            height: 20px;
+        }
+
+        .hamburger div {
+            width: 100%;
+            height: 3px;
+            background-color: #192264;
+        }
+
+        .menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background-color: rgb(44,58,77);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+            width: 50%;
+        }
+
+        .menu a {
+            display: block;
+            padding: 10px 20px;
+            color: #e0e1dd;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .menu a:hover {
+            background-color: #ffff;
+            color: #0d1b2a;
+        }
+
+        .menu-active {
+            display: block;
+        }
+
+        .section {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            width: 100%;
+            max-width: 1000px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            border-bottom: 2px solid #00ff87;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section p, .section ul {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .section img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .footer {
             text-align: center;
+            padding: 10px;
+            font-size: 0.9em;
+            background-color: #0056b3;
+            color: white;
+            margin-top: 20px;
         }
-        .feature {
-            margin-top: 50px;
-            width: 80%;
-            margin: 2.3em;
-        }
-        .features h2 {
-            text-align: center;
-            padding-top: 50px;
-        }
-        h3 {
-            margin-top: 0;
-            padding-top: 0;
-        }
-        .feature img {
-            width: 40%;
-        }
-        .container2 {
-            background: #030c52a0;
-            text-align: center;
-            padding: 40px;
-        }
-        footer {
-            margin-top: 100px;
-        }
-
-        /* New CSS for header, logo, and hamburger menu */
-        header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 10px 20px;
-    background-color: #fff;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-}
-
-.logo {
-    display: flex;
-    align-items: center; /* Vertically align items */
-}
-
-.logo img {
-    width: 30px; /* Adjust the size as needed */
-    border-radius: 50px;
-    margin-right: 10px; /* Add some spacing between the image and text */
-}
-
-.logo span {
-    font-size: 1em; /* Adjust the font size as needed */
-    color: #030c52;
-    vertical-align: middle; /* Ensure text aligns vertically with the image */
-}
-
-.hamburger {
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 20px;
-    height: 20px;
-}
-
-.hamburger div {
-    width: 100%;
-    height: 3px;
-    background-color: #192264;
-}
-
-.menu {
-    display: none;
-    position: absolute;
-    top: 60px;
-    right: 20px;
-    background-color: rgb(44,58,77);
-    border-radius: 5px;
-    overflow: hidden;
-    z-index: 1000;
-    width: 50%;
-}
-
-.menu a {
-    display: block;
-    padding: 10px 20px;
-    color: #e0e1dd;
-    text-decoration: none;
-    transition: background 0.3s;
-}
-
-.menu a:hover {
-    background-color: #ffff;
-    color: #0d1b2a;
-}
-
-.menu-active {
-    display: block;
-}
-.needed {
-    background-color: #fff;
-}
     </style>
 </head>
 <body>
     <header>
-    <div class="logo">
-        <img src="softcoin.png" alt="Softcoin Logo">
-        <span>Softcoin</span>
-    </div>
-    <div class="hamburger" id="hamburger-menu">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
-    <nav class="menu" id="menu">
-        <a href="/login">Log in</a>
-        <a href="#">Contact Us</a>
-        <a href="#">Whitepaper</a>
-    </nav>
-</header>
+        <div class="logo">
+            <img src="softcoin.png" alt="Softcoin Logo">
+            <span>Softcoin</span>
+        </div>
+        <div class="hamburger" id="hamburger-menu">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <nav class="menu" id="menu">
+            <a href="/login">Log in</a>
+            <a href="#">Contact Us</a>
+            <a href="/whitepaper">Whitepaper</a>
+        </nav>
+    </header>
 
     <div class="container">
         <div class="content">
@@ -319,62 +292,46 @@
             </div>
             <a href="/register" class="register-button">Register Now</a>
         </div>
-    </div>
-    <h4>Start mining Softcoin today, and embark on a journey toward true financial freedom.</h4>
-    <h4>Softcoin is positioned to be a groundbreaking force in the crypto landscape, poised to redefine industry standards.</h4>
-    <h4>With a deep root in community engagement, we ensure every participant plays a pivotal role in our collective success.</h4>
-    
-     
-    <div class="tokenomics">
-        <img src="iconns/Tokenomics.png" alt="Tokenomics">
-    </div>
-    <a href="/register" class="register-button">Register Now</a>
-    <div class="features">
-      <h2>What Sets Softcoin Apart?</h2>
-      <div class="feature">
-          <h3>Ease of Use</h3>
-          <p>Simplified mining process for seamless navigation.</p>
-      </div>
-      <div class="feature">
-          <h3>Diverse Earning Opportunities</h3>
-          <p>Multiple avenues for generating passive income.</p>
-      </div>
-      <div class="feature">
-          <h3>Assured Listing</h3>
-          <p>Listing on major exchanges for broader accessibility is assured.</p>
-      </div>
-      <div class="feature">
-          <h3>Community Focus</h3>
-          <p>Built to empower and reward our community members.</p>
-      </div>
-    </div>
-    <div class="features needed">
-        <div class="feature">
-            <img src="iconns/coinbase.png" alt="Ease of Use">
+
+        <div class="section">
+            <h2>1. Introduction</h2>
+            <h3>1.1. Abstract</h3>
+            <p>Softcoin is the next big thing in the cryptocurrency world, providing users with a unique opportunity to earn substantial rewards through innovative mining mechanisms and engaging activities.</p>
+            <h3>1.2. Vision</h3>
+            <p>Our vision for Softcoin is to create a cryptocurrency that not only holds great value but also empowers its users through accessible and rewarding mining and earning opportunities.</p>
         </div>
-        <div class="feature">
-            <img src="iconns/bitexchange.png" alt="Diverse Earning Opportunities">
+
+        <div class="section">
+            <h2>2. Our Mission</h2>
+            <p>Our mission is to revolutionize the cryptocurrency landscape by making it easier and more rewarding for users to participate in mining and earning activities, ultimately driving widespread adoption and trust in digital assets.</p>
+            <img src="iconns/mission.png" alt="Our Mission">
         </div>
-        <div class="feature">
-            <img src="iconns/Huobi-logo.png" alt="Assured Listing">
+
+        <div class="section">
+            <h2>3. How Softcoin Works</h2>
+            <ul>
+                <li><b>3.1. Mining:</b> Engage in various mining activities to earn Softcoin tokens, with dynamic rewards based on your level and performance.</li>
+                <li><b>3.2. Earning:</b> Complete tasks, invite friends, and participate in daily check-ins to earn additional Softcoin tokens and bonuses.</li>
+                <li><b>3.3. Levels:</b> Progress through levels to unlock higher rewards and exclusive benefits, enhancing your overall earning potential.</li>
+            </ul>
         </div>
-        <div class="feature">
-            <img src="iconns/binance.png" alt="Community Focus">
-        </div>
-        <div class="feature">
-            <img src="iconns/Web3-Icon-6.png">
-        </div>
-        <div class="feature">
-            <img src="iconns/Logo-OKX.png">
+
+        <div class="section">
+            <h2>4. Benefits of Softcoin</h2>
+            <p>By joining Softcoin, you'll gain access to a range of benefits, including:</p>
+            <ul>
+                <li>High earning potential with up to $500 daily rewards.</li>
+                <li>Innovative mining mechanisms that keep you engaged and rewarded.</li>
+                <li>A supportive community of like-minded individuals.</li>
+                <li>Exclusive bonuses and promotions for active participants.</li>
+            </ul>
+            <img src="iconns/benefits.png" alt="Benefits of Softcoin">
         </div>
     </div>
-    <div class="container2">
-        <p>Join us as we disrupt the crypto sphere with unparalleled innovation and opportunity.</p>
-        <a href="/register" class="register-button">Register Now</a>
+
+    <div class="footer">
+        <p>&copy; 2024 Softcoin. All rights reserved.</p>
     </div>
-    <footer class="section">
-       <p>&copy; Softcoin 2024.</p>
-    </footer>
 
     <script>
         let texts = [

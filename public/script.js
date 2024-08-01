@@ -163,4 +163,86 @@ document.addEventListener("DOMContentLoaded", () => {
     
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    const username = localStorage.getItem('username');
+    if (!username) {
+        window.location.href = '/register';
+    } else {
+        document.getElementById('user-name').textContent = username;
+        fetchNotifications(username);
+    }
+});
 
+const notificationIcon = document.getElementById('notification-icon');
+const notificationModal = document.getElementById('notification-modal');
+const notificationList = document.getElementById('notification-list');
+const notificationCount = document.getElementById('notification-count');
+const closeBtn = document.querySelector('.close');
+
+notificationIcon.addEventListener('click', () => {
+    notificationModal.style.display = "block";
+});
+
+closeBtn.addEventListener('click', () => {
+    notificationModal.style.display = "none";
+});
+
+window.addEventListener('click', (event) => {
+    if (event.target == notificationModal) {
+        notificationModal.style.display = "none";
+    }
+});
+
+async function fetchNotifications(username) {
+    try {
+        const response = await fetch(`/api/notifications/${username}`);
+        const notifications = await response.json();
+
+        let unreadCount = 0;
+        notificationList.innerHTML = notifications.map(notification => {
+            if (!notification.read) unreadCount++;
+            const formattedDate = new Date(notification.date).toLocaleString();
+            return `
+                <div class="notification-item" data-id="${notification.id}">
+                    <div class="notification-title">${notification.title}</div>
+                    <div class="notification-timestamp">${formattedDate}</div>
+                    <div class="notification-message">${notification.message}</div>
+                </div>
+            `;
+        }).join('');
+
+        notificationCount.textContent = unreadCount;
+        notificationCount.style.display = unreadCount > 0 ? 'inline' : 'none';
+
+        document.querySelectorAll('.notification-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const messageElement = item.querySelector('.notification-message');
+                messageElement.style.display = messageElement.style.display === 'none' ? 'block' : 'none';
+
+                if (!item.classList.contains('read')) {
+                    markNotificationAsRead(item.dataset.id);
+                    item.classList.add('read');
+                    unreadCount--;
+                    notificationCount.textContent = unreadCount;
+                    notificationCount.style.display = unreadCount > 0 ? 'inline' : 'none';
+                }
+            });
+        });
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+    }
+}
+
+async function markNotificationAsRead(notificationId) {
+    try {
+        await fetch('/api/notifications/markRead', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ notificationId })
+        });
+    } catch (error) {
+        console.error('Error marking notification as read:', error);
+    }
+}
