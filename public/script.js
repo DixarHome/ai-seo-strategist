@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let timerInterval;
 
     const username = localStorage.getItem('username');
-    if (!username) return window.location.href = '/register';
+    if (!username) return window.location.href = '/login';
 
     const mineBtn = document.getElementById('mine-btn');
     const coinBalanceEl = document.getElementById('coin-balance');
@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     const username = localStorage.getItem('username');
     if (!username) {
-        window.location.href = '/register';
+        window.location.href = '/login';
     } else {
         document.getElementById('user-name').textContent = username;
         fetchNotifications(username);

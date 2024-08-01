@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 localStorage.setItem('token', result.token);
                 localStorage.setItem('username', result.username);
-                window.location.href = '/home';
+                window.location.href = '/';
             }
         } catch {
             alertBox.textContent = 'An error occurred. Please try again.';

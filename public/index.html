@@ -3,362 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Softcoin - Explore the Future of Cryptocurrency</title>
-    <meta name="description" content="Cryptocurrency Mining and Earning Platform.">
-    <meta name="keywords" content="Softcoin, cryptocurrency, mining">
-    <meta name="author" content="SoftCoin">
-    <link rel="icon" href="icons/softcoin.png" type="image/x-icon">
+    <title>Softcoin</title>
+    <link rel="stylesheet" href="styles.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1069924523331145"
+     crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <meta property="og:title" content="Softcoin" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.softcoin.world" />
-    <meta property="og:image" content="https://www.softcoin.world/explore.png" />
-    <meta property="og:description" content="Start mining Softcoin and earn up to $500 daily!" />
-    <meta property="og:site_name" content="Softcoin" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Softcoin" />
-    <meta name="twitter:description" content="Start mining Softcoin and earn up to $500 daily!" />
-    <meta name="twitter:image" content="https://www.softcoin.world/explore.png" />
     <style>
-        /* Existing CSS */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #0d1b2a;
-            color: #e0e1dd;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-image: url('iconns/discover.png'), linear-gradient(to bottom right, #0d1b2a, #0a192f);
-            background-size: cover, cover;
-            background-repeat: no-repeat, no-repeat;
-            background-position: center, center;
-            background-attachment: fixed;
-            overflow-y: auto;
-            overflow-x: hidden;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            display: flex;
-            align-items: flex-start;
-            flex-direction: column;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0;
-            background: #030c52a0;
-            padding: 0 20px;
-            margin-top: 40px;
-        }
-
-        .content {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            margin-top: 40px;
-            text-align: left;
-            flex-direction: column;
-            padding-bottom: 40px;
-        }
-
-        .content h2 {
-            font-size: 1.2em;
-            margin: 20px 0;
-            text-align: left;
-            width: 100%;
-            margin-left: 40px;
-        }
-
-        .content h3 {
-            font-size: 4em;
-            margin: 10px 0;
-            color: #02ff00;
-            text-align: left;
-            margin-left: 20px;
-            width: 100%;
-            white-space: nowrap;
-        }
-
-        h2 {
-            text-align: left;
-            margin-bottom: 0;
+            overflow-y: hidden;
             padding-bottom: 0;
         }
-
-        .register-button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #00ff87;
-            color: #0d1b2a;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 1.2em;
-        }
-
-        .content p {
-            margin-top: 20px;
-            font-size: 1em;
-        }
-
-        .image img {
-            width: 80%;
-            height: auto;
-            margin-left: 25px;
-        }
-
-        h3 span {
-            font-size: 0.5em;
-            color: #fff;
-        }
-
-        .typing-animation {
-            display: inline-block;
-            white-space: nowrap;
-            overflow: hidden;
-            color: #02ff00;
-            border-right: 3px solid #02ff00;
-            animation: typing 1s steps(30, end), blink 0.75s step-end infinite;
-        }
-
-        @keyframes typing {
-            from {
-                width: 0;
-            }
-            to {
-                width: 100%;
-            }
-        }
-
-        @keyframes blink {
-            from, to {
-                border-color: transparent;
-            }
-            50% {
-                border-color: #02ff00;
-            }
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 10px 20px;
-            background-color: #fff;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo img {
-            width: 30px;
-            border-radius: 50px;
-            margin-right: 10px;
-        }
-
-        .logo span {
-            font-size: 1em;
-            color: #030c52;
-            vertical-align: middle;
-        }
-
-        .hamburger {
+        #notification-icon {
+            position: relative;
             cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            width: 20px;
-            height: 20px;
         }
+.notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    color: #0f1c30;
+}
 
-        .hamburger div {
-            width: 100%;
-            height: 3px;
-            background-color: #192264;
-        }
+.notification-title {
+    font-weight: bold;
+}
 
-        .menu {
-            display: none;
+.notification-timestamp {
+    font-size: 0.9em;
+    color: #888;
+    margin-top: 5px;
+}
+
+.notification-message {
+    display: none;
+    padding: 10px 0;
+    color: #555;
+}
+
+        #notification-icon .badge {
             position: absolute;
-            top: 60px;
-            right: 20px;
-            background-color: rgb(44,58,77);
-            border-radius: 5px;
-            overflow: hidden;
-            z-index: 1000;
-            width: 50%;
-        }
-
-        .menu a {
-            display: block;
-            padding: 10px 20px;
-            color: #e0e1dd;
-            text-decoration: none;
-            transition: background 0.3s;
-        }
-
-        .menu a:hover {
-            background-color: #ffff;
-            color: #0d1b2a;
-        }
-
-        .menu-active {
-            display: block;
-        }
-
-        .section {
-            margin-top: 40px;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            width: 100%;
-            max-width: 1000px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .section h2 {
-            border-bottom: 2px solid #00ff87;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        .section p, .section ul {
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-
-        .section img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 20px auto;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 10px;
-            font-size: 0.9em;
-            background-color: #0056b3;
+            top: 0;
+            right: 0;
             color: white;
-            margin-top: 20px;
+            background: red;
+            padding: 1px 3px;
+            border-radius: 50%;
+            font-size: 6px;
+            display: none; /* Hide initially */
         }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 0px;
+        }
+        .modal h3 {
+            color: black;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 600px;
+            height: 78%;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* Add to your existing CSS */
+
+.notification-item h4 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #101031;
+}
+
+.notification-item p {
+    color: #0068ff;
+    margin: 5px 0;
+}
+
+.notification-item small {
+    color: #666;
+    font-size: 0.8em;
+}
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="softcoin.png" alt="Softcoin Logo">
-            <span>Softcoin</span>
+    <div id="top-bar">
+        <div id="user-info">
+            <img src="softcoin.png" alt="Avatar" id="avatar">
+            <span>Hello, <span id="user-name">User Name</span>!</span>
         </div>
-        <div class="hamburger" id="hamburger-menu">
-            <div></div>
-            <div></div>
-            <div></div>
+        <div id="notification-icon">
+            <span class="badge" id="notification-count"></span>
+            <i class="fas fa-bell"></i>
+            
         </div>
-        <nav class="menu" id="menu">
-            <a href="/login">Log in</a>
-            <a href="#">Contact Us</a>
-            <a href="/whitepaper">Whitepaper</a>
-        </nav>
-    </header>
-
-    <div class="container">
-        <div class="content">
-            <h2>Are you ready to</h2>
-            <div id="poster">
-                <h3 id="main-text"><span class="typing-animation">Explore The<br>Future of<br>Cryptocurrency<span>?</span></span></h3>
-                <div class="image">
-                    <img src="iconns/explorer.png" alt="Explore the Future of Cryptocurrency">
-                </div>
-            </div>
-            <a href="/register" class="register-button">Register Now</a>
+        <div id="controls">
+            <button onclick="upgrades()" id="upgrade-btn"><i class="fas fa-arrow-up"></i> Upgrades</button>
         </div>
-
-        <div class="section">
-            <h2>1. Introduction</h2>
-            <h3>1.1. Abstract</h3>
-            <p>Softcoin is the next big thing in the cryptocurrency world, providing users with a unique opportunity to earn substantial rewards through innovative mining mechanisms and engaging activities.</p>
-            <h3>1.2. Vision</h3>
-            <p>Our vision for Softcoin is to create a cryptocurrency that not only holds great value but also empowers its users through accessible and rewarding mining and earning opportunities.</p>
+    </div>
+   
+<!-- Notification Modal -->
+<div id="notification-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Notifications</h3>
+        <div id="notification-list"></div>
+    </div>
+</div>
+    
+    <!-- Slideshow Container -->
+    <div id="slideshow-container">
+        <div class="slide">
+            <a href="/softie"><img src="images/explore.png" alt="Slide 2"></a>
         </div>
-
-        <div class="section">
-            <h2>2. Our Mission</h2>
-            <p>Our mission is to revolutionize the cryptocurrency landscape by making it easier and more rewarding for users to participate in mining and earning activities, ultimately driving widespread adoption and trust in digital assets.</p>
-            <img src="iconns/mission.png" alt="Our Mission">
+        <div class="slide">
+            <a href="/softie"><img src="images/earn.png" alt="Slide 2"></a>
         </div>
-
-        <div class="section">
-            <h2>3. How Softcoin Works</h2>
-            <ul>
-                <li><b>3.1. Mining:</b> Engage in various mining activities to earn Softcoin tokens, with dynamic rewards based on your level and performance.</li>
-                <li><b>3.2. Earning:</b> Complete tasks, invite friends, and participate in daily check-ins to earn additional Softcoin tokens and bonuses.</li>
-                <li><b>3.3. Levels:</b> Progress through levels to unlock higher rewards and exclusive benefits, enhancing your overall earning potential.</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>4. Benefits of Softcoin</h2>
-            <p>By joining Softcoin, you'll gain access to a range of benefits, including:</p>
-            <ul>
-                <li>High earning potential with up to $500 daily rewards.</li>
-                <li>Innovative mining mechanisms that keep you engaged and rewarded.</li>
-                <li>A supportive community of like-minded individuals.</li>
-                <li>Exclusive bonuses and promotions for active participants.</li>
-            </ul>
-            <img src="iconns/benefits.png" alt="Benefits of Softcoin">
+        <div class="slide">
+            <a href="/softie"><img src="images/become.png" alt="Slide 3"></a>
         </div>
     </div>
 
-    <div class="footer">
-        <p>&copy; 2024 Softcoin. All rights reserved.</p>
+    <strong><p id="coin-balance">0 SFT</p></strong>
+    <p id="status-message"></p>
+    <div id="sound-wave-container" disabled>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
     </div>
+    <div id="mining-session-count">Sessions Completed: 0</div>
+    <p id="timer-text">Mining stops in: <span id="timer">00:00:00</span></p>
+    <button id="mine-btn">Start Mining<span id="level">Level: <span id="mining-level">1</span></span></button>
+
+    <div id="nav-placeholder"></div>
+    <div id="cherry-placeholder"></div>
+    <script src="cherry.js"></script>
+
+    <script src="navigation.js" defer></script>
+    <script src="script.js" defer></script>
+    <script defer>
+        document.addEventListener("DOMContentLoaded", () => {
+            const username = localStorage.getItem('username');
+            if (!username) {
+                window.location.href = '/login';
+            } else {
+                document.getElementById('user-name').textContent = username;
+            }
+        });
+
+        function upgrades() {
+            window.location.href = '/upgrades';
+        }
+    </script>
 
     <script>
-        let texts = [
-            'Explore The<br>Future of<br>Cryptocurrency<span>?</span>',
-            'Earn A Passive <br>Income of up To <br>$500 Daily<span>?</span>',
-            'Become a <br>Millionaire After<br>Our TGE<span>?</span>'
-        ];
-        let index = 0;
+        let slideIndex = 0;
+        showSlides();
 
-        function changeText() {
-            const mainText = document.getElementById('main-text');
-            mainText.innerHTML = `<span class="typing-animation">${texts[index]}</span>`;
-            index = (index + 1) % texts.length;
+        function showSlides() {
+            let slides = document.getElementsByClassName("slide");
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {slideIndex = 1}    
+            slides[slideIndex-1].style.display = "block";  
+            setTimeout(showSlides, 10000);
         }
-
-        document.addEventListener('DOMContentLoaded', (event) => {
-            setInterval(changeText, 4000);
-            changeText(); // Initial call to start the process
-
-            // Hamburger menu functionality
-            const hamburgerMenu = document.getElementById('hamburger-menu');
-            const menu = document.getElementById('menu');
-
-            hamburgerMenu.addEventListener('click', () => {
-                menu.classList.toggle('menu-active');
-            });
-        });
     </script>
 </body>
 </html>
