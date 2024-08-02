@@ -101,12 +101,14 @@
             background-image: url('images/lock2.png'); /* Set the image URL */
             background-size: cover; /* Ensure the image covers the entire card */
             background-position: center; /* Center the image */
+            margin-bottom: 5px;
     
           }
          .unlock {
             background-image: url('images/unlock2.png'); /* Set the image URL */
             background-size: cover; /* Ensure the image covers the entire card */
             background-position: center; /* Center the image */
+            margin-top: 5px;
           }
 
          .balance-card h2 {
@@ -153,7 +155,7 @@
             margin: 5px;
             padding: 0;
             font-weight: bold;
-            font-size: 0.8em;
+            font-size: 1em;
             color: #b2b2b2;
         }
         .softie-section {
@@ -208,30 +210,53 @@
         a {
             text-decoration: none;
         }
+        .countdown {
+            color: #fff;
+            margin-top: 10px;
+            font-size: 1.2em;
+        }
+        .countdown {
+            text-align: center;
+            margin-top: 0;
+            font-size: 12px;
+        }
+        #countdown {
+            color: rgba(0, 255, 0, 1);
+        }
+        #softie-level {
+            color: rgba(0, 255, 0, 1);
+        }
+        #daily-profit {
+            color: rgba(0, 255, 0, 1);
+            
+        }
     </style>
 </head>
 <body>
     <header>
-    <div class="logo">
-        <span>Softie</span>
-    </div>
-    <div class="hamburger" id="hamburger-menu">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
-    <nav class="menu" id="menu">
-        <a href="#">Learn More</a>
-        <a href="#">Income Calculator</a>
-        <a href="/payment">Make Deposit</a>
-        <a href="#">Withdrawal</a>
-    </nav>
-</header>
+        <div class="logo">
+            <span>Softie</span>
+        </div>
+        <div class="hamburger" id="hamburger-menu">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <nav class="menu" id="menu">
+            <a href="#">Learn More</a>
+            <a href="#">Income Calculator</a>
+            <a href="/payment">Make Deposit</a>
+            <a href="#">Withdrawal</a>
+        </nav>
+    </header>
     <section class="balance-section">
         <div class="balance-card lock">
             <h2>Commitment:</h2>
             <p class="balance-amount" id="commitment-balance">0.00 USD</p>
             <button onclick="deposit()" class="deposit-btn">Make Deposit</button>
+        </div>
+        <div class="countdown" id="countdown-timer" style="display:none;">
+            Your Next Return Will Drop in <span id="countdown">00:00:00</span>
         </div>
         <div class="balance-card unlock">
             <h2>Earning Balance:</h2>
@@ -244,15 +269,15 @@
             <p>Level: <span id="softie-level"></span></p>
             <p>Daily profit: <span id="daily-profit">0 USD</span></p>
         </div>
+        
     </section>
     <section class="many">
         <h2>Make A Commitment</h2>
-        <p>Become a Softcoin Stakeholder (Softie) by Depositing at least $2 in your Commitment Account. <br><br>And as a Stakeholder you are entitled to a daily return of up to 10% of your commitment till TGE. <br><br>Commitments will be unlocked and returned in full to Stakeholders after Token Generation Event (TGE).</p>
-        
+        <p>Become a Softcoin Shareholder by Depositing at least $5 in your Commitment Account. <br><br>As a Shareholder you get a daily return up to 8% of your commitment. And this return will be paid everyday until TGE. <br><br>Commitments will be unlocked and fully refunded to Shareholders after Token Generation Event (TGE).</p>
+        <p>Boost your earnings by building a tribe. If any of the friends you invited to join Softcoin through your referral link decides to become a Softcoin Shareholder, they will be automatically added to your tribe and you will get 5% of every Commitment they make.</p>
+        <p>The minimum withdrawal is $10, and you can withdraw your earnings at anytime. There is no maximum withdrawal limit.</p>
     </section>
-    
     <section class="softie-section">
-        
         <div class="softie-cards-container">
             <div class="softie-card">
                 <img src="images/1.png" alt="Softie Level 1">
@@ -297,12 +322,12 @@
                 <p>Unlimited Earnings</p>
             </div>
         </div>
-        </section>
-        <div id="nav-placeholder"></div>
-        <div id="cherry-placeholder"></div>
-        <script src="cherry.js"></script>
-        <script src="navigation.js" defer></script>
-    <script src="softie.js" defer></script>
+    </section>
+    <div id="nav-placeholder"></div>
+    <div id="cherry-placeholder"></div>
+    <script src="cherry.js"></script>
+    <script src="navigation.js" defer></script>
+    <script src="softie.js"></script>
     <script>
         // JavaScript to toggle menu visibility
         const hamburgerMenu = document.getElementById('hamburger-menu');
@@ -311,11 +336,11 @@
         hamburgerMenu.addEventListener('click', () => {
             menu.classList.toggle('menu-active');
         });
-    </script>
-    <script defer>
+
         function deposit() {
             window.location.href = '/payment'; // Replace with your target URL
         }
+
     </script>
 </body>
 </html>

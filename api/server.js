@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const nodemailer = require('nodemailer');
 const connectToDatabase = require('../utils/db');
 const User = require('../models/User');
 const Transaction = require('../models/Transaction');
@@ -19,6 +18,35 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/api/auth', authRoutes);
+
+// server.js
+const cron = require('node-cron');
+const calculateAndUpdateReturns = require('../utils/returns');
+
+// Schedule the job to run at 12am GMT every day
+cron.schedule('0 0 * * *', async () => {
+    console.log('Calculating and updating returns...');
+    await calculateAndUpdateReturns();
+}, {
+    scheduled: true,
+    timezone: "Etc/GMT"
+});
+
+
+app.get('/api/users/:username/commitmentBalance', async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        const user = await User.findOne({ username: username }, 'commitmentBalance');
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json({ commitmentBalance: user.commitmentBalance });
+    } catch (error) {
+        console.error('Error fetching commitment balance:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 app.get('/api/users/:username/transactions', async (req, res) => {
     try {
