@@ -15,7 +15,7 @@
         .container {
             width: 80%;
             max-width: 600px;
-            margin: 0;
+            margin: 0 auto;
             padding: 8px;
             border-radius: 10px;
             padding-bottom: 100px;
@@ -47,7 +47,7 @@
             background-color: #63f871;
             border-radius: 5px;
         }
-        .wallet-address, .amount-input, .conversion-result {
+        .amount-input, .wallet-address, .conversion-result {
             margin-bottom: 20px;
         }
         .amount-input input, .wallet-address input {
@@ -63,7 +63,6 @@
             color: #fff;
         }
         .wallet-address {
-            
             align-items: center;
         }
         .wallet-address input {
@@ -107,7 +106,7 @@
             width: 80%;
             text-align: left;
             align-items: center;
-            margin: 2.5em;
+            margin: 2.5em auto;
         }
         #prehamble {
             color: #00f300;
@@ -128,6 +127,47 @@
         }
         #bull {
             display: flex;
+        }
+        /* Centered alert styles */
+        #custom-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        #custom-alert.success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+
+        #custom-alert.loading {
+            background-color: #fff;
+            color: #000;
+            border-color: #ccc;
+        }
+
+        /* Loading animation styles */
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #000;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -151,9 +191,11 @@
             </div>
         </div>
         
+        <div id="custom-alert"></div>
+        
         <div class="amount-input">
             <label for="usd-amount">Amount in USD:</label>
-            <input type="number" id="usd-amount" placeholder="Enter amount in USD">
+            <input type="number" id="usd-amount" placeholder="Enter amount in USD" min="5">
         </div>
         
         <div class="conversion-result">
@@ -162,13 +204,13 @@
 
         <div class="wallet-address">
             <label for="wallet">Wallet Address:</label>
-           <div id="bull"><input type="text" id="wallet" readonly>
+            <div id="bull"><input type="text" id="wallet" readonly>
             <button id="copy-wallet-btn">Copy</button></div>
         </div>
         
         <div class="amount-input">
             <label for="transaction-id">Transaction ID:</label>
-            <input type="number" id="transaction-id" placeholder="Enter Transaction ID">
+            <input type="text" id="transaction-id" placeholder="Enter Transaction ID">
         </div>
         
         <div class="instructions">
@@ -178,7 +220,7 @@
             <li>Only send the crypto selected to the provided wallet address</li>
             <li>Ensure you copied the right address</li>
             <li>Send the payment before clicking the submit button</li>
-            <li>The processing can take between 2 to 24 hour, please be patient.</li>
+            <li>The processing can take between 2 to 24 hours, please be patient.</li>
             </ul>
         </div>
         
@@ -186,15 +228,15 @@
 
         <div class="deposit-history">
             <h2>Deposit History</h2>
-            <div class="history-item">
+            <div id="history-items">
+                <!-- Transaction history items will be added here -->
             </div>
-            <!-- More history items -->
         </div>
     </div>
     <div id="nav-placeholder"></div>
-        <div id="cherry-placeholder"></div>
-        <script src="cherry.js"></script>
-        <script src="navigation.js" defer></script>
-    <script src="payment.js"></script>
+    <div id="cherry-placeholder"></div>
+    <script src="cherry.js"></script>
+    <script src="navigation.js" defer></script>
+    <script src="payment.js" defer></script>
 </body>
 </html>

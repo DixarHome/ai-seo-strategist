@@ -1,3 +1,5 @@
+//User.js
+
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -22,7 +24,9 @@ const userSchema = new mongoose.Schema({
         token: String,
         expires: Date
     },
-    notifications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Notification' }]  // Add this line
+    notifications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Notification' }],
+    commitmentBalance: { type: Number, default: 0 },
+    transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }] // Add this line
 });
 
 const User = mongoose.model('User', userSchema);

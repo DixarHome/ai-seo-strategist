@@ -1,14 +1,14 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const mongoose = require('mongoose');
+const nodemailer = require('nodemailer');
 const connectToDatabase = require('../utils/db');
 const User = require('../models/User');
+const Transaction = require('../models/Transaction');
 const authRoutes = require('../routes/auth');
-const Notification = require('../models/Notification'); // Add this line
-
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-}
+const Notification = require('../models/Notification');
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -18,8 +18,21 @@ connectToDatabase().then(() => console.log('MongoDB connected'));
 app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, '../public')));
-
 app.use('/api/auth', authRoutes);
+
+app.get('/api/users/:username/transactions', async (req, res) => {
+    try {
+        const { username } = req.params;
+        const user = await User.findOne({ username }).populate('transactions').exec();
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json(user.transactions);
+    } catch (error) {
+        console.error('Error fetching transaction history:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 // Endpoint to fetch notifications
 app.get('/api/notifications/:username', async (req, res) => {
