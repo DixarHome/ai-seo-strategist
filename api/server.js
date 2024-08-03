@@ -19,7 +19,54 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/api/auth', authRoutes);
 
-// server.js
+const sendEmail = require('../utils/mailer');  // Adjust the path as needed
+
+app.post('/api/withdraw', async (req, res) => {
+    const { username, amount, method, walletAddress } = req.body;
+
+    try {
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        if (amount > user.earningBalance || amount < 10) {
+            return res.status(400).json({ error: 'Invalid amount' });
+        }
+
+        user.earningBalance -= amount;
+        await user.save();
+
+        // Send email to support
+        const supportEmailContent = `
+            Username: ${user.username}
+            Full Name: ${user.fullName}
+            Email: ${user.email}
+            Amount: ${amount}
+            Method: ${method}
+            Wallet Address: ${walletAddress}
+        `;
+        await sendEmail('support@softcoin.world', 'Withdrawal Request', supportEmailContent);
+
+        // Send email to user
+        const userEmailContent = `
+            Dear ${user.fullName},
+
+            Your withdrawal request of ${amount} USD is being processed.
+
+            Best regards,
+            Softcoin Team
+        `;
+        await sendEmail(user.email, 'Withdrawal Request Received', userEmailContent);
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error processing withdrawal request:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 const cron = require('node-cron');
 const calculateAndUpdateReturns = require('../utils/returns');
 
@@ -311,7 +358,7 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Internal server error.' });
 });
 
-['friends', 'tasks', 'softie', 'more', 'upgrades', 'login', 'register', 'reset-password', 'verification', 'home', 'payment','whitepaper' ].forEach(file => {
+['friends', 'tasks', 'softie', 'more', 'upgrades', 'login', 'register', 'reset-password', 'verification', 'home', 'payment','whitepaper', 'withdraw' ].forEach(file => {
     app.get(`/${file}`, (req, res) => {
         res.sendFile(path.join(__dirname, '../public', `${file}.html`));
     });

@@ -245,24 +245,24 @@
         <nav class="menu" id="menu">
             <a href="#">Learn More</a>
             <a href="#">Income Calculator</a>
-            <a href="/payment">Make Deposit</a>
-            <a href="#">Withdrawal</a>
+            <a href="/payment">Deposit</a>
+            <a href="/withdraw">Withdraw</a>
         </nav>
     </header>
     <section class="balance-section">
         <div class="balance-card lock">
             <h2>Commitment:</h2>
             <p class="balance-amount" id="commitment-balance">0.00 USD</p>
-            <button onclick="deposit()" class="deposit-btn">Make Deposit</button>
+            <button onclick="deposit()" class="deposit-btn">Deposit</button>
         </div>
         <div class="countdown" id="countdown-timer" style="display:none;">
             Your Next Return Will Drop in <span id="countdown">00:00:00</span>
         </div>
         <div class="balance-card unlock">
-            <h2>Earning Balance:</h2>
+            <h2>Earnings:</h2>
             <p class="balance-amount" id="earning-balance">0.00 USD</p>
             <div class="actions">
-                <a href="#" class="withdraw-btn">Withdrawal</a>
+                <a href="/withdraw" class="withdraw-btn">Withdraw</a>
             </div>
         </div>
         <div class="profits">
