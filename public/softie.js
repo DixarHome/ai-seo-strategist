@@ -1,8 +1,8 @@
-// softie.js
 document.addEventListener('DOMContentLoaded', function() {
     const username = localStorage.getItem('username');
     if (!username) {
         document.getElementById('commitment-balance').innerText = 'No user logged in';
+        document.getElementById('earning-balance').innerText = 'No user logged in';
         return;
     }
 
@@ -51,6 +51,21 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Error fetching commitment balance:', error);
             document.getElementById('commitment-balance').innerText = 'Error fetching commitment balance';
+        });
+
+    // Fetch and display the earning balance
+    fetch(`/api/users/${username}/earningBalance`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById('earning-balance').innerText = 'Error fetching earning balance';
+            } else {
+                document.getElementById('earning-balance').innerText = `${data.earningBalance} USD`;
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching earning balance:', error);
+            document.getElementById('earning-balance').innerText = 'Error fetching earning balance';
         });
 });
 

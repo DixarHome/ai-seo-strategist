@@ -48,6 +48,21 @@ app.get('/api/users/:username/commitmentBalance', async (req, res) => {
     }
 });
 
+app.get('/api/users/:username/earningBalance', async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        const user = await User.findOne({ username: username }, 'earningBalance');
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json({ earningBalance: user.earningBalance });
+    } catch (error) {
+        console.error('Error fetching earning balance:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 app.get('/api/users/:username/transactions', async (req, res) => {
     try {
         const { username } = req.params;
