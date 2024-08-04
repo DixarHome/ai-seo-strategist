@@ -35,6 +35,33 @@ async function sendVerificationEmail(email, token) {
     await sendEmail(email, 'Email Verification', message);
 }
 
+// Send welcome email
+async function sendWelcomeEmail(email, fullName) {
+    const message = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+            <h2>Welcome to Softcoin, ${fullName}!</h2>
+            <p>We're excited to have you on board. Softcoin is a revolutionary cryptocurrency project that offers more than just traditional airdrops. As a member of our community, you'll enjoy a range of benefits and opportunities.</p>
+            <p>Here's what you can expect:</p>
+            <ul>
+                <li>Exclusive access to our <a href="http://www.softcoin.world/investment-platform" style="color: blue;">investment platform</a></li>
+                <li>Regular updates on our <a href="https://twitter.com/softcoin__" style="color: blue;">Twitter</a> and <a href="https://t.me/softcoinupdate" style="color: blue;">Telegram</a> channels</li>
+                <li>Exciting referral rewards and bonuses</li>
+                <li>And much more!</li>
+            </ul>
+            <p>Stay connected with us:</p>
+            <p>
+                <a href="https://twitter.com/softcoin__"><img src="https://via.placeholder.com/150x50?text=Twitter" alt="Twitter" style="width: 150px; height: 50px;"></a>
+                <a href="https://t.me/softcoinupdate"><img src="https://via.placeholder.com/150x50?text=Telegram" alt="Telegram" style="width: 150px; height: 50px;"></a>
+            </p>
+            <p>If you have any questions or need assistance, feel free to reach out to our support team.</p>
+            <p>Thank you for joining us. Together, let's make the future of cryptocurrency brighter!</p>
+            <p>Best Regards,<br>Softcoin Team</p>
+        </div>
+    `;
+
+    await sendEmail(email, 'Welcome to Softcoin', message);
+}
+
 // Registration endpoint
 router.post('/register', async (req, res) => {
     const { fullName, username, email, password, referralUsername } = req.body;
@@ -104,6 +131,9 @@ router.post('/register', async (req, res) => {
 
         // Send verification email
         await sendVerificationEmail(email, verificationToken);
+
+        // Send welcome email
+        await sendWelcomeEmail(email, fullName);
 
         res.status(201).json({ message: 'User registered successfully. Please check your email to verify your account.' });
     } catch (error) {
