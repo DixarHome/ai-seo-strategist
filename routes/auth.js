@@ -30,7 +30,6 @@ async function sendEmail(to, subject, text) {
 
 // Send verification email
 async function sendVerificationEmail(email, token) {
-    // Update the link to point to the actual verification page
     const verificationLink = `http://www.softcoin.world/verification?token=${token}`;
     const message = `Please verify your email address by clicking the link: ${verificationLink}`;
     await sendEmail(email, 'Email Verification', message);
@@ -86,24 +85,22 @@ router.post('/register', async (req, res) => {
 
         if (referrer) {
             referrer.referrals.push(newUser._id);
-            referrer.coinBalance += 50000; // Bonus for the referrer
+            const referralBonus = 50000; // Bonus for the referrer
+            referrer.coinBalance += referralBonus;
+            referrer.totalReferralBonus = (referrer.totalReferralBonus || 0) + referralBonus;
             await referrer.save();
 
-// After creating a notification for the referrer
+            const notification = new Notification({
+                user: referrer._id,
+                title: 'New Referral Registered!',
+                message: `${newUser.username} has registered using your referral link, and you have been rewarded with 50,000 SFT.`
+            });
 
-    const notification = new Notification({
-        user: referrer._id,
-        title: 'New Referral Registered',
-        message: `${newUser.username} has registered using your referral.`
-    });
+            await notification.save();
 
-    await notification.save();
-
-    // Add the notification to the user's notifications array
-    referrer.notifications.push(notification._id);
-    await referrer.save();
-}
-
+            referrer.notifications.push(notification._id);
+            await referrer.save();
+        }
 
         // Send verification email
         await sendVerificationEmail(email, verificationToken);

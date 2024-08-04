@@ -109,6 +109,12 @@
     color: #666;
     font-size: 0.8em;
 }
+    @media (min-width: 768px) {
+      body {
+        overflow-y: auto;
+        padding-bottom: 80px;
+      }
+    }
     </style>
 </head>
 <body>
@@ -135,7 +141,6 @@
         <div id="notification-list"></div>
     </div>
 </div>
-    
     <!-- Slideshow Container -->
     <div id="slideshow-container">
         <div class="slide">
@@ -148,7 +153,6 @@
             <a href="/softie"><img src="images/become.png" alt="Slide 3"></a>
         </div>
     </div>
-
     <strong><p id="coin-balance">0 SFT</p></strong>
     <p id="status-message"></p>
     <div id="sound-wave-container" disabled>
@@ -166,6 +170,29 @@
     <div id="mining-session-count">Sessions Completed: 0</div>
     <p id="timer-text">Mining stops in: <span id="timer">00:00:00</span></p>
     <button id="mine-btn">Start Mining<span id="level">Level: <span id="mining-level">1</span></span></button>
+    
+    <nav id="bottom-nav">
+        <a href="/" class="nav-item">
+            <img src="design/home.svg" alt="Home">
+            <span>Home</span>
+        </a>
+        <a href="/tasks" class="nav-item">
+            <img src="design/tasks.svg" alt="Tasks">
+            <span>Tasks</span>
+        </a>
+        <a href="/friends" class="nav-item">
+            <img src="design/friends.svg" alt="Friends">
+            <span>Friends</span>
+        </a>
+        <a href="/softie" class="nav-item">
+            <img src="design/softie.svg" alt="Softie">
+            <span>Softie</span>
+        </a>
+        <a href="/more" class="nav-item">
+            <img src="design/more.svg" alt="More">
+            <span>More</span>
+        </a>
+    </nav>
 
     <div id="nav-placeholder"></div>
     <div id="cherry-placeholder"></div>

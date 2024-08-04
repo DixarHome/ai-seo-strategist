@@ -1,12 +1,13 @@
 // script.js
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     let coinBalance = 0;
     let currentLevel = 1;
     let miningSessionCount = 0;
     const rewardIntervals = [2 * 60 * 60 * 1000, 3 * 60 * 60 * 1000, 4 * 60 * 60 * 1000, 5 * 60 * 60 * 1000, 6 * 60 * 60 * 1000];
     const rewards = [15000, 30000, 60000, 120000, 240000];
     let timerInterval;
+    let referralBonus = 0;
 
     const username = localStorage.getItem('username');
     if (!username) return window.location.href = '/login';
@@ -18,6 +19,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const miningLevelEl = document.getElementById('mining-level');
     const miningSessionCountEl = document.getElementById('mining-session-count');
     const bars = document.querySelectorAll('.bar');
+
+    async function fetchReferralBonus() {
+        try {
+            const response = await fetch(`/api/referrals/${username}`);
+            const data = await response.json();
+            if (data && data.referrals) {
+                referralBonus = data.referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0);
+            }
+        } catch (error) {
+            console.error("Error fetching referral earnings:", error);
+        }
+    }
 
     async function startMining() {
         try {
@@ -35,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 coinBalance = data.coinBalance;
                 currentLevel = data.level;
                 miningSessionCount = data.miningSessionCount;
+                await fetchReferralBonus(); // Fetch referral bonus when mining starts
                 updateCoinBalance();
                 updateMiningLevel();
                 updateMiningSessionCount();
@@ -47,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateCoinBalance() {
-        coinBalanceEl.textContent = `${coinBalance.toLocaleString()} SFT`;
+        coinBalanceEl.textContent = `${(coinBalance + referralBonus).toLocaleString()} SFT`;
     }
 
     function updateMiningLevel() {
@@ -76,7 +90,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 coinBalance += rewards[level - 1];
                 updateCoinBalance();
-                updateCoinBalanceWithReferralEarnings();
                 miningSessionCount += 1;
                 updateMiningSessionCount();
             } else {
@@ -87,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const elapsedTime = rewardIntervals[level - 1] - remainingTime;
                 const coinsMined = Math.floor((elapsedTime / rewardIntervals[level - 1]) * rewards[level - 1]);
-                coinBalanceEl.textContent = `${(coinBalance + coinsMined).toLocaleString()} SFT`;
+                coinBalanceEl.textContent = `${(coinBalance + coinsMined + referralBonus).toLocaleString()} SFT`;
             }
         }
 
@@ -108,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 coinBalance = data.coinBalance;
                 currentLevel = data.level;
                 miningSessionCount = data.miningSessionCount;
+                await fetchReferralBonus(); // Fetch referral bonus when checking mining status
                 updateCoinBalance();
                 updateMiningLevel();
                 updateMiningSessionCount();
@@ -124,7 +138,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 updateStatusMessage("Mining complete!");
                 mineBtn.disabled = false;
                 toggleBarsAnimation(false);
-                updateCoinBalanceWithReferralEarnings();
             } else {
                 updateStatusMessage("Mining not started");
                 mineBtn.disabled = false;
@@ -141,26 +154,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    async function updateCoinBalanceWithReferralEarnings() {
-        try {
-            const response = await fetch(`/api/referrals/${username}`);
-            const data = await response.json();
-            if (data && data.referrals) {
-                const referralBonus = data.referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0);
-                const totalCoinBalance = coinBalance + referralBonus;
-                coinBalanceEl.textContent = `${totalCoinBalance.toLocaleString()} SFT`;
-            }
-        } catch (error) {
-            console.error("Error fetching referral earnings:", error);
-        }
-    }
-
     mineBtn.addEventListener('click', startMining);
 
     // Update the mining status and coin balance on page load
+    await fetchReferralBonus(); // Fetch referral bonus on page load
     updateMiningStatus();
-    
-    
 });
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -53,7 +53,7 @@ app.post('/api/withdraw', async (req, res) => {
         const userEmailContent = `
             Dear ${user.fullName},
 
-            Your withdrawal request of ${amount} USD is being processed.
+            Your withdrawal request of ${amount} USD is being processed. Your wallet will be credited within 2 to 24 hours.
 
             Best regards,
             Softcoin Team
@@ -165,6 +165,8 @@ app.post('/api/notifications/markRead', async (req, res) => {
     }
 });
 
+// server.js
+
 app.get('/api/referrals/:username', async (req, res) => {
     const { username } = req.params;
 
@@ -175,12 +177,13 @@ app.get('/api/referrals/:username', async (req, res) => {
 
         const referrals = user.referrals.map(ref => ({
             username: ref.username,
-            coinBalance: ref.coinBalance
+            coinBalance: ref.coinBalance,
+            commitmentBalance: ref.commitmentBalance // Assuming this field exists
         }));
 
         const referralBonus = user.referrals.length * 50000; // 50,000 SFT for each referred friend
         const miningRewards = referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0); // 20% mining rewards
-        const totalEarnings = referralBonus + miningRewards;
+        const totalEarnings = referralBonus + miningRewards + user.totalReferralBonus; // Include totalReferralBonus in the totalEarnings
 
         const response = { referrals, totalEarnings };
         res.status(200).json(response);
@@ -249,6 +252,8 @@ app.post('/api/miningStatus', async (req, res) => {
     }
 });
 
+// server.js
+
 app.post('/api/upgradeLevel', async (req, res) => {
     const { username, level } = req.body;
     try {
@@ -259,7 +264,7 @@ app.post('/api/upgradeLevel', async (req, res) => {
         const upgradeCosts = [0, 100000, 500000, 2000000, 10000000];
         if (user.coinBalance < upgradeCosts[level - 1]) return res.status(400).json({ message: 'Insufficient balance' });
 
-        user.coinBalance -= upgradeCosts[level - 1];
+        user.coinBalance -= upgradeCosts[level - 1]; // Only reduce coinBalance, not totalReferralBonus
         user.level = level;
         await user.save();
 
@@ -358,7 +363,7 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Internal server error.' });
 });
 
-['friends', 'tasks', 'softie', 'more', 'upgrades', 'login', 'register', 'reset-password', 'verification', 'home', 'payment','whitepaper', 'withdraw' ].forEach(file => {
+['friends', 'tasks', 'softie', 'more', 'upgrades', 'login', 'register', 'reset-password', 'verification', 'home', 'payment','whitepaper', 'withdraw', 'learn-more' ].forEach(file => {
     app.get(`/${file}`, (req, res) => {
         res.sendFile(path.join(__dirname, '../public', `${file}.html`));
     });

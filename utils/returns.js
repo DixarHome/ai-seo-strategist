@@ -36,7 +36,7 @@ async function calculateAndUpdateReturns() {
 
         // Send email notification
         const emailSubject = 'Your Daily Return Update';
-        const emailText = `Dear ${user.fullName},\n\nYour daily return of ${dailyReturn} has been added to your earning balance.\n\nThank you,\nSoftcoin Team`;
+        const emailText = `Dear ${user.fullName},\n\nYour daily return of ${dailyReturn} USD has been added to your earnings.\n\nBest regards,\nSoftcoin Team`;
         await sendEmail(user.email, emailSubject, emailText);
     });
 }

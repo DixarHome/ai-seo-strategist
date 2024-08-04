@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Friends</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1069924523331145"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1069924523331145" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
@@ -26,13 +25,13 @@
             margin-top: 5px;
             color: #b7b7b7;
             text-align: center;
-            
         }
+
         .modal p {
             text-align: left;
         }
 
-        .earnings {
+        .earnings, .softie-bonus {
             font-size: 2em;
             color: white;
             margin: 0;
@@ -44,7 +43,7 @@
             padding: 20px;
             border-radius: 10px;
             text-align: left;
-            width: 90%;
+            width: 80%;
             color: white;
             text-align: center;
         }
@@ -54,14 +53,12 @@
             border-collapse: collapse;
             margin-top: 20px;
             color: #2C3A4D;
-            
         }
 
         th, td {
             padding: 10px;
             text-align: left;
             border-bottom: 1px solid #333;
-           
         }
 
         th {
@@ -87,37 +84,59 @@
             z-index: 999;
         }
 
-.custom-alert {
-    display: none;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 15px;
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
-    z-index: 1000;
-    transition: opacity 0.5s ease;
-}
+        .custom-alert {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
 
-.custom-alert.success {
-    background-color: green;
-}
+        .custom-alert.success {
+            background-color: green;
+        }
 
         #earning-text {
             margin-bottom: 0;
             margin-top: 30px;
         }
+
         #from {
-           margin-top: 0;
+            margin-top: 0;
+        }
+
+        #shalaye {
+            width: 70%;
+            background-color: #650361;
+            padding: 30px;
+            margin-top: 20px;
+            border-radius: 20px;
+        }
+
+        #shalaye p {
+            color: white;
+        }
+
+        .friends-container {
+            background-color: #650361;
+            border-radius: 20px;
         }
     </style>
 </head>
 <body>
     <h1>Your Friends</h1>
-    <p>Earn 20% of your friends mining rewards, Plus get 50,000 SFT for each invite, and your friend receives 50,000 too!</p>
+    <div id="shalaye">
+        <p>Invite your friends and get 20% of their mining rewards as bonus.</p>
+        <p>You will also get 50,000 SFT for each invite, your friend will also get a welcome bonus of 50,000 SFT</p>
+    </div>
     <p id="earning-text">You've earned</p>
     <h2 class="earnings">0 SFT</h2>
+    <h2 class="softie-bonus">0 USD</h2>
     <p id="from">from your friends</p>
     <div id="alert-box" class="custom-alert"></div>
     <div class="friends-container">
@@ -126,7 +145,8 @@
             <thead>
                 <tr>
                     <th>Username</th>
-                    <th>Balance</th>
+                    <th>SFT Balance</th>
+                    <th>Commitment</th>
                 </tr>
             </thead>
             <tbody id="referrals-table">
@@ -135,6 +155,7 @@
         </table>
     </div>
     <button class="button" id="invite-btn">Invite a Friend</button>
+    
     <div id="cherry-placeholder"></div>
     <script src="cherry.js" defer></script>
     <div id="nav-placeholder"></div>
@@ -159,58 +180,66 @@
                 const referralsTable = document.getElementById('referrals-table');
                 const friendsCount = document.getElementById('friends-count');
                 const earnings = document.querySelector('.earnings');
+                const softieBonusElement = document.querySelector('.softie-bonus');
 
                 friendsCount.textContent = `You have ${data.referrals.length} friends`;
                 earnings.textContent = `${data.totalEarnings.toFixed(2)} SFT`;
 
-                data.referrals.forEach(ref => {
+                let totalSoftieBonus = 0;
+
+                for (const ref of data.referrals) {
                     const row = document.createElement('tr');
                     const usernameCell = document.createElement('td');
                     const balanceCell = document.createElement('td');
+                    const commitmentCell = document.createElement('td');
 
                     usernameCell.textContent = ref.username;
                     balanceCell.textContent = ref.coinBalance;
+                    commitmentCell.textContent = ref.commitmentBalance;
 
                     row.appendChild(usernameCell);
                     row.appendChild(balanceCell);
+                    row.appendChild(commitmentCell);
                     referralsTable.appendChild(row);
-                });
+
+                    totalSoftieBonus += ref.commitmentBalance * 0.05;
+                }
+
+                softieBonusElement.textContent = `${totalSoftieBonus.toFixed(2)} USD`;
             } catch (error) {
                 console.error('Error fetching referrals:', error);
             }
         });
     </script>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-    const username = localStorage.getItem('username');
-    if (!username) return window.location.href = '/register';
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const username = localStorage.getItem('username');
+            if (!username) return window.location.href = '/register';
 
-    const inviteBtn = document.getElementById('invite-btn');
-    const alertBox = document.getElementById('alert-box');
+            const inviteBtn = document.getElementById('invite-btn');
+            const alertBox = document.getElementById('alert-box');
 
-    inviteBtn.addEventListener('click', () => {
-        const referralLink = `https://www.softcoin.world/register?ref=${username}`;
-        navigator.clipboard.writeText(referralLink).then(() => {
-            showCustomAlert("Referral link copied to clipboard!", true);
-        }).catch(() => {
-            showCustomAlert("Failed to copy referral link.", false);
+            inviteBtn.addEventListener('click', () => {
+                const referralLink = `https://www.softcoin.world/register?ref=${username}`;
+                navigator.clipboard.writeText(referralLink).then(() => {
+                    showCustomAlert("Referral link copied to clipboard!", true);
+                }).catch(() => {
+                    showCustomAlert("Failed to copy referral link.", false);
+                });
+            });
+
+            function showCustomAlert(message, success) {
+                alertBox.textContent = message;
+                alertBox.className = 'custom-alert';
+                if (success) {
+                    alertBox.classList.add('success');
+                }
+                alertBox.style.display = 'block';
+                setTimeout(() => {
+                    alertBox.style.display = 'none';
+                }, 3000);
+            }
         });
-    });
-
-    function showCustomAlert(message, success) {
-        alertBox.textContent = message;
-        alertBox.className = 'custom-alert';
-        if (success) {
-            alertBox.classList.add('success');
-        }
-        alertBox.style.display = 'block';
-        setTimeout(() => {
-            alertBox.style.display = 'none';
-        }, 3000);
-    }
-});
-</script>
-<script src="cherry.js"></script>
-
+    </script>
 </body>
 </html>
