@@ -46,20 +46,19 @@ async function sendWelcomeEmail(email, fullName) {
         <p>We're excited to have you on board and we promise you, this is going to be a very rewarding experience.</p>
         <p>You have been given a welcome bonus of 50,000 SFT to start you up on this exciting journey, and there are lots more where that came from.</p>
         
-        <p>If you haven't, Kindly verify your email address and log into your account to start earning Softcoins and secure your place at the forefront of the biggest innovation to hit the crypto-sphere.</p>
-        <p>The Softcoin project is packed with a lot of activities to keep you engaged, and a lot of ways to help you earn and achieve the financial freedom you've been looking for.</p>
+        <p>If you haven't already, Kindly verify your email address and log into your account to start earning Softcoins and secure your place at the forefront of the biggest innovation to hit the crypto-sphere.</p>
+        <p>The Softcoin project is packed with a lot of activities to keep you engaged, and a lot of ways to help you earn.</p>
         <h3>Become a Softcoin Shareholder (Softie)</h3>
         <img src="https://softcoin.world/iconns/shareholder.png" alt="Shareholder Image" style="width: 300px; height: 150px;">
-        <p>We are giving you a rare opportunity to become a shareholder in this project. Yes, Unlike your regular crypto airdrop project, the Softcoin team have decided to give our participant the chance to be shareholders in the project.</p>
-        <p>As a shareholder, you will not have to wait till TGE and Mainnet Launch before you start making money, because will be sharing the profit of the project as we go in form of a daily return. This return can be as high as $500 daily, even higher depending on your level of commitment.</p>
-        <p>The most exciting part of this is that you can become a Softcoin Shareholder (Softie) with as little as $5, your earning begins immediately, and the sky is just the beginning.</p>
+        <p>We are giving you a rare opportunity to become a shareholder in this project. Unlike your regular crypto airdrop project, the Softcoin team have decided to give our participant the chance to be shareholders in the project.</p>
+        <p>As a shareholder, you will not have to wait till TGE and Mainnet Launch before you start earning instantly withdrawable income. And this income can be as high as $500 daily, depending on your level of commitment. You can become a Softcoin Shareholder with as little as $5.</p>
         <img src="https://softcoin.world/okay/vision.png" alt="Welcome Image" style="width: 300px; height: 150px;">
         <p>Keep up with the progress of the project by following Softcoin on Twitter. You can also join our Update Channel on telegram to get up to date information about the project.</p>
         <p>
             <a href="https://twitter.com/softcoin__"><img src="https://softcoin.world/okay/twitter.png" alt="Twitter" style="width: 150px; height: 150px;"></a>
             <a href="https://t.me/softcoinupdate"><img src="https://softcoin.world/okay/telegram.png" alt="Telegram" style="width: 150px; height: 150px;"></a>
         </p>
-        <p>If you have any questions or need assistance, feel free to reach out to our <a href="malito:support@softcoin.world">support team</a>.</p>
+        <p>If you have any questions or need assistance, feel free to reach out to our <a href="malito:support@softcoin.world">Support Team</a>.</p>
         <p>Thank you for joining us. Together, let's make the future of cryptocurrency brighter!</p>
         <p>Best Regards,<br>Softcoin Team</p>
     </div>`;
