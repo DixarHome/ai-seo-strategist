@@ -1,3 +1,5 @@
+// tasks.js
+
 document.addEventListener("DOMContentLoaded", async () => {
     const username = localStorage.getItem('username');
     if (!username) return window.location.href = '/register';
@@ -5,6 +7,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const taskDetails = {
         "follow-btn": { name: "Follow Softcoin on X", target: 1, reward: 30000 },
         "join-btn": { name: "Join Softcoin telegram channel", target: 1, reward: 30000 },
+        "earnDog-btn": { name: "Earn some doggs", target: 1, reward: 30000 },
+        "sunwave-btn": { name: "Start mining Sunwave", target: 1, reward: 30000 },
         "refer2-btn": { name: "Invite 2 friends", target: 2, reward: 30000 },
         "refer5-btn": { name: "Invite 5 friends", target: 5, reward: 50000 },
         "refer10-btn": { name: "Invite 10 friends", target: 10, reward: 100000 },
@@ -52,7 +56,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (response.ok && data.success) {
                 return true;
             } else {
-                console.error(data.message || 'Failed to claim reward');
+                console.error(data.message || 'Reward claimed successfully');
                 return false;
             }
         } catch (error) {
@@ -191,8 +195,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const fetchProgress = taskId.startsWith('refer') ? fetchReferralCount : fetchMiningSessionCount;
-        if (taskId === 'follow-btn' || taskId === 'join-btn') {
-            const url = taskId === 'follow-btn' ? 'https://twitter.com/softcoin__' : 'https://t.me/softcoinupdates';
+        if (taskId === 'follow-btn' || taskId === 'join-btn' || taskId === 'earnDog-btn' || taskId === 'sunwave-btn') {
+            const url = {
+                'follow-btn': 'https://twitter.com/softcoin__',
+                'join-btn': 'https://t.me/softcoinupdates',
+                'earnDog-btn': 'https://t.me/dogshouse_bot/join?startapp=4PHyTlasRsqFaapdMO-dLw',
+                'sunwave-btn': 'https://sunwavestoken.com/@davidnelson'
+            }[taskId];
             handleSocialMediaTask(taskId, url);
             checkSocialMediaTask(taskId);
         } else {

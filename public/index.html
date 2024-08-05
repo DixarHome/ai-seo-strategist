@@ -9,6 +9,9 @@
      crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+<script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+
     <style>
         body {
             overflow-y: hidden;
@@ -115,6 +118,14 @@
         padding-bottom: 80px;
       }
     }
+
+    .introjs-tooltiptext {
+        color: #333; /* Change this to your desired color */
+    }
+    .introjs-tooltiptext b {
+        font-size: 12px;
+    }
+
     </style>
 </head>
 <body>
@@ -128,7 +139,7 @@
             <i class="fas fa-bell"></i>
             
         </div>
-        <div id="controls">
+        <div id="controls" data-step="2">
             <button onclick="upgrades()" id="upgrade-btn"><i class="fas fa-arrow-up"></i> Upgrades</button>
         </div>
     </div>
@@ -141,16 +152,17 @@
         <div id="notification-list"></div>
     </div>
 </div>
+
     <!-- Slideshow Container -->
     <div id="slideshow-container">
         <div class="slide">
-            <a href="/softie"><img src="images/explore.png" alt="Slide 2"></a>
+            <a href="/softie"><img src="iconns/welcome.png" alt="Slide 2"></a>
         </div>
         <div class="slide">
-            <a href="/softie"><img src="images/earn.png" alt="Slide 2"></a>
+            <a href="/softie"><img src="okay/vision.png" alt="Slide 2"></a>
         </div>
         <div class="slide">
-            <a href="/softie"><img src="images/become.png" alt="Slide 3"></a>
+            <a href="/softie"><img src="iconns/shareholder.png" alt="Slide 3"></a>
         </div>
     </div>
     <strong><p id="coin-balance">0 SFT</p></strong>
@@ -169,26 +181,26 @@
     </div>
     <div id="mining-session-count">Sessions Completed: 0</div>
     <p id="timer-text">Mining stops in: <span id="timer">00:00:00</span></p>
-    <button id="mine-btn">Start Mining<span id="level">Level: <span id="mining-level">1</span></span></button>
+    <button id="mine-btn" data-step="1">Start Mining<span id="level">Level: <span id="mining-level">1</span></span></button>
     
     <nav id="bottom-nav">
-        <a href="/" class="nav-item">
+        <a href="/" class="nav-item" id="home">
             <img src="design/home.svg" alt="Home">
             <span>Home</span>
         </a>
-        <a href="/tasks" class="nav-item">
+        <a href="/tasks" class="nav-item" id="tasks" data-step="3">
             <img src="design/tasks.svg" alt="Tasks">
             <span>Tasks</span>
         </a>
-        <a href="/friends" class="nav-item">
+        <a href="/friends" class="nav-item" id="friends" data-step="4">
             <img src="design/friends.svg" alt="Friends">
             <span>Friends</span>
         </a>
-        <a href="/softie" class="nav-item">
+        <a href="/softie" class="nav-item" id="softie" data-step="5">
             <img src="design/softie.svg" alt="Softie">
             <span>Softie</span>
         </a>
-        <a href="/more" class="nav-item">
+        <a href="/more" class="nav-item" id="more" data-step="6">
             <img src="design/more.svg" alt="More">
             <span>More</span>
         </a>
@@ -213,6 +225,58 @@
         function upgrades() {
             window.location.href = '/upgrades';
         }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // Function to check if the referrer is the login page
+    function isComingFromLogin() {
+        const referrer = document.referrer;
+        const loginPageUrl = 'http://localhost:3000/login'; // Replace with your actual login page URL
+        return referrer === loginPageUrl;
+    }
+
+    // Check if the user is coming from the login page and if the tour has been taken
+    if (isComingFromLogin() && localStorage.getItem('tourTaken') !== 'true') {
+      const username = localStorage.getItem('username');
+        introJs().setOptions({
+            steps: [
+                {
+                    intro: `<b>Welcome to Softcoin ${username}!</b><br><br>We have lots of goodies in store for you, so Let's take a quick tour.`
+                },
+                {
+                    element: document.querySelector('#mine-btn'),
+                    intro: "Click this button to begin a mining session.<br><br>Your first mining session will last for 2 hours, ensure to be back in time to start a new session right after."
+                },
+                {
+                    element: document.querySelector('#controls'),
+                    intro: "Upgrade your mining level from here for a longer mining session, and bigger reward per hour.<br><br>The higher you go, the bigger the benefit."
+                },
+                {
+                    element: document.querySelector('#tasks'),
+                    intro: "Navigate to the <b>Task</b> page to see a list of tasks you can complete to earn more Softcoins.<br><br>You should also endeavor to join our recommended projects."
+                },
+                {
+                    element: document.querySelector('#friends'),
+                    intro: "Click here to open the <b>Friends</b> page.<br><br>The <b>Friends</b> page is where you can get your referral link, with which you can invite your friends to Softcoin and earn big rewards."
+                },
+                {
+                    element: document.querySelector('#softie'),
+                    intro: "Check out the <b>Softie</b> page and see if becoming a Softcoin Shareholder is something you will like to do.<br><br>Becoming a <b>Softie</b> is a swift way to earn instantly withdrawable income daily."
+                },
+                {
+                    element: document.querySelector('#more'),
+                    intro: "We are always cooking up more ways to excite users and help them grow their earnings, don't forget to check out the <b>More</b> page daily for more ways to earn and participate.<br><br>Thank you for joining us."
+                }
+            ]
+
+        }).oncomplete(function() {
+            localStorage.setItem('tourTaken', 'true');
+        }).onexit(function() {
+            localStorage.setItem('tourTaken', 'true');
+        }).start();
+    }
+});
+
     </script>
 
     <script>

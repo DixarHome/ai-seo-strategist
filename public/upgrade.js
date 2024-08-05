@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const username = localStorage.getItem('username');
-    if (!username) return window.location.href = '/register';
+    if (!username) return window.location.href = '/login';
 
     try {
         const response = await fetch(`/api/miningStatus`, {
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const data = await response.json();
             if (data.success) {
                 showCustomAlert(`Successfully upgraded to level ${level}`, () => {
-                    window.location.href = '/home';
+                    window.location.href = '/';
                 });
             } else {
                 showCustomAlert(data.message);

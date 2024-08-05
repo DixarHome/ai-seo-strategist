@@ -8,22 +8,69 @@
      crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles.css">
     <style>
-.coming-soon {
-    text-align: center;
-    margin-top: 80%;
-}
+        body {
+            margin: 0;
+            padding: 0;
+            padding-top: 100px;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
 
-.coming-soon h1 {
-    font-size: 1em;
-    color: lightgrey;
-}
+            
+        }
+        .more-items {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #212121;
+            color: #fff;
+            border-radius: 10px;
+            padding: 10px;
+            width: 80%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 1px;
+            text-decoration: none;
+        }
+        h2 {
+            font-size: 1.7em;
+            margin: 0;
+            
+        }
+        p {
+            font-size: 0.9em;
+            margin: 5px 0 0 0;
+            
+            color: #f09403;
+        }
+        .more-icon img {
+            width: 70px;
+        }
+        .more-details {
+            position: absolute;
+            margin-left: 80px;
+            width: 50%;
+        }
+
     </style>
 </head>
 <body>
+  
+        <a class="more-items" href="/market">
+            <div class="more-icon">
+                <img src="icons/bitcoin.png">
+            </div>
+            
+            <div class="more-details">
+                <h2>Crypto Market</h2>
+                <p>Be up to date with your knowledge of cryptocurrency rates.</p>
+            </div>
+        </a>
    
-    <div class="coming-soon">
-        <h1>Coming Soon</h1>
-    </div>
+
     <div id="cherry-placeholder"></div>
     <div id="nav-placeholder"></div>
     <script src="navigation.js"></script>
