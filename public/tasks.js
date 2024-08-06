@@ -2,11 +2,12 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
     const username = localStorage.getItem('username');
-    if (!username) return window.location.href = '/register';
+    if (!username) return window.location.href = '/login';
 
     const taskDetails = {
         "follow-btn": { name: "Follow Softcoin on X", target: 1, reward: 30000 },
         "join-btn": { name: "Join Softcoin telegram channel", target: 1, reward: 30000 },
+        "post-btn": { name: "Make a post on X", target: 1, reward: 30000 },
         "earnDog-btn": { name: "Earn some doggs", target: 1, reward: 30000 },
         "sunwave-btn": { name: "Start mining Sunwave", target: 1, reward: 30000 },
         "refer2-btn": { name: "Invite 2 friends", target: 2, reward: 30000 },
@@ -195,12 +196,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const fetchProgress = taskId.startsWith('refer') ? fetchReferralCount : fetchMiningSessionCount;
-        if (taskId === 'follow-btn' || taskId === 'join-btn' || taskId === 'earnDog-btn' || taskId === 'sunwave-btn') {
+        if (taskId === 'follow-btn' || taskId === 'join-btn' || taskId === 'earnDog-btn' || taskId === 'sunwave-btn' || taskId === 'post-btn') {
             const url = {
                 'follow-btn': 'https://twitter.com/softcoin__',
                 'join-btn': 'https://t.me/softcoinupdates',
                 'earnDog-btn': 'https://t.me/dogshouse_bot/join?startapp=4PHyTlasRsqFaapdMO-dLw',
-                'sunwave-btn': 'https://sunwavestoken.com/@davidnelson'
+                'sunwave-btn': 'https://sunwavestoken.com/@davidnelson',
+                'post-btn': `https://twitter.com/intent/tweet?text=%F0%9F%93%88%20Ready%20to%20maximize%20your%20crypto%20potential%3F%0A%0ASoftcoin%20offers%20unparalleled%20opportunities%20with%20our%20referral%20and%20mining%20rewards.%0A%0AJoin%20me%20at%20softcoin.world%20and%20start%20earning%20today!%0A%0A%23CryptoLife%20%23CryptoRewards%20%23SoftCoin`
             }[taskId];
             handleSocialMediaTask(taskId, url);
             checkSocialMediaTask(taskId);
