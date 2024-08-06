@@ -71,7 +71,7 @@ const cron = require('node-cron');
 const calculateAndUpdateReturns = require('../utils/returns');
 
 // Schedule the job to run at 12am GMT every day
-cron.schedule('0 0 * * *', async () => {
+cron.schedule('10 0 * * *', async () => {
     console.log('Calculating and updating returns...');
     await calculateAndUpdateReturns();
 }, {
