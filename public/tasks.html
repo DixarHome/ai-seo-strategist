@@ -50,45 +50,74 @@
             width: 80%;
         }
 
-        .task {
+        #main-div {
             display: flex;
-            flex-direction: column;
-            background-color: #2c2c2c;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #730477;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
             padding: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        #task-item-div {
+            width: 75%;
         }
 
-        .task span {
-            font-size: 16px;
+        #task-item-div span {
+            font-size: 13px;
             font-weight: bold;
-            color: #0ff000;
+            color: #fff;
         }
 
-        .task .reward {
-            font-size: 14px;
-            color: #ffffff;
+        #task-item-div p.reward {
+            font-size: 11px;
+            color: #b0b0b0;
             margin: 5px 0;
         }
+        #task-item-div .reward span {
+            color: #0bda13;
+        }
 
-        .task button {
+        #action-div {
+            width: 25%;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        #action-div button {
             padding: 10px;
-            background-color: #4CAF50;
+            background-color: #95eb95;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
+            width: 80px; /* Set a fixed width for consistency */
         }
+        
+        #action-div button.in-motion {
+    background-color: #95eb95; /* Faint green */
+    color: #fff;
+    cursor: not-allowed;
+}
 
-        .task button:disabled {
-            background-color: #ddd;
-            color: #999;
-            cursor: not-allowed;
-        }
+#action-div button.ready-to-claim {
+    background-color: #0bda13; /* Green */
+    color: #fff;
+    cursor: pointer;
+}
 
-.custom-alert {
+#action-div button.claimed {
+    background-color: #ddd; /* Grey */
+    color: #999;
+    cursor: not-allowed;
+}
+
+
+
+
+        .custom-alert {
             display: none;
             position: fixed;
             top: 50%;
@@ -104,28 +133,29 @@
             z-index: 1000;
         }
         #custom-alert-message {
-        background: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        max-width: 80%;
-        color: #231f1f;
-      }
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 80%;
+            color: #231f1f;
+        }
 
         .custom-alert button {
             margin-top: 10px;
             background-color: green;
             border: none;
             padding: 10px;
-            margin-left: 120px;
             color: #fff;
             cursor: pointer;
             border-radius: 5px;
             text-align: center;
+            align-items: center;
         }
         .custom-alert button:hover {
             background-color: #0b4c15;
         }
+        
     </style>
 </head>
 <body>
@@ -144,10 +174,10 @@
         <p id="custom-alert-message"></p>
         <button onclick="closeCustomAlert()">Ok</button>
     </div>
-        <div id="nav-placeholder"></div>
-        <div id="cherry-placeholder"></div>
-        <script src="cherry.js"></script>
-        <script src="navigation.js" defer></script>
+    <div id="nav-placeholder"></div>
+    <div id="cherry-placeholder"></div>
+    <script src="cherry.js"></script>
+    <script src="navigation.js" defer></script>
     <script src="tasks.js"></script>
 </body>
 </html>
