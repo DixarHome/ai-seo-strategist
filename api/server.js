@@ -21,6 +21,10 @@ app.use('/api/auth', authRoutes);
 
 const sendEmail = require('../utils/mailer');  // Adjust the path as needed
 
+app.get('/ping', (req, res) => {
+  res.send('OK');
+});
+
 app.post('/api/withdraw', async (req, res) => {
     const { username, amount, method, walletAddress } = req.body;
 
