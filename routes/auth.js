@@ -153,6 +153,7 @@ router.post('/register', async (req, res) => {
 });
 
 // Email verification endpoint
+// Email verification endpoint
 router.get('/verify-email', async (req, res) => {
     const { token } = req.query;
 
@@ -175,6 +176,11 @@ router.get('/verify-email', async (req, res) => {
                 const referralBonus = 50000; // Bonus for the referrer
                 referrer.coinBalance += referralBonus;
                 referrer.totalReferralBonus = (referrer.totalReferralBonus || 0) + referralBonus;
+                
+                // Increment referral count and add new user to referrer's referrals array
+                referrer.referralCount += 1;
+                referrer.referrals.push(user._id);
+                
                 await referrer.save();
 
                 const notification = new Notification({
