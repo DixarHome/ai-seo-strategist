@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         "join-btn": { name: "Join Softcoin telegram channel", target: 1, reward: 30000, action: "Join" },
         "post-btn": { name: "Make a post on X", target: 1, reward: 30000, action: "Post" },
         "earnDog-btn": { name: "Earn some Doggs", target: 1, reward: 30000, action: "Earn" },
-        "sunwave-btn": { name: "Start mining Sunwave", target: 1, reward: 30000, action: "Start" },
         "refer2-btn": { name: "Invite 2 friends", target: 2, reward: 30000 },
         "refer5-btn": { name: "Invite 5 friends", target: 5, reward: 50000 },
         "refer10-btn": { name: "Invite 10 friends", target: 10, reward: 100000 },
@@ -204,13 +203,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const fetchProgress = taskId.startsWith('refer') ? fetchReferralCount : fetchMiningSessionCount;
-        if (taskId === 'follow-btn' || taskId === 'join-btn' || taskId === 'earnDog-btn' || taskId === 'sunwave-btn' || taskId === 'post-btn') {
+        if (taskId === 'follow-btn' || taskId === 'join-btn' || taskId === 'earnDog-btn' || taskId === 'post-btn') {
             const url = {
                 'follow-btn': 'https://twitter.com/softcoin__',
                 'join-btn': 'https://t.me/softcoinupdates',
                 'earnDog-btn': 'https://t.me/dogshouse_bot/join?startapp=4PHyTlasRsqFaapdMO-dLw',
-                'sunwave-btn': 'https://sunwavestoken.com/@davidnelson',
-                'post-btn': `https://twitter.com/intent/tweet?text=%F0%9F%93%88%20Ready%20to%20maximize%20your%20crypto%20potential%3F%0A%0ASoftcoin%20offers%20unparalleled%20opportunities%20with%20our%20referral%20and%20mining%20rewards.%0A%0AJoin%20me%20at%20softcoin.world%20and%20start%20earning%20today!%0A%0A%23CryptoLife%20%23CryptoRewards%20%23SoftCoin`
+                'post-btn': `https://twitter.com/intent/tweet?text=%F0%9F%93%88%20Ready%20to%20maximize%20your%20crypto%20potential%3F%0A%0ASoftcoin%20offers%20unparalleled%20opportunities%20with%20our%20referral%20and%20mining%20rewards.%0A%0AJoin%20us%20at%20softcoin.world%20and%20start%20earning%20today!%0A%0A%23CryptoLife%20%23CryptoRewards%20%23SoftCoin`
             }[taskId];
             handleSocialMediaTask(taskId, url);
             checkSocialMediaTask(taskId);
