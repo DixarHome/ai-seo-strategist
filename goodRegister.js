@@ -1,21 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     const registrationForm = document.getElementById('registration-form');
     const alertBox = document.getElementById('alert-box');
-    const spinner = document.querySelector('.spinner');
 
     const showAlert = (message, type) => {
         alertBox.textContent = message;
         alertBox.className = `custom-alert alert-${type}`;
         alertBox.style.display = 'block';
-    };
-
-    const showLoading = () => {
-        alertBox.style.display = 'block';
-        spinner.style.display = 'block';
-    };
-
-    const hideLoading = () => {
-        spinner.style.display = 'none';
     };
 
     registrationForm.addEventListener('submit', async (event) => {
@@ -51,8 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
             referralUsername
         };
 
-        showLoading(); // Show loading spinner
-
         try {
             const response = await fetch('/api/auth/register', {
                 method: 'POST',
@@ -62,20 +50,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(payload)
             });
 
-            hideLoading(); // Hide loading spinner
-
             const data = await response.json();
 
             if (response.ok) {
-                showAlert('Registration successful! Please check your email to verify your account.', 'success');
-                setTimeout(() => {
-                    window.location.href = '/login'; // Redirect to the login page after 5 seconds
-                }, 5000);
+                showAlert('Registration successful', 'success');
+                window.location.href = '/login'; // Redirect to the login page
             } else {
                 showAlert(data.message || 'Registration failed', 'danger');
             }
         } catch (error) {
-            hideLoading(); // Hide loading spinner in case of error
             console.error('Error:', error);
             showAlert('An error occurred during registration', 'danger');
         }

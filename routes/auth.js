@@ -132,7 +132,7 @@ router.post('/register', async (req, res) => {
             password: hashedPassword,
             referralUsername,
             referredBy: referrer ? referrer._id : null,
-            coinBalance: 50000, // Initial bonus for the referred friend
+            coinBalance: 0, // Initial balance is 0; bonus is given after verification
             verificationToken, // Save the verification token
             isVerified: false, // Set the user as unverified initially
         });
@@ -142,9 +142,6 @@ router.post('/register', async (req, res) => {
         // Send verification email
         await sendVerificationEmail(email, verificationToken);
 
-        // Send welcome email
-        await sendWelcomeEmail(email, fullName);
-
         res.status(201).json({ message: 'User registered successfully. Please check your email to verify your account.' });
     } catch (error) {
         console.error('Error during registration:', error);
@@ -152,7 +149,6 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// Email verification endpoint
 // Email verification endpoint
 router.get('/verify-email', async (req, res) => {
     const { token } = req.query;
@@ -167,6 +163,18 @@ router.get('/verify-email', async (req, res) => {
 
         user.isVerified = true;
         user.verificationToken = null;
+        user.coinBalance = 50000; // Credit the user with their bonus after verification
+        await user.save();
+
+        // Send a notification to the user about the bonus
+        const welcomeNotification = new Notification({
+            user: user._id,
+            title: 'Welcome to Softcoin!',
+            message: 'Your email has been verified, and you have received a welcome bonus of 50,000 SFT.'
+        });
+        await welcomeNotification.save();
+
+        user.notifications.push(welcomeNotification._id);
         await user.save();
 
         // Handle referral bonus if the user was referred
@@ -183,20 +191,20 @@ router.get('/verify-email', async (req, res) => {
                 
                 await referrer.save();
 
-                const notification = new Notification({
+                const referrerNotification = new Notification({
                     user: referrer._id,
                     title: 'Referral Verified!',
                     message: `${user.username} has verified their email, and you have been rewarded with 50,000 SFT.`
                 });
 
-                await notification.save();
+                await referrerNotification.save();
 
-                referrer.notifications.push(notification._id);
+                referrer.notifications.push(referrerNotification._id);
                 await referrer.save();
             }
         }
 
-        res.status(200).json({ message: 'Email verified successfully' });
+        res.status(200).json({ message: 'Email verified successfully. Your bonus has been credited.' });
     } catch (error) {
         console.error('Error verifying email:', error);
         res.status(500).json({ message: 'Error verifying email' });

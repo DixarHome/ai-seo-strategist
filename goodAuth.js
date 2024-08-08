@@ -91,6 +91,7 @@ Softcoin Team.
 }
 
 // Registration endpoint
+// Registration endpoint
 router.post('/register', async (req, res) => {
     const { fullName, username, email, password, referralUsername } = req.body;
 
@@ -138,25 +139,6 @@ router.post('/register', async (req, res) => {
 
         await newUser.save();
 
-        if (referrer) {
-            referrer.referrals.push(newUser._id);
-            const referralBonus = 50000; // Bonus for the referrer
-            referrer.coinBalance += referralBonus;
-            referrer.totalReferralBonus = (referrer.totalReferralBonus || 0) + referralBonus;
-            await referrer.save();
-
-            const notification = new Notification({
-                user: referrer._id,
-                title: 'New Referral Registered!',
-                message: `${newUser.username} has registered using your referral link, and you have been rewarded with 50,000 SFT.`
-            });
-
-            await notification.save();
-
-            referrer.notifications.push(notification._id);
-            await referrer.save();
-        }
-
         // Send verification email
         await sendVerificationEmail(email, verificationToken);
 
@@ -170,6 +152,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
+// Email verification endpoint
 // Email verification endpoint
 router.get('/verify-email', async (req, res) => {
     const { token } = req.query;
@@ -185,6 +168,33 @@ router.get('/verify-email', async (req, res) => {
         user.isVerified = true;
         user.verificationToken = null;
         await user.save();
+
+        // Handle referral bonus if the user was referred
+        if (user.referredBy) {
+            const referrer = await User.findById(user.referredBy);
+            if (referrer) {
+                const referralBonus = 50000; // Bonus for the referrer
+                referrer.coinBalance += referralBonus;
+                referrer.totalReferralBonus = (referrer.totalReferralBonus || 0) + referralBonus;
+                
+                // Increment referral count and add new user to referrer's referrals array
+                referrer.referralCount += 1;
+                referrer.referrals.push(user._id);
+                
+                await referrer.save();
+
+                const notification = new Notification({
+                    user: referrer._id,
+                    title: 'Referral Verified!',
+                    message: `${user.username} has verified their email, and you have been rewarded with 50,000 SFT.`
+                });
+
+                await notification.save();
+
+                referrer.notifications.push(notification._id);
+                await referrer.save();
+            }
+        }
 
         res.status(200).json({ message: 'Email verified successfully' });
     } catch (error) {
