@@ -61,8 +61,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function updateCoinBalance() {
-        coinBalanceEl.textContent = `${(coinBalance + referralBonus).toLocaleString()}`;
-    }
+    coinBalanceEl.textContent = `${coinBalance.toLocaleString()}`;
+}
+
 
     function updateMiningLevel() {
         miningLevelEl.textContent = currentLevel;
@@ -77,36 +78,36 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function startTimer(miningStartTime, level) {
-        const endTime = new Date(miningStartTime).getTime() + rewardIntervals[level - 1];
+    const endTime = new Date(miningStartTime).getTime() + rewardIntervals[level - 1];
 
-        function updateTimer() {
-            const remainingTime = endTime - Date.now();
-            if (remainingTime <= 0) {
-                clearInterval(timerInterval);
-                timerEl.textContent = "00:00:00";
-                updateStatusMessage("Mining complete!");
-                toggleBarsAnimation(false);
-                mineBtn.disabled = false;
+    function updateTimer() {
+        const remainingTime = endTime - Date.now();
+        if (remainingTime <= 0) {
+            clearInterval(timerInterval);
+            timerEl.textContent = "00:00:00";
+            updateStatusMessage("Mining complete!");
+            toggleBarsAnimation(false);
+            mineBtn.disabled = false;
 
-                coinBalance += rewards[level - 1];
-                updateCoinBalance();
-                miningSessionCount += 1;
-                updateMiningSessionCount();
-            } else {
-                const hours = Math.floor((remainingTime / (1000 * 60 * 60)) % 24);
-                const minutes = Math.floor((remainingTime / (1000 * 60)) % 60);
-                const seconds = Math.floor((remainingTime / 1000) % 60);
-                timerEl.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            coinBalance += rewards[level - 1];
+            updateCoinBalance();
+            miningSessionCount += 1;
+            updateMiningSessionCount();
+        } else {
+            const hours = Math.floor((remainingTime / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((remainingTime / (1000 * 60)) % 60);
+            const seconds = Math.floor((remainingTime / 1000) % 60);
+            timerEl.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-                const elapsedTime = rewardIntervals[level - 1] - remainingTime;
-                const coinsMined = Math.floor((elapsedTime / rewardIntervals[level - 1]) * rewards[level - 1]);
-                coinBalanceEl.textContent = `${(coinBalance + coinsMined + referralBonus).toLocaleString()}`;
-            }
+            const elapsedTime = rewardIntervals[level - 1] - remainingTime;
+            const coinsMined = Math.floor((elapsedTime / rewardIntervals[level - 1]) * rewards[level - 1]);
+            coinBalanceEl.textContent = `${(coinBalance + coinsMined).toLocaleString()}`;
         }
-
-        updateTimer();
-        timerInterval = setInterval(updateTimer, 1000);
     }
+
+    updateTimer();
+    timerInterval = setInterval(updateTimer, 1000);
+}
 
     async function updateMiningStatus() {
         try {

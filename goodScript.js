@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function updateCoinBalance() {
-        coinBalanceEl.textContent = `${(coinBalance + referralBonus).toLocaleString()} SFT`;
+        coinBalanceEl.textContent = `${(coinBalance + referralBonus).toLocaleString()}`;
     }
 
     function updateMiningLevel() {
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 const elapsedTime = rewardIntervals[level - 1] - remainingTime;
                 const coinsMined = Math.floor((elapsedTime / rewardIntervals[level - 1]) * rewards[level - 1]);
-                coinBalanceEl.textContent = `${(coinBalance + coinsMined + referralBonus).toLocaleString()} SFT`;
+                coinBalanceEl.textContent = `${(coinBalance + coinsMined + referralBonus).toLocaleString()}`;
             }
         }
 
@@ -191,20 +191,25 @@ window.addEventListener('click', (event) => {
     }
 });
 
+let expandedNotification = null; // Track the currently expanded notification
+
 async function fetchNotifications(username) {
     try {
         const response = await fetch(`/api/notifications/${username}`);
-        const notifications = await response.json();
+        let notifications = await response.json();
+
+        // Sort notifications by date (most recent first)
+        notifications.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         let unreadCount = 0;
         notificationList.innerHTML = notifications.map(notification => {
             if (!notification.read) unreadCount++;
             const formattedDate = new Date(notification.date).toLocaleString();
             return `
-                <div class="notification-item" data-id="${notification.id}">
+                <div class="notification-item ${notification.read ? 'read' : 'unread'}" data-id="${notification.id}">
                     <div class="notification-title">${notification.title}</div>
                     <div class="notification-timestamp">${formattedDate}</div>
-                    <div class="notification-message">${notification.message}</div>
+                    <div class="notification-message" style="display: none;">${notification.message}</div>
                 </div>
             `;
         }).join('');
@@ -213,9 +218,22 @@ async function fetchNotifications(username) {
         notificationCount.style.display = unreadCount > 0 ? 'inline' : 'none';
 
         document.querySelectorAll('.notification-item').forEach(item => {
+            const timestamp = item.querySelector('.notification-timestamp');
+            const messageElement = item.querySelector('.notification-message');
+
             item.addEventListener('click', () => {
-                const messageElement = item.querySelector('.notification-message');
-                messageElement.style.display = messageElement.style.display === 'none' ? 'block' : 'none';
+                // If a different notification is clicked, collapse the previous one
+                if (expandedNotification && expandedNotification !== item) {
+                    expandedNotification.querySelector('.notification-message').style.display = 'none';
+                    expandedNotification.querySelector('.notification-timestamp').style.display = 'none';
+                }
+
+                // Expand the current notification if it's not already expanded
+                if (expandedNotification !== item) {
+                    messageElement.style.display = 'block';
+                    timestamp.style.display = 'block';
+                    expandedNotification = item;
+                }
 
                 if (!item.classList.contains('read')) {
                     markNotificationAsRead(item.dataset.id);
@@ -243,48 +261,4 @@ async function markNotificationAsRead(notificationId) {
     } catch (error) {
         console.error('Error marking notification as read:', error);
     }
-}
-
-if ('serviceWorker' in navigator && 'PushManager' in window) {
-    navigator.serviceWorker.register('/service-worker.js')
-        .then(function(swReg) {
-            console.log('Service Worker is registered', swReg);
-        })
-        .catch(function(error) {
-            console.error('Service Worker Error', error);
-        });
-}
-
-navigator.serviceWorker.ready.then(function(swReg) {
-    swReg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array('BIyuPrBMbxLn8cLNOE4tS2jh0_IVYyYnKmE3t6EqNBMXQW65jSEOTIKnjm_tdOq7HkfenQHl67j2vvwtnvTfxbw')
-    }).then(function(subscription) {
-        // Send subscription to the server
-        fetch('/api/save-subscription', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                username: localStorage.getItem('username'),
-                subscription: subscription
-            })
-        });
-    }).catch(function(error) {
-        console.error('Failed to subscribe to push', error);
-    });
-});
-
-function urlBase64ToUint8Array(base64String) {
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
-    const base64 = (base64String + padding)
-        .replace(/\-/g, '+')
-        .replace(/_/g, '/');
-
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
-
-    for (let i = 0; i < rawData.length; ++i) {
-        outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
 }

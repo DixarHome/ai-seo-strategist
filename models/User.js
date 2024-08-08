@@ -23,13 +23,10 @@ const userSchema = new mongoose.Schema({
         expires: Date
     },
     notifications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Notification' }],
-    transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }], // Add this line
+    transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }], 
     commitmentBalance: { type: Number, default: 0 },
     earningBalance: { type: Number, default: 0 },
-    totalReferralBonus: {
-        type: Number,
-        default: 0
-    }
+    totalReferralBonus: { type: Number, default: 0 }
 });
 
 // Method to calculate daily returns and update the earning balance

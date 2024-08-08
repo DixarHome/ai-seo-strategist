@@ -168,58 +168,59 @@
     <script src="cherry.js" defer></script>
     <div id="nav-placeholder"></div>
     <script src="navigation.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const username = localStorage.getItem('username'); // Get the username from local storage
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const username = localStorage.getItem('username'); // Get the username from local storage
 
-            if (!username) {
-                console.error('Username not found in local storage');
-                return;
+        if (!username) {
+            console.error('Username not found in local storage');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/referrals/${username}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log('Fetched data:', data); // Debugging log
+
+            const referralsTable = document.getElementById('referrals-table');
+            const friendsCount = document.getElementById('friends-count');
+            const earnings = document.querySelector('.earnings');
+            const softieBonusElement = document.querySelector('.softie-bonus');
+
+            friendsCount.textContent = `You have ${data.referrals.length} friends`;
+            earnings.textContent = `${data.totalEarnings.toFixed(2)} SFT`; // Display totalReferralBonus
+
+            let totalSoftieBonus = 0;
+
+            for (const ref of data.referrals) {
+                const row = document.createElement('tr');
+                const usernameCell = document.createElement('td');
+                const balanceCell = document.createElement('td');
+                const commitmentCell = document.createElement('td');
+
+                usernameCell.className = 'username-cell';
+                usernameCell.textContent = ref.username;
+                balanceCell.textContent = ref.coinBalance;
+                commitmentCell.textContent = ref.commitmentBalance;
+
+                row.appendChild(usernameCell);
+                row.appendChild(balanceCell);
+                row.appendChild(commitmentCell);
+                referralsTable.appendChild(row);
+
+                totalSoftieBonus += ref.commitmentBalance * 0.05; // Calculate softie bonus
             }
 
-            try {
-                const response = await fetch(`/api/referrals/${username}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const data = await response.json();
-                console.log('Fetched data:', data); // Debugging log
+            softieBonusElement.textContent = `${totalSoftieBonus.toFixed(2)} USD`; // Display softie bonus
+        } catch (error) {
+            console.error('Error fetching referrals:', error);
+        }
+    });
+</script>
 
-                const referralsTable = document.getElementById('referrals-table');
-                const friendsCount = document.getElementById('friends-count');
-                const earnings = document.querySelector('.earnings');
-                const softieBonusElement = document.querySelector('.softie-bonus');
-
-                friendsCount.textContent = `You have ${data.referrals.length} friends`;
-                earnings.textContent = `${data.totalEarnings.toFixed(2)} SFT`;
-
-                let totalSoftieBonus = 0;
-
-                for (const ref of data.referrals) {
-    const row = document.createElement('tr');
-    const usernameCell = document.createElement('td');
-    const balanceCell = document.createElement('td');
-    const commitmentCell = document.createElement('td');
-
-    usernameCell.className = 'username-cell'; // Add this line
-    usernameCell.textContent = ref.username;
-    balanceCell.textContent = ref.coinBalance;
-    commitmentCell.textContent = ref.commitmentBalance;
-
-    row.appendChild(usernameCell);
-    row.appendChild(balanceCell);
-    row.appendChild(commitmentCell);
-    referralsTable.appendChild(row);
-
-    totalSoftieBonus += ref.commitmentBalance * 0.05;
-}
-
-                softieBonusElement.textContent = `${totalSoftieBonus.toFixed(2)} USD`;
-            } catch (error) {
-                console.error('Error fetching referrals:', error);
-            }
-        });
-    </script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const username = localStorage.getItem('username');
