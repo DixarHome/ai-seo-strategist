@@ -141,6 +141,9 @@ router.post('/register', async (req, res) => {
 
         // Send verification email
         await sendVerificationEmail(email, verificationToken);
+        
+        // Send welcome email
+        await sendWelcomeEmail(email, fullName);
 
         res.status(201).json({ message: 'User registered successfully. Please check your email to verify your account.' });
     } catch (error) {
@@ -183,7 +186,7 @@ router.get('/verify-email', async (req, res) => {
             if (referrer) {
                 const referralBonus = 50000; // Bonus for the referrer
                 referrer.coinBalance += referralBonus;
-                referrer.totalReferralBonus = (referrer.totalReferralBonus || 0) + referralBonus;
+                referrer.totalReferralBonus += referralBonus;
                 
                 // Increment referral count and add new user to referrer's referrals array
                 referrer.referralCount += 1;
