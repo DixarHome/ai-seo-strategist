@@ -194,14 +194,17 @@ window.addEventListener('click', (event) => {
 async function fetchNotifications(username) {
     try {
         const response = await fetch(`/api/notifications/${username}`);
-        const notifications = await response.json();
+        let notifications = await response.json();
+
+        // Sort notifications by date (most recent first)
+        notifications.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         let unreadCount = 0;
         notificationList.innerHTML = notifications.map(notification => {
             if (!notification.read) unreadCount++;
             const formattedDate = new Date(notification.date).toLocaleString();
             return `
-                <div class="notification-item" data-id="${notification.id}">
+                <div class="notification-item ${notification.read ? 'read' : 'unread'}" data-id="${notification.id}">
                     <div class="notification-title">${notification.title}</div>
                     <div class="notification-timestamp">${formattedDate}</div>
                     <div class="notification-message">${notification.message}</div>
@@ -213,9 +216,14 @@ async function fetchNotifications(username) {
         notificationCount.style.display = unreadCount > 0 ? 'inline' : 'none';
 
         document.querySelectorAll('.notification-item').forEach(item => {
+            const timestamp = item.querySelector('.notification-timestamp');
+            timestamp.style.display = 'none'; // Hide timestamps initially
+
             item.addEventListener('click', () => {
                 const messageElement = item.querySelector('.notification-message');
-                messageElement.style.display = messageElement.style.display === 'none' ? 'block' : 'none';
+                const isExpanded = messageElement.style.display === 'block';
+                messageElement.style.display = isExpanded ? 'none' : 'block';
+                timestamp.style.display = isExpanded ? 'none' : 'block';
 
                 if (!item.classList.contains('read')) {
                     markNotificationAsRead(item.dataset.id);

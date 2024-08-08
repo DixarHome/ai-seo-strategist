@@ -14,7 +14,7 @@
 
     <style>
         body {
-            overflow-y: hidden;
+
             padding-bottom: 0;
         }
         #notification-icon {
@@ -69,7 +69,7 @@
             padding-top: 0px;
         }
         .modal h3 {
-            color: black;
+            color: #09037e;
         }
         .modal-content {
             background-color: #fefefe;
@@ -112,9 +112,29 @@
     color: #666;
     font-size: 0.8em;
 }
+
+.notification-item {
+    cursor: pointer;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.notification-item.unread {
+    color: #0f8705;
+}
+
+.notification-item.read {
+    color: gray;
+}
+
+.notification-timestamp,
+.notification-message {
+    display: none; /* Initially hidden */
+}
+
+
     @media (min-width: 768px) {
       body {
-        overflow-y: auto;
         padding-bottom: 80px;
       }
     }
@@ -177,7 +197,18 @@
     padding: 0;
     text-align: center;
         }
-
+#user-name {
+    display: inline-block;
+    max-width: 80px; /* Adjust the width as needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 5px;
+}
+#user-info span {
+    display: flex;
+    align-items: center;
+}
     </style>
 </head>
 <body>
@@ -273,19 +304,22 @@
     <script src="navigation.js" defer></script>
     <script src="script.js" defer></script>
     <script defer>
-        document.addEventListener("DOMContentLoaded", () => {
-            const username = localStorage.getItem('username');
-            if (!username) {
-                window.location.href = '/login';
-            } else {
-                document.getElementById('user-name').textContent = username;
-            }
-        });
+<script defer>
+    document.addEventListener("DOMContentLoaded", () => {
+    const username = localStorage.getItem('username');
+    if (!username) {
+        window.location.href = '/login';
+    } else {
+        const truncatedUsername = username.length > 15 ? username.substring(0, 15) + '...' : username;
+        document.getElementById('user-name').textContent = truncatedUsername;
+    }
+});
 
-        function upgrades() {
-            window.location.href = '/upgrades';
-        }
-    </script>
+    function upgrades() {
+        window.location.href = '/upgrades';
+    }
+</script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
     // Function to check if the referrer is the login page
