@@ -207,7 +207,7 @@ router.get('/verify-email', async (req, res) => {
             }
         }
 
-        res.status(200).json({ message: 'Email verified successfully. You can now <a href="https://app.softcoin.world/login">Log In</a>.' });
+        res.status(200).json({ message: 'Email verified successfully' });
     } catch (error) {
         console.error('Error verifying email:', error);
         res.status(500).json({ message: 'Error verifying email' });
