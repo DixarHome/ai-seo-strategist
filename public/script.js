@@ -191,6 +191,8 @@ window.addEventListener('click', (event) => {
     }
 });
 
+let expandedNotification = null; // Track the currently expanded notification
+
 async function fetchNotifications(username) {
     try {
         const response = await fetch(`/api/notifications/${username}`);
@@ -207,7 +209,7 @@ async function fetchNotifications(username) {
                 <div class="notification-item ${notification.read ? 'read' : 'unread'}" data-id="${notification.id}">
                     <div class="notification-title">${notification.title}</div>
                     <div class="notification-timestamp">${formattedDate}</div>
-                    <div class="notification-message">${notification.message}</div>
+                    <div class="notification-message" style="display: none;">${notification.message}</div>
                 </div>
             `;
         }).join('');
@@ -217,13 +219,21 @@ async function fetchNotifications(username) {
 
         document.querySelectorAll('.notification-item').forEach(item => {
             const timestamp = item.querySelector('.notification-timestamp');
-            timestamp.style.display = 'none'; // Hide timestamps initially
+            const messageElement = item.querySelector('.notification-message');
 
             item.addEventListener('click', () => {
-                const messageElement = item.querySelector('.notification-message');
-                const isExpanded = messageElement.style.display === 'block';
-                messageElement.style.display = isExpanded ? 'none' : 'block';
-                timestamp.style.display = isExpanded ? 'none' : 'block';
+                // If a different notification is clicked, collapse the previous one
+                if (expandedNotification && expandedNotification !== item) {
+                    expandedNotification.querySelector('.notification-message').style.display = 'none';
+                    expandedNotification.querySelector('.notification-timestamp').style.display = 'none';
+                }
+
+                // Expand the current notification if it's not already expanded
+                if (expandedNotification !== item) {
+                    messageElement.style.display = 'block';
+                    timestamp.style.display = 'block';
+                    expandedNotification = item;
+                }
 
                 if (!item.classList.contains('read')) {
                     markNotificationAsRead(item.dataset.id);
