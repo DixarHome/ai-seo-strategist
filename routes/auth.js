@@ -186,7 +186,7 @@ router.get('/verify-email', async (req, res) => {
             if (referrer) {
                 const referralBonus = 50000; // Bonus for the referrer
                 referrer.coinBalance += referralBonus;
-                referrer.totalReferralBonus += referralBonus;
+                referrer.totalReferralBonus += referralBonus; // Increment the totalReferralBonus
                 
                 // Increment referral count and add new user to referrer's referrals array
                 referrer.referralCount += 1;
@@ -207,7 +207,7 @@ router.get('/verify-email', async (req, res) => {
             }
         }
 
-        res.status(200).json({ message: 'Email verified successfully. Your bonus has been credited.' });
+        res.status(200).json({ message: 'Email verified successfully. You can now <a href="https://app.softcoin.world/login">Log In</a>.' });
     } catch (error) {
         console.error('Error verifying email:', error);
         res.status(500).json({ message: 'Error verifying email' });
