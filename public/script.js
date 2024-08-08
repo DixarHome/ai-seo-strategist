@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function updateCoinBalance() {
-        coinBalanceEl.textContent = `${(coinBalance + referralBonus).toLocaleString()} SFT`;
+        coinBalanceEl.textContent = `${(coinBalance + referralBonus).toLocaleString()}`;
     }
 
     function updateMiningLevel() {
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 const elapsedTime = rewardIntervals[level - 1] - remainingTime;
                 const coinsMined = Math.floor((elapsedTime / rewardIntervals[level - 1]) * rewards[level - 1]);
-                coinBalanceEl.textContent = `${(coinBalance + coinsMined + referralBonus).toLocaleString()} SFT`;
+                coinBalanceEl.textContent = `${(coinBalance + coinsMined + referralBonus).toLocaleString()}`;
             }
         }
 

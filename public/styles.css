@@ -131,7 +131,7 @@ input:checked + .slider:before {
     margin-bottom: 20px;
     width: 40%;
     padding: 3.3em;
-    padding-top: 5em;
+    padding-top: 4em;
     padding-bottom: 0;
 }
 
@@ -173,7 +173,7 @@ input:checked + .slider:before {
     width: 80%;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 60px; /* Adjust this value if needed */
     position: relative;
     overflow: hidden;
@@ -200,7 +200,7 @@ input:checked + .slider:before {
 
 #timer {
   padding-bottom: 0;
-  color: #028900;
+  color: #2ef72b;
   font-size: 12px;
 }
 #timer-text {

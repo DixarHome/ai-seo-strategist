@@ -126,6 +126,58 @@
         font-size: 12px;
     }
 
+    .slide {
+        position: absolute;
+        width: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+    }
+
+    .slide.active {
+        opacity: 1;
+    }
+
+    #dots-container {
+        text-align: center;
+        position: relative;
+        bottom: 0px;
+        top: 10px;
+    }
+
+    .dot {
+        height: 10px;
+        width: 10px;
+        margin: 0 4px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+        transition: background-color 0.6s ease;
+    }
+
+    .dot.active {
+        background-color: #11e400;
+    }
+    /* styles.css */
+
+.coin-balance {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .coin-balance p,
+        .coin-balance span {
+            display: inline;
+            margin: 0;
+            margin-top: 20px;
+        }
+        .coin-balance span {
+            font-size: 30px;
+
+    color: #2db804; /* Light theme color */
+    padding: 0;
+    text-align: center;
+        }
+
     </style>
 </head>
 <body>
@@ -156,16 +208,24 @@
     <!-- Slideshow Container -->
     <div id="slideshow-container">
         <div class="slide">
-            <a href="/softie"><img src="iconns/welcome.png" alt="Slide 2"></a>
+            <a href="/softie"><img src="adverts/softie.png" alt="Shareholder"></a>
+        </div>
+        <div class="slide active">
+            <a href="#"><img src="adverts/welcome.png" alt="Welcome"></a>
         </div>
         <div class="slide">
-            <a href="/softie"><img src="okay/vision.png" alt="Slide 2"></a>
+            <a href="https://twitter.com/softcoin__"><img src="adverts/twitter-ad.png" alt="Twitter"></a>
         </div>
+        
         <div class="slide">
-            <a href="/softie"><img src="iconns/shareholder.png" alt="Slide 3"></a>
+            <a href="https://t.me/softcoinupdates"><img src="adverts/telegram-ad.png" alt="Telegram"></a>
         </div>
     </div>
-    <strong><p id="coin-balance">0 SFT</p></strong>
+    <div id="dots-container"></div>
+   <div class="coin-balance">
+    <strong><p id="coin-balance">0</p><span>SFT</span></strong>
+</div>
+
     <p id="status-message"></p>
     <div id="sound-wave-container" disabled>
         <div class="bar"></div>
@@ -280,19 +340,34 @@
     </script>
 
     <script>
-        let slideIndex = 0;
-        showSlides();
-
-        function showSlides() {
+        document.addEventListener('DOMContentLoaded', function() {
+            let slideIndex = 0;
             let slides = document.getElementsByClassName("slide");
+            let dotsContainer = document.getElementById("dots-container");
+
+            // Create dots
             for (let i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";  
+                let dot = document.createElement("span");
+                dot.classList.add("dot");
+                dotsContainer.appendChild(dot);
             }
-            slideIndex++;
-            if (slideIndex > slides.length) {slideIndex = 1}    
-            slides[slideIndex-1].style.display = "block";  
-            setTimeout(showSlides, 10000);
-        }
+
+            let dots = document.getElementsByClassName("dot");
+
+            function showSlides() {
+                for (let i = 0; i < slides.length; i++) {
+                    slides[i].classList.remove("active");
+                    dots[i].classList.remove("active");
+                }
+                slideIndex++;
+                if (slideIndex > slides.length) {slideIndex = 1}
+                slides[slideIndex - 1].classList.add("active");
+                dots[slideIndex - 1].classList.add("active");
+                setTimeout(showSlides, 10000); // Change image every 10 seconds
+            }
+
+            showSlides();
+        });
     </script>
 </body>
 </html>
