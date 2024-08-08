@@ -12,7 +12,7 @@
             margin: 0;
             padding: 20px;
             padding-top: 10px;
-            padding-bottom: 0px;
+            padding-bottom: 80px;
         }
 
         h1 {
@@ -126,6 +126,14 @@
             background-color: #650361;
             border-radius: 20px;
         }
+        .username-cell {
+    max-width: 80px; /* Adjust width as needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
     </style>
 </head>
 <body>
@@ -188,22 +196,23 @@
                 let totalSoftieBonus = 0;
 
                 for (const ref of data.referrals) {
-                    const row = document.createElement('tr');
-                    const usernameCell = document.createElement('td');
-                    const balanceCell = document.createElement('td');
-                    const commitmentCell = document.createElement('td');
+    const row = document.createElement('tr');
+    const usernameCell = document.createElement('td');
+    const balanceCell = document.createElement('td');
+    const commitmentCell = document.createElement('td');
 
-                    usernameCell.textContent = ref.username;
-                    balanceCell.textContent = ref.coinBalance;
-                    commitmentCell.textContent = ref.commitmentBalance;
+    usernameCell.className = 'username-cell'; // Add this line
+    usernameCell.textContent = ref.username;
+    balanceCell.textContent = ref.coinBalance;
+    commitmentCell.textContent = ref.commitmentBalance;
 
-                    row.appendChild(usernameCell);
-                    row.appendChild(balanceCell);
-                    row.appendChild(commitmentCell);
-                    referralsTable.appendChild(row);
+    row.appendChild(usernameCell);
+    row.appendChild(balanceCell);
+    row.appendChild(commitmentCell);
+    referralsTable.appendChild(row);
 
-                    totalSoftieBonus += ref.commitmentBalance * 0.05;
-                }
+    totalSoftieBonus += ref.commitmentBalance * 0.05;
+}
 
                 softieBonusElement.textContent = `${totalSoftieBonus.toFixed(2)} USD`;
             } catch (error) {
