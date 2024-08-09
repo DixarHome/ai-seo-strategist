@@ -15,7 +15,7 @@
     <style>
         body {
 
-            padding-bottom: 0;
+            padding-bottom: 70px;
         }
         #notification-icon {
             position: relative;
@@ -148,7 +148,6 @@
 
     .slide {
         position: absolute;
-        width: 100%;
         opacity: 0;
         transition: opacity 1s ease-in-out;
     }
@@ -161,7 +160,8 @@
         text-align: center;
         position: relative;
         bottom: 0px;
-        top: 10px;
+        margin-top: 0;
+        padding-top: 0;
     }
 
     .dot {
@@ -170,6 +170,8 @@
         margin: 0 4px;
         background-color: #bbb;
         border-radius: 50%;
+        padding: 0;
+        padding-bottom: 0;
         display: inline-block;
         transition: background-color 0.6s ease;
     }
@@ -181,17 +183,18 @@
 
 .coin-balance {
             font-weight: bold;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .coin-balance p,
         .coin-balance span {
             display: inline;
             margin: 0;
-            margin-top: 20px;
+            margin-top: 10px;
         }
         .coin-balance span {
             font-size: 30px;
+            margin-left: 10px;
 
     color: #2db804; /* Light theme color */
     padding: 0;
@@ -199,7 +202,7 @@
         }
 #user-name {
     display: inline-block;
-    max-width: 80px; /* Adjust the width as needed */
+    width: 50px; /* Adjust the width as needed */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -209,6 +212,26 @@
     display: flex;
     align-items: center;
 }
+/*.well {
+    width: 80%;
+    align-items: center;
+    padding: 20px 10px;
+    margin: 20px auto;
+    background: #373737;
+    border-radius: 30px;
+    text-align: center;
+    
+}
+.well #mine-btn {
+    margin: 0 auto;
+}
+.well #sound-wave-container {
+    margin: 0 auto;
+}
+.well .coin-balance {
+    margin-top: 0;
+    padding-top: 0;
+}*/
     </style>
 </head>
 <body>
@@ -250,11 +273,13 @@
         </div>
     </div>
     <div id="dots-container"></div>
+ <!-- <div class="well"> -->
    <div class="coin-balance">
     <strong><p id="coin-balance">0</p><span>SFT</span></strong>
 </div>
 
     <p id="status-message"></p>
+
     <div id="sound-wave-container" disabled>
         <div class="bar"></div>
         <div class="bar"></div>
@@ -270,7 +295,7 @@
     <div id="mining-session-count">Sessions Completed: 0</div>
     <p id="timer-text">Mining stops in: <span id="timer">00:00:00</span></p>
     <button id="mine-btn" data-step="1">Start Mining<span id="level">Level: <span id="mining-level">1</span></span></button>
-    
+  <!--  </div> -->
     <nav id="bottom-nav">
         <a href="/" class="nav-item" id="home">
             <img src="design/home.svg" alt="Home">

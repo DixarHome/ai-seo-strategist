@@ -103,10 +103,12 @@ input:checked + .slider {
 input:checked + .slider:before {
     transform: translateX(6px); /* Adjust the translate distance */
 }
-
+.coin-balance {
+    top: 0;
+}
 #coin-balance {
     font-size: 30px;
-    margin: 20px 5px 0;
+    margin-top: 0;
     color: white; /* Light theme color */
     padding: 0;
     text-align: center;
@@ -171,7 +173,7 @@ input:checked + .slider:before {
     color: white;
     border: none;
     width: 80%;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
     margin-top: 10px;
     margin-bottom: 60px; /* Adjust this value if needed */
@@ -272,7 +274,7 @@ p {
     display: flex;
     margin-top: 0; /* Remove gap */
     padding-bottom: 0;
-    margin-bottom: 0;
+    margin-bottom: 10px;
     height: 20%;
 }
 
@@ -288,7 +290,7 @@ p {
     height: 100%;
     display: block;
     margin: 0;
-    border-radius: 20px;
+    border-radius: 15px;
 }
 
 /* Add active class to the first slide */

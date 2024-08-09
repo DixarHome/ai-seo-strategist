@@ -204,9 +204,24 @@ app.post('/api/startMining', async (req, res) => {
 
         user.isMining = true;
         user.miningStartTime = new Date();
+
+        // Define rewards based on the user's level
+        const rewards = [15000, 30000, 60000, 120000, 240000]; // These should correspond to your levels
+        const minedAmount = rewards[user.level - 1]; // Calculate the reward based on the current level
+
+        // Handle referral bonus immediately when mining starts
+        if (user.referredBy) {
+            const referrer = await User.findById(user.referredBy);
+            if (referrer) {
+                const referralBonus = minedAmount * 0.2; // 20% of the mined amount
+                referrer.coinBalance += referralBonus;
+                referrer.totalReferralBonus = (referrer.totalReferralBonus || 0) + referralBonus;
+                await referrer.save();
+            }
+        }
+
         await user.save();
 
-        // Don't add referral bonuses to coinBalance
         res.status(200).json({
             miningStartTime: user.miningStartTime,
             coinBalance: user.coinBalance,
@@ -235,17 +250,6 @@ app.post('/api/miningStatus', async (req, res) => {
             user.isMining = false;
             user.miningStartTime = null;
             user.miningSessionCount = (user.miningSessionCount || 0) + 1;
-
-            // Handle referral bonus
-            if (user.referredBy) {
-                const referrer = await User.findById(user.referredBy);
-                if (referrer) {
-                    const referralBonus = minedAmount * 0.2;
-                    referrer.coinBalance += referralBonus;
-                    referrer.totalReferralBonus = (referredBy.totalReferralBonus || 0) + referralBonus;
-                    await referrer.save();
-                }
-            }
 
             await user.save();
         }

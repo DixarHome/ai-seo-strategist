@@ -175,19 +175,17 @@ app.get('/api/referrals/:username', async (req, res) => {
     const { username } = req.params;
 
     try {
-        console.log('Fetching referrals for:', username); // Debugging
+        console.log('Fetching referrals for:', username);
         const user = await User.findOne({ username }).populate('referrals');
         if (!user) return res.status(404).json({ message: 'User not found' });
 
         const referrals = user.referrals.map(ref => ({
             username: ref.username,
             coinBalance: ref.coinBalance,
-            commitmentBalance: ref.commitmentBalance // Assuming this field exists
+            commitmentBalance: ref.commitmentBalance
         }));
 
-        const referralBonus = user.referrals.length * 50000; // 50,000 SFT for each referred friend
-        const miningRewards = referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0); // 20% mining rewards
-        const totalEarnings = referralBonus + miningRewards + user.totalReferralBonus; // Include totalReferralBonus in the totalEarnings
+        const totalEarnings = user.totalReferralBonus; // Only totalReferralBonus
 
         const response = { referrals, totalEarnings };
         res.status(200).json(response);
@@ -208,12 +206,10 @@ app.post('/api/startMining', async (req, res) => {
         user.miningStartTime = new Date();
         await user.save();
 
-        const referralBonus = user.referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0);
-        const totalCoinBalance = user.coinBalance + referralBonus;
-
+        // Don't add referral bonuses to coinBalance
         res.status(200).json({
             miningStartTime: user.miningStartTime,
-            coinBalance: totalCoinBalance,
+            coinBalance: user.coinBalance,
             level: user.level,
             miningSessionCount: user.miningSessionCount || 0
         });
@@ -234,19 +230,29 @@ app.post('/api/miningStatus', async (req, res) => {
         const miningEndTime = new Date(user.miningStartTime).getTime() + rewardIntervals[user.level - 1];
 
         if (user.isMining && currentTime >= miningEndTime) {
-            user.coinBalance += rewards[user.level - 1];
+            const minedAmount = rewards[user.level - 1];
+            user.coinBalance += minedAmount;
             user.isMining = false;
             user.miningStartTime = null;
             user.miningSessionCount = (user.miningSessionCount || 0) + 1;
+
+            // Handle referral bonus
+            if (user.referredBy) {
+                const referrer = await User.findById(user.referredBy);
+                if (referrer) {
+                    const referralBonus = minedAmount * 0.2;
+                    referrer.coinBalance += referralBonus;
+                    referrer.totalReferralBonus = (referredBy.totalReferralBonus || 0) + referralBonus;
+                    await referrer.save();
+                }
+            }
+
             await user.save();
         }
 
-        const referralBonus = user.referrals.reduce((acc, ref) => acc + ref.coinBalance * 0.2, 0);
-        const totalCoinBalance = user.coinBalance + referralBonus;
-
         res.status(200).json({
             miningStartTime: user.miningStartTime,
-            coinBalance: totalCoinBalance,
+            coinBalance: user.coinBalance,
             level: user.level,
             miningSessionCount: user.miningSessionCount || 0,
             miningComplete: !user.isMining
@@ -255,8 +261,6 @@ app.post('/api/miningStatus', async (req, res) => {
         res.status(500).json({ message: 'Error retrieving mining status' });
     }
 });
-
-// server.js
 
 app.post('/api/upgradeLevel', async (req, res) => {
     const { username, level } = req.body;
