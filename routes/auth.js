@@ -43,22 +43,22 @@ async function sendWelcomeEmail(email, fullName) {
         <h2>Welcome to the future, ${fullName}!</h2>
         <p>We're excited to have you on board and we promise you, this is going to be a very rewarding experience.</p>
         <p>You have been given a welcome bonus of 50,000 SFT to start you up on this exciting journey, and there are lots more where that came from.</p>
-        
         <p><a href="https://app.softcoin.world">Start Mining Softcoin</a></p>
         
         <p>If you haven't already, Kindly verify your email address and log into your account to start earning Softcoins and secure your place at the forefront of the biggest innovation to hit the crypto-sphere.</p>
         <p>The Softcoin project is packed with a lot of activities to keep you engaged, and a lot of ways to help you earn.</p>
-        <p><a href="https://app.softcoin.world">Start Mining Softcoin</a></p>
+        <p><a href="https://app.softcoin.world">Start Mining Softcoin</a></p><br><br>
         <h3>Become a Softcoin Shareholder (Softie)</h3>
         <p>We are giving you a rare opportunity to become a shareholder in this project. Unlike your regular crypto airdrop project, the Softcoin team have decided to give our participant the chance to be shareholders in the project.</p>
-        <p>As a shareholder, you will not have to wait till TGE and Mainnet Launch before you start earning instantly withdrawable income. And this income can be as high as $500 daily, depending on your level of commitment.</p><br><br>
+        <p>As a shareholder, you will not have to wait till TGE and Mainnet Launch before you start earning instantly withdrawable income. And this income can be as high as $500 daily, depending on your level of commitment. You can become a Softcoin Shareholder with as little as $5.</p><br><br>
+
         <p>Keep up with the progress of the project by following Softcoin on Twitter. You can also join our Update Channel on telegram to get up to date information about the project.</p>
         <p>
-            <a href="https://twitter.com/softcoin__"><img src="https://softcoin.world/okay/twitter.png" alt="Twitter" style="width: 40px; height: 40px;"></a>
-            <a href="https://t.me/softcoinupdate"><img src="https://softcoin.world/okay/telegram.png" alt="Telegram" style="width: 40px; height: 40px;"></a>
+            <a href="https://twitter.com/softcoin__"><img src="https://softcoin.world/okay/twitter.png" alt="Twitter" style="width: 30px; height: 30px;"></a>
+            <a href="https://t.me/softcoinupdate"><img src="https://softcoin.world/okay/telegram.png" alt="Telegram" style="width: 30px; height: 30px;"></a>
         </p>
-        <p>If you have any questions or need assistance, feel free to reach out to our <a href="malito:support@softcoin.world">Support Team</a>.</p>
-        <p>Thank you for joining us. Together, let's make the future of cryptocurrency brighter!</p>
+        <p>If you have any questions or need assistance, feel free to reach out to our Support Team (support@softcoin.world)</p>
+        <p>Thank you for joining us. Together, let's make the future of cryptocurrency brighter!</p><br><br>
         <p>Best Regards,<br>Softcoin Team</p>
     </div>`;
 
@@ -131,7 +131,7 @@ router.post('/register', async (req, res) => {
             password: hashedPassword,
             referralUsername,
             referredBy: referrer ? referrer._id : null,
-            coinBalance: 0, // Initial balance is 0; bonus is given after verification
+            coinBalance: 50000, // Initial bonus for the referred friend
             verificationToken, // Save the verification token
             isVerified: false, // Set the user as unverified initially
         });
@@ -140,7 +140,7 @@ router.post('/register', async (req, res) => {
 
         // Send verification email
         await sendVerificationEmail(email, verificationToken);
-        
+
         // Send welcome email
         await sendWelcomeEmail(email, fullName);
 
@@ -151,6 +151,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
+// Email verification endpoint
 // Email verification endpoint
 router.get('/verify-email', async (req, res) => {
     const { token } = req.query;
@@ -165,18 +166,6 @@ router.get('/verify-email', async (req, res) => {
 
         user.isVerified = true;
         user.verificationToken = null;
-        user.coinBalance = 50000; // Credit the user with their bonus after verification
-        await user.save();
-
-        // Send a notification to the user about the bonus
-        const welcomeNotification = new Notification({
-            user: user._id,
-            title: 'Welcome to Softcoin!',
-            message: 'Your email has been verified, and you have received a welcome bonus of 50,000 SFT.'
-        });
-        await welcomeNotification.save();
-
-        user.notifications.push(welcomeNotification._id);
         await user.save();
 
         // Handle referral bonus if the user was referred
@@ -185,7 +174,7 @@ router.get('/verify-email', async (req, res) => {
             if (referrer) {
                 const referralBonus = 50000; // Bonus for the referrer
                 referrer.coinBalance += referralBonus;
-                referrer.totalReferralBonus = (referredBy.totalReferralBonus || 0) + referralBonus; // Increment the totalReferralBonus
+                referrer.totalReferralBonus = (referrer.totalReferralBonus || 0) + referralBonus;
                 
                 // Increment referral count and add new user to referrer's referrals array
                 referrer.referralCount += 1;
@@ -193,15 +182,15 @@ router.get('/verify-email', async (req, res) => {
                 
                 await referrer.save();
 
-                const referrerNotification = new Notification({
+                const notification = new Notification({
                     user: referrer._id,
                     title: 'Referral Verified!',
                     message: `${user.username} has verified their email, and you have been rewarded with 50,000 SFT.`
                 });
 
-                await referrerNotification.save();
+                await notification.save();
 
-                referrer.notifications.push(referrerNotification._id);
+                referrer.notifications.push(notification._id);
                 await referrer.save();
             }
         }
