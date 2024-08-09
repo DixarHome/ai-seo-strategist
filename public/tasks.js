@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!username) return window.location.href = '/login';
 
     const taskDetails = {
-        "follow-btn": { name: "Follow Softcoin on X", target: 1, reward: 10000, action: "Follow" },
+        "followw-btn": { name: "Follow Softcoin on X", target: 1, reward: 10000, action: "Follow" },
         "join-btn": { name: "Join Softcoin telegram channel", target: 1, reward: 10000, action: "Join" },
         "post-btn": { name: "Make a post on X", target: 1, reward: 10000, action: "Post" },
         "earnDog-btn": { name: "Earn some Doggs", target: 1, reward: 10000, action: "Earn" },
@@ -205,9 +205,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const fetchProgress = taskId.startsWith('refer') ? fetchReferralCount : fetchMiningSessionCount;
-        if (taskId === 'follow-btn' || taskId === 'join-btn' || taskId === 'earnDog-btn' || taskId === 'post-btn'  || taskId === 'farm-btn' || taskId === 'seed-btn') {
+        if (taskId === 'followw-btn' || taskId === 'join-btn' || taskId === 'earnDog-btn' || taskId === 'post-btn'  || taskId === 'farm-btn' || taskId === 'seed-btn') {
             const url = {
-                'follow-btn': 'https://twitter.com/softcoin__',
+                'followw-btn': 'https://twitter.com/softcoinproject',
                 'join-btn': 'https://t.me/softcoinupdates',
                 'earnDog-btn': 'https://t.me/dogshouse_bot/join?startapp=4PHyTlasRsqFaapdMO-dLw',
                 'farm-btn': 'https://t.me/Tomarket_ai_bot/app?startapp=00001S56',

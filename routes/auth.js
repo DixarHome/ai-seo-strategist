@@ -54,7 +54,7 @@ async function sendWelcomeEmail(email, fullName) {
         <p>As a shareholder, you will not have to wait till TGE and Mainnet Launch before you start earning instantly withdrawable income. And this income can be as high as $500 daily, depending on your level of commitment.</p><br><br>
         <p>Keep up with the progress of the project by following Softcoin on Twitter. You can also join our Update Channel on telegram to get up to date information about the project.</p>
         <p>
-            <a href="https://twitter.com/softcoin__"><img src="https://softcoin.world/okay/twitter.png" alt="Twitter" style="width: 40px; height: 40px;"></a>
+            <a href="https://twitter.com/softcoinproject"><img src="https://softcoin.world/okay/twitter.png" alt="Twitter" style="width: 40px; height: 40px;"></a>
             <a href="https://t.me/softcoinupdate"><img src="https://softcoin.world/okay/telegram.png" alt="Telegram" style="width: 40px; height: 40px;"></a>
         </p>
         <p>If you have any questions or need assistance, feel free to reach out to our <a href="malito:support@softcoin.world">Support Team</a>.</p>
@@ -140,9 +140,7 @@ router.post('/register', async (req, res) => {
 
         // Send verification email
         await sendVerificationEmail(email, verificationToken);
-        
-        // Send welcome email
-        await sendWelcomeEmail(email, fullName);
+ 
 
         res.status(201).json({ message: 'User registered successfully. Please check your email to verify your account.' });
     } catch (error) {
