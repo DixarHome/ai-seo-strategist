@@ -186,7 +186,7 @@ router.get('/verify-email', async (req, res) => {
             if (referrer) {
                 const referralBonus = 50000; // Bonus for the referrer
                 referrer.coinBalance += referralBonus;
-                referrer.totalReferralBonus += referralBonus; // Increment the totalReferralBonus
+                referrer.totalReferralBonus = (referredBy.totalReferralBonus || 0) + referralBonus; // Increment the totalReferralBonus
                 
                 // Increment referral count and add new user to referrer's referrals array
                 referrer.referralCount += 1;

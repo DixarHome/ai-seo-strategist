@@ -237,12 +237,12 @@ app.post('/api/miningStatus', async (req, res) => {
             user.miningSessionCount = (user.miningSessionCount || 0) + 1;
 
             // Handle referral bonus
-            if (user.referrer) {
-                const referrer = await User.findOne({ username: user.referrer });
+            if (user.referredBy) {
+                const referrer = await User.findById(user.referredBy);
                 if (referrer) {
                     const referralBonus = minedAmount * 0.2;
                     referrer.coinBalance += referralBonus;
-                    referrer.totalReferralBonus = (referrer.totalReferralBonus || 0) + referralBonus;
+                    referrer.totalReferralBonus = (referredBy.totalReferralBonus || 0) + referralBonus;
                     await referrer.save();
                 }
             }
