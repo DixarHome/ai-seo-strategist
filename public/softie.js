@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.error) {
                 document.getElementById('earning-balance').innerText = 'Error fetching earning balance';
             } else {
-                document.getElementById('earning-balance').innerText = `${data.earningBalance} USD`;
+                document.getElementById('earning-balance').innerText = `${data.earningBalance.toFixed(2)} USD`;
             }
         })
         .catch(error => {
