@@ -90,6 +90,50 @@
             font-size: 14px;
             color: #757575;
         }
+ 
+        .alert-box {
+            display: none; /* Hidden by default */
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .alert-box.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-box.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-box.loading {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #2bcf04;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -97,6 +141,8 @@
         <header>
             <h1>Withdraw Earnings</h1>
         </header>
+        <div id="alert-box" class="alert-box"></div>
+
         <main>
             <form id="withdrawal-form">
                 <div class="form-group">
