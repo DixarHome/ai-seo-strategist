@@ -5,16 +5,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     const taskDetails = {
         "followw-btn": { name: "Follow Softcoin on X", target: 1, reward: 10000, action: "Follow" },
         "join-btn": { name: "Join Softcoin telegram channel", target: 1, reward: 10000, action: "Join" },
-        "post-btn": { name: "Make a post on X", target: 1, reward: 10000, action: "Post" },
-        "earnDog-btn": { name: "Earn some Doggs", target: 1, reward: 10000, action: "Earn" },
-        "seed-btn": { name: "Start farming Seeds", target: 1, reward: 10000, action: "Start" },
-        "farm-btn": { name: "Farm $TOMATO", target: 1, reward: 10000, action: "Farm" },
         "refer2-btn": { name: "Invite 2 friends", target: 2, reward: 30000 },
         "refer5-btn": { name: "Invite 5 friends", target: 5, reward: 50000 },
         "refer10-btn": { name: "Invite 10 friends", target: 10, reward: 100000 },
         "mine2-btn": { name: "Complete 2 mining sessions", target: 2, reward: 10000 },
         "mine20-btn": { name: "Complete 20 mining sessions", target: 20, reward: 100000 },
-        "mine100-btn": { name: "Complete 100 mining sessions", target: 100, reward: 1000000 }
+        "mine100-btn": { name: "Complete 100 mining sessions", target: 100, reward: 1000000 },
+        "post-btn": { name: "Make a post on X", target: 1, reward: 10000, action: "Post" },
+        "earnDog-btn": { name: "Earn some Doggs", target: 1, reward: 10000, action: "Earn" },
+        "seed-btn": { name: "Start farming Seeds", target: 1, reward: 10000, action: "Start" },
+        "farm-btn": { name: "Farm $TOMATO", target: 1, reward: 10000, action: "Farm" },
+        "sunwave": { name: "Join SUNWAVES", target: 1, reward: 10000, action: "Go" },
+        "call": { name: "Join CALL", target: 1, reward: 10000, action: "Join" },
+        "lost-dog": { name: "Join the Lost Dogs", target: 1, reward: 10000, action: "Join" },
+        "major": { name: "Become A Major", target: 1, reward: 10000, action: "Go" },
     };
 
     async function fetchReferralCount() {
@@ -205,13 +209,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const fetchProgress = taskId.startsWith('refer') ? fetchReferralCount : fetchMiningSessionCount;
-        if (taskId === 'followw-btn' || taskId === 'join-btn' || taskId === 'earnDog-btn' || taskId === 'post-btn'  || taskId === 'farm-btn' || taskId === 'seed-btn') {
+        if (taskId === 'followw-btn' || taskId === 'join-btn' || taskId === 'earnDog-btn' || taskId === 'post-btn'  || taskId === 'farm-btn' || taskId === 'seed-btn' || taskId === 'sunwave' || taskId === 'call' || taskId === 'lost-dog' || taskId === 'major') {
             const url = {
                 'followw-btn': 'https://twitter.com/softcoinproject',
                 'join-btn': 'https://t.me/softcoinupdates',
                 'earnDog-btn': 'https://t.me/dogshouse_bot/join?startapp=4PHyTlasRsqFaapdMO-dLw',
                 'farm-btn': 'https://t.me/Tomarket_ai_bot/app?startapp=00001S56',
+                'major': 'https://t.me/major/start?startapp=1170015722',
+                'lost-dog': 'https://t.me/lost_dogs_bot/lodoapp?startapp=ref-u_1170015722__s_578244',
                 'seed-btn': 'https://t.me/seed_coin_bot/app?startapp=1170015722',
+                'sunwave': 'https://sunwavestoken.com/@davidnelson',
+                'call': 'https://callfluent.io/@1170015722',
                 'post-btn': `https://twitter.com/intent/tweet?text=%F0%9F%93%88%20Ready%20to%20maximize%20your%20crypto%20potential%3F%0A%0ASoftcoin%20offers%20unparalleled%20opportunities%20with%20our%20referral%20and%20mining%20rewards.%0A%0AJoin%20us%20at%20softcoin.world%20and%20start%20earning%20today!%0A%0A%23CryptoLife%20%23CryptoRewards%20%23SoftCoin`
             }[taskId];
             handleSocialMediaTask(taskId, url);
