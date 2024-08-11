@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (response.ok && data.success) {
                 return true;
             } else {
-                console.error(data.message || 'Reward claimed successfully');
+                console.error(data.message || 'Reward claimed successfully!');
                 return false;
             }
         } catch (error) {
