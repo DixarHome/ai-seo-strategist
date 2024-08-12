@@ -315,7 +315,7 @@
     </div>
     <div id="mining-session-count">Sessions Completed: 0</div>
     <p id="timer-text">Mining stops in: <span id="timer">00:00:00</span></p>
-    <button id="mine-btn" data-step="1">Start Mining<span id="level">Level: <span id="mining-level">1</span></span></button>
+    <button id="mine-btn" onclick="trackButtonClick()" data-step="1">Start Mining<span id="level">Level: <span id="mining-level">1</span></span></button>
   <!--  </div> -->
     <nav id="bottom-nav">
         <a href="/" class="nav-item" id="home">
@@ -346,6 +346,13 @@
 
     <script src="navigation.js" defer></script>
     <script src="script.js" defer></script>
+
+<script>
+    function trackButtonClick() {
+        _paq.push(['trackEvent', 'Mining', 'Start', 'Homepage']);
+    }
+</script>
+
 <script defer>
     document.addEventListener("DOMContentLoaded", () => {
     const username = localStorage.getItem('username');
