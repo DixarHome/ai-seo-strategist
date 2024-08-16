@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin the Wheel</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+    background-image: url('game/wheelbg.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: repeat;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-y: auto;
+}
+
+
+        h1 {
+            margin-top: 25px;
+            font-size: 15px;
+            text-align: center;
+            width: 60%;
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 30px;
+            left: 10px;
+            padding: 5px 10px;
+            font-size: 10px;
+            background-color: #0f0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            color: black;
+        }
+
+        .ticket-box {
+            display: flex;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 5px 20px;
+            border-radius: 10px;
+            margin: 0px 0;
+        }
+
+        .ticket-box img {
+            width: 25px;
+            height: 25px;
+            margin-right: 10px;
+        }
+
+        .ticket-box span {
+            font-size: 20px;
+        }
+
+.ticker-box {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 10px;
+    width: 77%;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    margin-top: 15px;
+    position: relative;
+}
+
+.ticker-text {
+    display: inline-block;
+    white-space: nowrap;
+    animation: ticker 10s linear infinite; /* Adjusted speed for slower scrolling */
+}
+
+@keyframes ticker {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+        .wheel-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            padding-top: 25px;
+        }
+
+        #wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        #pointer {
+            position: absolute;
+            top: 50%;
+            left: 50.3%;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            transform: translate(-50%, -50%);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        #spin-button {
+            margin-top: 30px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #0f0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #spin-button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
+        /* Prize display styling */
+        #prize-display {
+            position: absolute;
+            width: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            display: none; /* Hidden by default */
+        }
+
+        #ok-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 20px;
+            background-color: #0f0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>What Does Your Luck Have In Store For You Today?</h1>
+
+    <!-- Spin Ticket Display -->
+    <div class="ticket-box">
+        <img src="game/Useful For Every Transaction!_20240814_184158_0001.png" alt="Ticket Icon">
+        <span id="spin-tickets">0</span>
+    </div>
+    <!-- Scrolling Ticker for Recent Wins -->
+<div class="ticker-box">
+    <div class="ticker-text">
+        <!-- The content here will be replaced by JavaScript -->
+    </div>
+</div>
+    <div class="wheel-container">
+        <img id="wheel" src="game/wheel.png" alt="Spin the Wheel">
+        <div id="pointer"></div>
+    </div>
+
+    <button id="spin-button">SPIN IT TO WIN IT!</button>
+
+    <!-- Prize Display Element -->
+    <div id="prize-display">
+        <div id="prize-text"></div>
+        <button id="ok-button">OK</button>
+    </div>
+    <div id="nav-placeholder"></div>
+    <div id="cherry-placeholder"></div>
+    <script src="cherry.js"></script>
+
+    <script src="navigation.js" defer></script>
+    <script src="wheel.js"></script>
+    <script src="ticker.js" defer></script>
+</body>
+</html>

@@ -25,6 +25,81 @@ app.get('/ping', (req, res) => {
   res.send('OK');
 });
 
+app.post('/api/updateSpinTickets', async (req, res) => {
+    const { username, spinTickets } = req.body; // `spinTickets` will be -1 for deduction
+
+    try {
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Check if the user has enough spin tickets
+        if (user.spinTickets + spinTickets < 0) {
+            return res.status(400).json({ error: 'Not enough spin tickets' });
+        }
+
+        // Update the user's spin ticket count
+        user.spinTickets += spinTickets;
+        await user.save();
+
+        res.status(200).json({ success: true, spinTickets: user.spinTickets });
+    } catch (error) {
+        console.error('Error updating spin tickets:', error);
+        res.status(500).json({ error: 'Failed to update spin tickets' });
+    }
+});
+
+app.post('/api/updatePrize', async (req, res) => {
+    const { username, prize, rewardType } = req.body;
+
+    try {
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Update user balance based on the rewardType
+        switch (rewardType) {
+            case 'usd':
+                user.earningBalance += prize;
+                break;
+            case 'sft':
+                user.coinBalance += prize;
+                break;
+            case 'tickets':
+                user.spinTickets += prize;
+                break;
+            default:
+                return res.status(400).json({ error: 'Invalid reward type' });
+        }
+
+        await user.save();
+        res.status(200).json({ success: true, message: 'Prize successfully added' });
+    } catch (error) {
+        console.error('Error updating prize:', error);
+        res.status(500).json({ error: 'Failed to update prize' });
+    }
+});
+
+// Adjust the spin-info route to accept the username from the request
+app.get('/api/users/:username/spin-info', async (req, res) => {
+    try {
+        const { username } = req.params;
+        const user = await User.findOne({ username }).select('spinTickets coinBalance earningBalance');
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.json({ spinTickets: user.spinTickets, coinBalance: user.coinBalance, earningBalance: user.earningBalance });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch spin info.' });
+    }
+});
+
 app.post('/api/withdraw', async (req, res) => {
     const { username, amount, method, walletAddress } = req.body;
 
@@ -219,15 +294,23 @@ app.post('/api/startMining', async (req, res) => {
                 await referrer.save();
             }
         }
+        
+        // Determine spin tickets based on user level
+        const spinTicketsByLevel = [2, 4, 8, 16, 32]; // Tickets for levels 1 to 5
+        const spinTickets = spinTicketsByLevel[user.level - 1] || 0; // Default to 0 if level is outside range
+
+        // Reward the user with spin tickets
+        user.spinTickets += spinTickets;
 
         await user.save();
 
         res.status(200).json({
-            miningStartTime: user.miningStartTime,
-            coinBalance: user.coinBalance,
-            level: user.level,
-            miningSessionCount: user.miningSessionCount || 0
-        });
+    miningStartTime: user.miningStartTime,
+    coinBalance: user.coinBalance,
+    level: user.level,
+    miningSessionCount: user.miningSessionCount || 0,
+    spinTickets: user.spinTickets // Include spinTickets in the response
+});
     } catch (error) {
         res.status(500).json({ message: 'Error starting mining' });
     }
@@ -259,7 +342,8 @@ app.post('/api/miningStatus', async (req, res) => {
             coinBalance: user.coinBalance,
             level: user.level,
             miningSessionCount: user.miningSessionCount || 0,
-            miningComplete: !user.isMining
+            miningComplete: !user.isMining,
+            spinTickets: user.spinTickets
         });
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving mining status' });
@@ -375,7 +459,7 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Internal server error.' });
 });
 
-['friends', 'tasks', 'softie', 'more', 'upgrades', 'login', 'register', 'reset-password', 'verification', 'home', 'payment','whitepaper', 'withdraw', 'learn-more', 'market' ].forEach(file => {
+['friends', 'tasks', 'softie', 'more', 'upgrades', 'login', 'register', 'reset-password', 'verification', 'home', 'payment','whitepaper', 'withdraw', 'learn-more', 'market', 'wheel', 'game-info' ].forEach(file => {
     app.get(`/${file}`, (req, res) => {
         res.sendFile(path.join(__dirname, '../public', `${file}.html`));
     });

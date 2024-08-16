@@ -26,7 +26,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #212121;
+            background: linear-gradient(45deg, #212121, #730477);
             color: #fff;
             border-radius: 10px;
             padding: 10px;
@@ -34,6 +34,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: 1px;
             text-decoration: none;
+            margin-bottom: 20px;
         }
         h2 {
             font-size: 1.7em;
@@ -43,11 +44,12 @@
         p {
             font-size: 0.9em;
             margin: 5px 0 0 0;
-            
+            width: 90%;
             color: #f09403;
         }
         .more-icon img {
             width: 70px;
+            align-items: center;
         }
         .more-details {
             position: absolute;
@@ -79,6 +81,15 @@
 
 </head>
 <body>
+          <a class="more-items" href="/wheel" style="background: linear-gradient(90deg, #1e4ff7, #11106f);">
+            <div class="more-details">
+                <h2>Wheel Of Fortune</h2>
+                <p style="color:#67fe7d;">What does your luck have in store for you today?!</p>
+            </div>
+             <div class="more-icon">
+                <img src="game/wheel.png">
+            </div>
+        </a>
   
         <a class="more-items" href="/market">
             <div class="more-icon">
@@ -90,6 +101,7 @@
                 <p>Be up to date with your knowledge of cryptocurrency rates.</p>
             </div>
         </a>
+
    
 
     <div id="cherry-placeholder"></div>

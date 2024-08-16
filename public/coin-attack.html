@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coin Squash Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            border: 1px solid #fff;
+            background-color: #333;
+        }
+        #gameOver {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            display: none;
+        }
+        #gameOver button {
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <div id="gameOver">
+        <p>Game Over</p>
+        <p id="finalScore">Score: 0</p>
+        <button onclick="restartGame()">Restart</button>
+    </div>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const gameOverDiv = document.getElementById('gameOver');
+        const finalScoreEl = document.getElementById('finalScore');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let coins = [];
+        let score = 0;
+        let gameOver = false;
+        let coinSpeed = 2;
+        let spawnInterval = 1000;
+        let lastSpawn = 0;
+
+        function getRandomX() {
+            return Math.random() * (canvas.width - 50);
+        }
+
+        function Coin(x, y, speed) {
+            this.x = x;
+            this.y = y;
+            this.size = 50;
+            this.speed = speed;
+            this.markedForDeletion = false;
+
+            this.update = function() {
+                this.y += this.speed;
+                if (this.y + this.size > canvas.height) {
+                    gameOver = true;
+                    gameOverDiv.style.display = 'block';
+                    finalScoreEl.innerText = `Score: ${score}`;
+                }
+            };
+
+            this.draw = function() {
+                ctx.fillStyle = 'gold';
+                ctx.beginPath();
+                ctx.arc(this.x + this.size / 2, this.y + this.size / 2, this.size / 2, 0, Math.PI * 2);
+                ctx.fill();
+            };
+        }
+
+        function spawnCoin() {
+            const x = getRandomX();
+            const speed = coinSpeed + Math.random() * 2;
+            coins.push(new Coin(x, -50, speed));
+        }
+
+        function updateGame(timestamp) {
+            if (gameOver) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (timestamp > lastSpawn + spawnInterval) {
+                lastSpawn = timestamp;
+                spawnCoin();
+                if (spawnInterval > 300) spawnInterval -= 10;
+                coinSpeed += 0.1;
+            }
+
+            coins.forEach((coin, index) => {
+                coin.update();
+                coin.draw();
+                if (coin.markedForDeletion) {
+                    coins.splice(index, 1);
+                }
+            });
+
+            ctx.fillStyle = 'white';
+            ctx.font = '24px Arial';
+            ctx.fillText(`Score: ${score}`, 20, 40);
+
+            requestAnimationFrame(updateGame);
+        }
+
+        canvas.addEventListener('click', (event) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+
+            coins.forEach(coin => {
+                if (
+                    mouseX > coin.x &&
+                    mouseX < coin.x + coin.size &&
+                    mouseY > coin.y &&
+                    mouseY < coin.y + coin.size
+                ) {
+                    coin.markedForDeletion = true;
+                    score += 10;
+                }
+            });
+        });
+
+        function restartGame() {
+            gameOver = false;
+            score = 0;
+            coinSpeed = 2;
+            spawnInterval = 1000;
+            coins = [];
+            gameOverDiv.style.display = 'none';
+            requestAnimationFrame(updateGame);
+        }
+
+        requestAnimationFrame(updateGame);
+    </script>
+</body>
+</html>

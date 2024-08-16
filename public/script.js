@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const rewards = [15000, 30000, 60000, 120000, 240000];
     let timerInterval;
     let referralBonus = 0;
+    let spinTickets = 0; // Track the user's spin tickets
 
     const username = localStorage.getItem('username');
     if (!username) return window.location.href = '/login';
@@ -48,10 +49,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 coinBalance = data.coinBalance;
                 currentLevel = data.level;
                 miningSessionCount = data.miningSessionCount;
+                // Update spin tickets
+                spinTickets = data.spinTickets;
                 await fetchReferralBonus(); // Fetch referral bonus when mining starts
                 updateCoinBalance();
                 updateMiningLevel();
                 updateMiningSessionCount();
+                updateSpinTicketsDisplay();
+
             } else {
                 updateStatusMessage(data.message || "Error starting mining");
             }
@@ -70,11 +75,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function updateMiningSessionCount() {
-        miningSessionCountEl.textContent = `Sessions Completed: ${miningSessionCount}`;
+        miningSessionCountEl.textContent = `${miningSessionCount}`;
     }
 
     function updateStatusMessage(message) {
         statusMessageEl.textContent = message;
+    }
+    
+    function updateSpinTicketsDisplay() {
+        const spinTicketsEl = document.getElementById('spin-tickets');
+        spinTicketsEl.textContent = `${spinTickets}`;
     }
 
     function startTimer(miningStartTime, level) {
@@ -122,10 +132,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 coinBalance = data.coinBalance;
                 currentLevel = data.level;
                 miningSessionCount = data.miningSessionCount;
+                spinTickets = data.spinTickets;
                 await fetchReferralBonus(); // Fetch referral bonus when checking mining status
                 updateCoinBalance();
                 updateMiningLevel();
                 updateMiningSessionCount();
+                updateSpinTicketsDisplay();
                 mineBtn.disabled = true;
                 toggleBarsAnimation(true);
                 updateStatusMessage("Mining in progress...");

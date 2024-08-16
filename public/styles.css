@@ -25,6 +25,7 @@ body {
     width: 100%;
     box-sizing: border-box;
     margin-bottom: 0; /* Remove gap */
+    margin-top: 5px;
 }
 
 #user-info {
@@ -47,67 +48,25 @@ body {
 #upgrade-btn {
     padding: 10px 20px;
     margin-left: 10px;
+    background: linear-gradient(45deg, #028900, #3bab01, #028900);
     background-color: #028900;
     color: white;
     border: none;
     border-radius: 10px; /* Curved corners */
     display: flex;
     align-items: center;
+    font-size: 10px;
 }
 
 #upgrade-btn i {
     margin-right: 10px; /* Space between icon and text */
 }
 
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 20px; /* Smaller width */
-    height: 20px; /* Smaller height */
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.4s;
-    border-radius: 50%; /* Make the slider a circle */
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 14px; /* Smaller inner circle */
-    width: 14px; /* Smaller inner circle */
-    left: 3px; /* Centered in the smaller slider */
-    bottom: 3px; /* Centered in the smaller slider */
-    background-color: white;
-    transition: 0.4s;
-    border-radius: 50%;
-}
-
-input:checked + .slider {
-    background-color: #2C3A4D;
-}
-
-input:checked + .slider:before {
-    transform: translateX(6px); /* Adjust the translate distance */
-}
 .coin-balance {
     top: 0;
 }
 #coin-balance {
-    font-size: 30px;
+    font-size: 25px;
     margin-top: 0;
     color: white; /* Light theme color */
     padding: 0;
@@ -119,7 +78,7 @@ input:checked + .slider:before {
     align-self: right;
 }
 #status-message {
-    font-size: 12px;
+    font-size: 10px;
     margin-bottom: 20px;
     margin: 0;
     padding: 0;
@@ -135,14 +94,16 @@ input:checked + .slider:before {
     padding: 3.3em;
     padding-top: 4em;
     padding-bottom: 0;
+    margin-left: 0px;
+    padding-left: 0;
 }
 
 .bar {
-    width: 5%;
+    width: 20%;
     height: 20px;
     background-color: #000;
     margin: 0 2px;
-    animation: soundWave 2s infinite;
+    animation: soundWave 1.5s infinite;
     transform-origin: bottom;
 }
 
@@ -171,6 +132,7 @@ input:checked + .slider:before {
     padding: 15px 30px;
     font-size: 15px;
     text-align: center;
+    background: linear-gradient(60deg, #7aac03, #028900);
     background-color: #028900;
     color: white;
     border: none;
@@ -178,7 +140,7 @@ input:checked + .slider:before {
     border-radius: 10px;
     cursor: pointer;
     margin-top: 10px;
-    margin-bottom: 60px; /* Adjust this value if needed */
+    margin-bottom: 0px; /* Adjust this value if needed */
     position: relative;
     overflow: hidden;
     display: flex;
@@ -187,6 +149,7 @@ input:checked + .slider:before {
 }
 
 #mine-btn:disabled {
+    background: linear-gradient(60deg, #ccc, #666565);
     background-color: #ccc;
     cursor: not-allowed;
     animation: none;
@@ -206,10 +169,10 @@ input:checked + .slider:before {
 #timer {
   padding-bottom: 0;
   color: #2ef72b;
-  font-size: 12px;
+  font-size: 10px;
 }
 #timer-text {
-  font-size: 12px;
+  font-size: 10px;
 }
 
 #mining-session-count {
@@ -275,10 +238,11 @@ p {
     overflow: hidden;
     position: relative;
     display: flex;
-    margin-top: 0; /* Remove gap */
+    margin-top: 5px; /* Remove gap */
     padding-bottom: 0;
-    margin-bottom: 10px;
-    height: 20%;
+    margin-bottom: 0px;
+    height: 18%;
+    border-radius: 15px;
 }
 
 .slide {
@@ -310,10 +274,10 @@ p {
 /* Styles for Cherry System */
 #cherry-system {
     position: fixed;
-    top: 18px;
-    left: 15px;
-    width: 40px;
-    height: 40px;
+    top: 21px;
+    left: 13px;
+    width: 42px;
+    height: 42px;
     z-index: 1000;
 }
 
@@ -327,13 +291,13 @@ p {
 }
 
 #cherry-logo img {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     object-fit: cover;
     border-radius: 50%;
     position: absolute;
-    top: 5px;
-    left: 5px;
+    top: 0;
+    left: 1.5px;
 }
 
 #cherry-logo::before {

@@ -40,24 +40,15 @@ async function sendVerificationEmail(email, token) {
 async function sendWelcomeEmail(email, fullName) {
     const htmlMessage = `
     <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-        <h2>Welcome to the future, ${fullName}!</h2>
-        <p>We're excited to have you on board and we promise you, this is going to be a very rewarding experience.</p>
-        <p>You have been given a welcome bonus of 50,000 SFT to start you up on this exciting journey, and there are lots more where that came from.</p>
+        <h2>Hello ${fullName}, welcome to Softcoin!</h2>
+        <p>We're very excited to have you on board and we promise you, this is going to be a very rewarding experience.</p>
+        <p>You have been given a welcome bonus of 50,000 SFT, 20 WOF Spin Tickets, and $5 USD to start you up on this exciting journey, and there are lots more where that came from.</p>
         
         <p><a href="https://app.softcoin.world">Start Mining Softcoin</a></p>
         
-        <p>If you haven't already, Kindly verify your email address and log into your account to start earning Softcoins and secure your place at the forefront of the biggest innovation to hit the crypto-sphere.</p>
-        <p>The Softcoin project is packed with a lot of activities to keep you engaged, and a lot of ways to help you earn.</p>
+        <p>The Softcoin project is packed with a lot of activities to keep you engaged, and a lot of ways to help you earn. If you haven't already, Kindly verify your email address and log into your account to start earning Softcoins, and secure your place at the forefront of the biggest innovation to hit the crypto-sphere.</p>
         <p><a href="https://app.softcoin.world">Start Mining Softcoin</a></p>
-        <h3>Become a Softcoin Shareholder (Softie)</h3>
-        <p>We are giving you a rare opportunity to become a shareholder in this project. Unlike your regular crypto airdrop project, the Softcoin team have decided to give our participant the chance to be shareholders in the project.</p>
-        <p>As a shareholder, you will not have to wait till TGE and Mainnet Launch before you start earning instantly withdrawable income. And this income can be as high as $500 daily, depending on your level of commitment.</p><br><br>
-        <p>Keep up with the progress of the project by following Softcoin on Twitter. You can also join our Update Channel on telegram to get up to date information about the project.</p>
-        <p>
-            <a href="https://twitter.com/softcoinproject"><img src="https://softcoin.world/okay/twitter.png" alt="Twitter" style="width: 40px; height: 40px;"></a>
-            <a href="https://t.me/softcoinupdate"><img src="https://softcoin.world/okay/telegram.png" alt="Telegram" style="width: 40px; height: 40px;"></a>
-        </p>
-        <p>If you have any questions or need assistance, feel free to reach out to our <a href="malito:support@softcoin.world">Support Team</a>.</p>
+        <p>If you have any questions or need further assistance, kindly reach out to our Support Team (support@softcoin.world).</p>
         <p>Thank you for joining us. Together, let's make the future of cryptocurrency brighter!</p>
         <p>Best Regards,<br>Softcoin Team</p>
     </div>`;
@@ -140,7 +131,7 @@ router.post('/register', async (req, res) => {
 
         // Send verification email
         await sendVerificationEmail(email, verificationToken);
- 
+       
 
         res.status(201).json({ message: 'User registered successfully. Please check your email to verify your account.' });
     } catch (error) {
@@ -164,13 +155,18 @@ router.get('/verify-email', async (req, res) => {
         user.isVerified = true;
         user.verificationToken = null;
         user.coinBalance = 50000; // Credit the user with their bonus after verification
+        user.spinTickets = 20;
+        user.earningBalance = 5;
         await user.save();
+
+        // Send welcome email
+        await sendWelcomeEmail(user.email, user.fullName);
 
         // Send a notification to the user about the bonus
         const welcomeNotification = new Notification({
             user: user._id,
             title: 'Welcome to Softcoin!',
-            message: 'Your email has been verified, and you have received a welcome bonus of 50,000 SFT.'
+            message: 'Your email has been verified, and you have received a welcome bonus of 50,000 SFT, 20 Spin Tickets, and $5 USD'
         });
         await welcomeNotification.save();
 
@@ -183,9 +179,8 @@ router.get('/verify-email', async (req, res) => {
             if (referrer) {
                 const referralBonus = 50000; // Bonus for the referrer
                 referrer.coinBalance += referralBonus;
-                referrer.totalReferralBonus = (referredBy.totalReferralBonus || 0) + referralBonus; // Increment the totalReferralBonus
-                
-                // Increment referral count and add new user to referrer's referrals array
+                referrer.totalReferralBonus += referralBonus; // Increment the totalReferralBonus
+                referrer.spinTickets += 20;
                 referrer.referralCount += 1;
                 referrer.referrals.push(user._id);
                 
@@ -194,7 +189,7 @@ router.get('/verify-email', async (req, res) => {
                 const referrerNotification = new Notification({
                     user: referrer._id,
                     title: 'Referral Verified!',
-                    message: `${user.username} has verified their email, and you have been rewarded with 50,000 SFT.`
+                    message: `${user.username} has verified their email, and you have been rewarded with 50,000 SFT, and 20 Spin Tickets.`
                 });
 
                 await referrerNotification.save();
