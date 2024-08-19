@@ -25,6 +25,34 @@ app.get('/ping', (req, res) => {
   res.send('OK');
 });
 
+app.get('/api/leaderboard/:username', async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        // Fetch all users with a commitmentBalance greater than 0
+        const users = await User.find({ commitmentBalance: { $gt: 0 } })
+            .sort({ commitmentBalance: -1 })  // Sort by commitmentBalance in descending order
+            .select('username commitmentBalance earningBalance');  // Select only the needed fields
+
+        if (!users || users.length === 0) {
+            return res.status(404).json({ message: 'No users found for the leaderboard' });
+        }
+
+        // Find the rank of the user requesting the leaderboard
+        const userIndex = users.findIndex(user => user.username === username);
+        const userRank = userIndex >= 0 ? userIndex + 1 : null;  // Rank starts at 1
+
+        // Respond with the top 10 users and the rank of the requested user
+        res.status(200).json({
+            leaders: users.slice(0, 10),  // Top 10 users
+            userRank: userRank ? userRank : 'Not Ranked'  // Show rank or 'Not Ranked' if user isn't in the leaderboard
+        });
+    } catch (error) {
+        console.error('Error fetching leaderboard:', error);
+        res.status(500).json({ message: 'Error fetching leaderboard' });
+    }
+});
+
 app.post('/api/updateSpinTickets', async (req, res) => {
     const { username, spinTickets } = req.body; // `spinTickets` will be -1 for deduction
 

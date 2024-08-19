@@ -256,19 +256,12 @@
     line-height: normal; /* Avoid the influence of line-height */
 }
 
-.spin-tickets {
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: bold;
-    margin: 0px 0;
-    color: #f57c00;
-}
 .well {
     background: linear-gradient(180deg, #01196a, #80057c);
     text-align: center;
     width: 75%;
     border-radius: 15px;
-    padding: 20px 10px;
+    padding: 30px 10px;
     margin-top: 0px;
 }
 .well #status-message {
@@ -453,14 +446,14 @@
     <!-- Slideshow Container -->
     <div id="slideshow-container">
         <div class="slide">
-            <a href="/softie"><img src="adverts/softie.png" alt="Shareholder"></a>
+            <a href="/softie"><img src="adverts/make.png" alt="Shareholder"></a>
         </div>
         <div class="slide">
-            <a href="https://twitter.com/softcoinproject"><img src="adverts/twitter-ad.png" alt="Twitter"></a>
+            <a href="https://twitter.com/softcoinproject"><img src="adverts/join.png" alt="Twitter"></a>
         </div>
         
         <div class="slide">
-            <a href="https://t.me/softcoinupdates"><img src="adverts/telegram-ad.png" alt="Telegram"></a>
+            <a href="https://t.me/softcoinupdates"><img src="adverts/telegram.png" alt="Telegram"></a>
         </div>
     </div>
     <div id="dots-container"></div>
@@ -626,7 +619,7 @@
                 if (slideIndex > slides.length) {slideIndex = 1}
                 slides[slideIndex - 1].classList.add("active");
                 dots[slideIndex - 1].classList.add("active");
-                setTimeout(showSlides, 10000); // Change image every 10 seconds
+                setTimeout(showSlides, 15000); // Change image every 10 seconds
             }
 
             showSlides();

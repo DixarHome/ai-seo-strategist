@@ -233,7 +233,8 @@ p {
 
 /* Slideshow Container */
 #slideshow-container {
-    width: 80%;
+    width: 300px;
+    height: 120px;
     margin: 0 auto;
     overflow: hidden;
     position: relative;
@@ -241,7 +242,6 @@ p {
     margin-top: 5px; /* Remove gap */
     padding-bottom: 0;
     margin-bottom: 0px;
-    height: 18%;
     border-radius: 15px;
 }
 

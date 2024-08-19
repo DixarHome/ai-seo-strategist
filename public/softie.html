@@ -18,7 +18,7 @@
             justify-content: space-between;
             align-items: center;
             width: 90%;
-            padding: 20px 20px;
+            padding: 28px 20px;
             background-color: #041f4c;
             position: fixed;
             top: 0;
@@ -36,10 +36,11 @@
             margin-right: 10px;
         }
         .logo span {
-            font-size: 2em;
+            font-size: 1.7em;
             color: #fff;
             font-weight: bold;
-            margin-left: 50px;
+            margin-left: 130px;
+            text-align: center;
         }
 
         .hamburger {
@@ -82,11 +83,11 @@
         }
         .balance-section {
             margin-top: 90px;
+            width: 80%;
         }
 
         .balance-section, .menu-section, .softie-section {
             padding: 10px;
-            width: 80%;
          }
 
          .balance-card {
@@ -112,15 +113,16 @@
           }
 
          .balance-card h2 {
-            color: #20fbfc;
+            color: #ecb6fd;
             margin: 0;
             font-size: 1em;
            }
 
          .balance-amount {
-           font-size: 24px;
+           font-size: 20px;
            color: #fff;
            margin: 0;
+           font-weight: bold;
            }
            .balance-card a {
              text-decoration: none;
@@ -134,6 +136,7 @@
            cursor: pointer;
            padding: 5px 20px;
            margin: 5px 0;
+           font-size: 10px;
          }
 
        .actions {
@@ -158,22 +161,37 @@
             margin: 5px;
             padding: 0;
             font-weight: bold;
-            font-size: 1em;
+            font-size: 0.9em;
             color: #b2b2b2;
         }
         .softie-section {
             margin-top: 20px;
             padding: 0 10px;
             width: 90%;
-            padding-bottom: 100px;
+            
         }
 
         .many {
             color: #fff;
             margin-top: 20px;
-            padding: 0 10px;
+            padding: 0;
             width: 80%;
             text-align: center;
+            background: linear-gradient(180deg, #4b227e, #1a1e2b);
+            padding-bottom: 20px;
+            border-radius: 20px;
+        }
+        .many h2 {
+            color: #0ee40e;
+            font-size: 15px;
+            padding-right: 12px;
+            margin-top: 15px;
+        }
+        .many p {
+            font-size: 12px;
+            width: 80%;
+            margin: 10px auto;
+            text-align: left;
         }
        .softie-section h2 {
             color: #fff;
@@ -183,32 +201,38 @@
             display: flex;
             overflow-x: auto;
             gap: 20px;
-            padding: 20px 0px;
+            padding: 0px 0px;
+            padding-bottom: 10px;
             scroll-snap-type: x mandatory;
         }
         .softie-card {
-            background-color: #02640e;
+            background: linear-gradient(180deg, #17b003, #091d5e);
             border: 1px solid #ddd;
             border-radius: 8px;
             flex: 0 0 auto;
             width: 200px;
+            height: 250px;
             scroll-snap-align: start;
             text-align: center;
-            padding: 20px;
+            padding: 10px;
         }
 
         .softie-card img {
-            width: 100%;
+            width: 100px;
             border-radius: 8px;
+            margin: 0;
+            padding: 0;
         }
         .softie-card h3 {
             color: #fff;
-            font-size: 2em;
+            font-size: 1.5em;
+            color: #06f5e1;
         }
 
         .softie-card p {
-            margin: 10px 0;
+            margin: 0px 0;
             color: #fff;
+            font-family: Arial;
         }
         a {
             color: lightblue;
@@ -233,6 +257,113 @@
             color: rgba(0, 255, 0, 1);
             
         }
+        h2 {
+            margin: 0;
+            margin-top: 30px;
+            font-size: 20px;
+        }
+        .softie-card p {
+            font-weight: bold;
+        }
+        .leaderboard-section {
+            padding-bottom: 100px;
+            width: 80%;
+            margin: 10px auto;
+            padding-right: 20px;
+        }
+.leaderboard-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 auto;
+    width: 100%;
+    
+}
+
+.leaderboard-item {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px 30px;
+    margin: 0 auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    font-size: 16px;
+    position: relative;
+    width: 85%;
+}
+
+.leaderboard-item .details {
+    display: flex;
+    flex-direction: column;
+    max-width: 70%;
+}
+
+.leaderboard-item .details .username {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.leaderboard-item .details .commitment, .leaderboard-item .details .earnings {
+    font-size: 10px;
+    color: #b2b2b2;
+}
+
+.rank-indicator {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 20px;
+    padding-right: 0px;
+    text-align: left;
+}
+
+.rank-icon {
+    width: 30px;
+    height: 30px;
+    padding-top: 10px;
+}
+
+.rank-icon:first-place {
+    content: url('game/first.png');
+}
+.rank-icon img {
+    margin: 0;
+    padding: 0;
+}
+.rank-icon:second-place {
+    content: url('game/second.png');
+}
+
+.rank-icon:third-place {
+    content: url('game/third.png');
+}
+
+    .user-rank {
+    margin-top: 20px;
+}
+
+.user-rank p {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+.user-rank p span {
+    color: #07ed07;
+    margin-left: 10px;
+}
+        .username-cell {
+    max-width: 35px; /* Adjust width as needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.rank-cell {
+    max-width: 15px;white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+}
     </style>
     <!-- Matomo -->
 <script>
@@ -290,63 +421,76 @@
         </div>
         <div class="profits">
             <p>Level: <span id="softie-level"></span></p>
-            <p>Daily profit: <span id="daily-profit">0 USD</span></p>
+            <p>Daily Profit: <span id="daily-profit">0 USD</span></p>
         </div>
         
     </section>
     <section class="many">
         <h2>Make A Commitment</h2>
-        <p>Become a Softcoin Shareholder by Depositing at least $5 in your Commitment Account. <br><br>As a Shareholder, you get a daily return of up to 8% of your commitment. And this return will be paid everyday until TGE. <br> <br>You also get a bonus of 5% of the amount deposited by your friends.<br><br>Commitments will be unlocked and fully refunded to Shareholders after Token Generation Event (TGE).</p>
+        <p>Become a Softcoin Shareholder by Depositing at least $5 in your Commitment Account.</p><p>As a Shareholder, you get a daily return of up to 8% of your committed fund. And this return will be paid everyday until TGE. </p> <p>You also get a bonus of 5% of the amount deposited by your friends.</p><p>Commitments will be unlocked and fully refunded to Shareholders after Token Generation Event (TGE).</p>
        
-        <p>The minimum withdrawal is $10, and you can withdraw your earnings at anytime. There is no maximum withdrawal limit.</p>
-        <a href="/learn-more">Learn More</a>
+        <p>The minimum withdrawal is $10, and you can withdraw your earnings at anytime.</p>
+        <p>Make your way up the levels and unlocked bigger returns.</p>
+        <p>Click <a href="/learn-more">here</a> to learn more.</p>
     </section>
+    <h2>Softie Levels</h2>
     <section class="softie-section">
         <div class="softie-cards-container">
             <div class="softie-card">
                 <img src="images/1.png" alt="Softie Level 1">
-                <h3>Amateur</h3>
-                <p>$5 - $30 Commitment</p>
-                <p>3% Daily Return</p>
+                <h3>Rising Softie</h3>
+                <p style="font-size: 20px;">$5 - $30</p>
+                <p style="color: gold;">3% Daily Return</p>
                 <p>Up To $1/Day</p>
             </div>
             <div class="softie-card">
                 <img src="images/2.png" alt="Softie Level 2">
-                <h3>Junior</h3>
-                <p>$31 - $100 Commitment</p>
-                <p>4% Daily Returns</p>
+                <h3>Junior Softie</h3>
+                <p style="font-size: 20px;">$31 - $100</p>
+                <p style="color: gold;">4% Daily Returns</p>
                 <p>Up To $4/Day</p>
             </div>
             <div class="softie-card">
                 <img src="images/3.png" alt="Softie Level 3">
-                <h3>Pro</h3>
-                <p>$101 - $500 Commitment</p>
-                <p>5% Daily Returns</p>
+                <h3>Pro Softie</h3>
+                <p style="font-size: 20px;">$101 - $500</p>
+                <p style="color: gold;">5% Daily Returns</p>
                 <p>Up To $25/Day</p>
             </div>
             <div class="softie-card">
                 <img src="images/4.png" alt="Softie Level 4">
-                <h3>Expert</h3>
-                <p>$501 - $2000 Commitment</p>
-                <p>6% Daily Returns</p>
+                <h3>Expert Softie</h3>
+                <p style="font-size: 20px;">$501 - $2000</p>
+                <p style="color: gold;">6% Daily Returns</p>
                 <p>Up To $120/Day</p>
             </div>
             <div class="softie-card">
                 <img src="images/5.png" alt="Softie Level 5">
-                <h3>Master</h3>
-                <p>$2001 - $5000 Commitment</p>
-                <p>7% Daily Returns</p>
+                <h3>Master Softie</h3>
+                <p style="font-size: 20px;">$2001 - $5000</p>
+                <p style="color: gold;">7% Daily Returns</p>
                 <p>Up To $350/Day</p>
             </div>
             <div class="softie-card">
                 <img src="images/6.png" alt="Softie Level 6">
-                <h3>Legend</h3>
-                <p>$5001+ Commitment</p>
-                <p>8% Daily Returns</p>
+                <h3>Legend Softie</h3>
+                <p style="font-size: 20px;">$5001+</p>
+                <p style="color: gold;">8% Daily Returns</p>
                 <p>Unlimited Earnings</p>
             </div>
         </div>
     </section>
+<h2>Shareholder Leaderboard</h2>
+<h3>Top 10</h3>
+<section class="leaderboard-section">
+    <ul id="leaderboard-list" class="leaderboard-list">
+        <!-- Leaderboard items will be dynamically inserted here -->
+    </ul>
+    <div class="user-rank">
+        <p>Your Rank: <span id="user-rank">--</span></p>
+    </div>
+</section>
+
     <div id="nav-placeholder"></div>
     <div id="cherry-placeholder"></div>
     <script src="cherry.js"></script>
@@ -365,6 +509,81 @@
             window.location.href = '/payment'; // Replace with your target URL
         }
 
+    </script>
+    <script>
+async function loadLeaderboard() {
+    const username = localStorage.getItem('username');
+
+    try {
+        const response = await fetch(`/api/leaderboard/${username}`);
+        const data = await response.json();
+
+        const leaderboardList = document.getElementById('leaderboard-list');
+        leaderboardList.innerHTML = ''; // Clear previous items
+
+        data.leaders.forEach((leader, index) => {
+            const listItem = document.createElement('li');
+            listItem.classList.add('leaderboard-item');
+
+            // User details
+            const detailsDiv = document.createElement('div');
+            detailsDiv.classList.add('details');
+
+            const usernameSpan = document.createElement('span');
+            usernameSpan.classList.add('username');
+            usernameSpan.textContent = leader.username;
+
+            const commitmentSpan = document.createElement('span');
+            commitmentSpan.classList.add('commitment');
+            commitmentSpan.textContent = `Commitment: $${leader.commitmentBalance}`;
+
+            const earningsSpan = document.createElement('span');
+            earningsSpan.classList.add('earnings');
+            earningsSpan.textContent = `Earnings: $${leader.earningBalance.toFixed(2)}`;
+
+            detailsDiv.appendChild(usernameSpan);
+            detailsDiv.appendChild(commitmentSpan);
+            detailsDiv.appendChild(earningsSpan);
+
+            listItem.appendChild(detailsDiv);
+
+            // Rank indicator
+            const rankDiv = document.createElement('div');
+            rankDiv.classList.add('rank-indicator');
+
+            if (index === 0) {
+                const rankIcon = document.createElement('img');
+                rankIcon.src = 'game/first.png'; // Replace with actual icon path
+                rankIcon.classList.add('rank-icon');
+                rankDiv.appendChild(rankIcon);
+            } else if (index === 1) {
+                const rankIcon = document.createElement('img');
+                rankIcon.src = 'game/second.png'; // Replace with actual icon path
+                rankIcon.classList.add('rank-icon');
+                rankDiv.appendChild(rankIcon);
+            } else if (index === 2) {
+                const rankIcon = document.createElement('img');
+                rankIcon.src = 'game/third.png'; // Replace with actual icon path
+                rankIcon.classList.add('rank-icon');
+                rankDiv.appendChild(rankIcon);
+            } else {
+                rankDiv.textContent = index + 1; // Display number for ranks 4 and beyond
+            }
+
+            listItem.appendChild(rankDiv);
+
+            leaderboardList.appendChild(listItem);
+        });
+
+        // Display the user's rank
+        document.getElementById('user-rank').textContent = data.userRank || '--';
+
+    } catch (error) {
+        console.error('Error loading leaderboard:', error);
+    }
+}
+// Call the function when the page loads
+loadLeaderboard();
     </script>
 </body>
 </html>
