@@ -53,12 +53,12 @@ async function spinWheel() {
         ranges: [
             { min: 162, max: 197, probability: 0.3},
             { min: 90, max: 125, probability: 0.3 },
-            { min: 54, max: 90, probability: 0.25 },
-            { min: 18, max: 54, probability: 0.02 },
-            { min: 306, max: 342, probability: 0.06 },
-            { min: 235, max: 270, probability: 0.06 },
-            { min: 0, max: 18, probability: 0.007 },
-            { min: 270, max: 306, probability: 0.003 }
+            { min: 54, max: 90, probability: 0.3 },
+            { min: 18, max: 54, probability: 0.05 },
+            { min: 306, max: 342, probability: 0.024 },
+            { min: 235, max: 270, probability: 0.024 },
+            { min: 0, max: 18, probability: 0.0015 },
+            { min: 270, max: 306, probability: 0.0005 }
         ]
     };
 
