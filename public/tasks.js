@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const taskDetails = {
         "followw-btn": { name: "Follow Softcoin on X", target: 1, reward: 10000, action: "Follow" },
         "join-btn": { name: "Join Softcoin Telegram Channel", target: 1, reward: 10000, action: "Join" },
+        "earnbitmoon": { name: "Join EarnBitMoon", target: 1, reward: 10000, action: "Join" },
         "refer2-btn": { name: "Invite 2 friends", target: 2, reward: 30000 },
         "refer5-btn": { name: "Invite 5 friends", target: 5, reward: 50000 },
         "refer10-btn": { name: "Invite 10 friends", target: 10, reward: 100000 },
@@ -219,9 +220,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const fetchProgress = taskId.startsWith('refer') ? fetchReferralCount : fetchMiningSessionCount;
-        if (taskId === 'followw-btn' || taskId === 'join-btn' || taskId === 'post-btn'  || taskId === 'farm-btn' || taskId === 'seed-btn' || taskId === 'sunwave' || taskId === 'call' || taskId === 'lost-dog' || taskId === 'major' || taskId === 'money-dog' || taskId === 'mozoai' || taskId === 'nomiz' || taskId === 'time-farm' || taskId === 'vertus' || taskId === 'hot' || taskId === 'athene' || taskId === 'simple' || taskId === 'cex' || taskId === 'match-quest' || taskId === 'blum') {
+        if (taskId === 'followw-btn' || taskId === 'join-btn' || taskId === 'post-btn'  || taskId === 'farm-btn' || taskId === 'seed-btn' || taskId === 'sunwave' || taskId === 'call' || taskId === 'lost-dog' || taskId === 'major' || taskId === 'money-dog' || taskId === 'mozoai' || taskId === 'nomiz' || taskId === 'time-farm' || taskId === 'vertus' || taskId === 'hot' || taskId === 'athene' || taskId === 'simple' || taskId === 'cex' || taskId === 'match-quest' || taskId === 'blum' || taskId === 'earnbitmoon') {
             const url = {
                 'followw-btn': 'https://twitter.com/softcoinproject',
+                'earnbitmoon': 'https://earnbitmoon.club/?ref=125258',
                 'match-quest': 'https://t.me/MatchQuestBot/start?startapp=b0e03025b2ca2160315e2ebcacf4da52',
                 'blum': 'https://t.me/BlumCryptoBot/app?startapp=ref_f1LDj4pzs5',
                 'cex': 'https://t.me/cexio_tap_bot?start=1716270247236481',
