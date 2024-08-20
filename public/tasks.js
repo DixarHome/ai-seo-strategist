@@ -12,6 +12,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         "mine20-btn": { name: "Complete 20 mining sessions", target: 20, reward: 100000 },
         "mine100-btn": { name: "Complete 100 mining sessions", target: 100, reward: 1000000 },
         "post-btn": { name: "Make a post on X", target: 1, reward: 10000, action: "Post" },
+        "athene": { name: "Start Mining Athene", target: 1, reward: 10000, action: "Start" },
+        "simple": { name: "Join Simple Tap", target: 1, reward: 10000, action: "Join" },
+        "cex": { name: "Start Mining CEX", target: 1, reward: 10000, action: "Start" },
+        "match-quest": { name: "Join MatchQuest", target: 1, reward: 10000, action: "Join" },
+        "blum": { name: "Start Farming BLUM", target: 1, reward: 10000, action: "Start" },
         "seed-btn": { name: "Start farming Seeds", target: 1, reward: 10000, action: "Start" },
         "farm-btn": { name: "Farm $TOMATO", target: 1, reward: 10000, action: "Farm" },
         "sunwave": { name: "Join SUNWAVES", target: 1, reward: 10000, action: "Go" },
@@ -214,9 +219,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const fetchProgress = taskId.startsWith('refer') ? fetchReferralCount : fetchMiningSessionCount;
-        if (taskId === 'followw-btn' || taskId === 'join-btn' || taskId === 'post-btn'  || taskId === 'farm-btn' || taskId === 'seed-btn' || taskId === 'sunwave' || taskId === 'call' || taskId === 'lost-dog' || taskId === 'major' || taskId === 'money-dog' || taskId === 'mozoai' || taskId === 'nomiz' || taskId === 'time-farm' || taskId === 'vertus' || taskId === 'hot') {
+        if (taskId === 'followw-btn' || taskId === 'join-btn' || taskId === 'post-btn'  || taskId === 'farm-btn' || taskId === 'seed-btn' || taskId === 'sunwave' || taskId === 'call' || taskId === 'lost-dog' || taskId === 'major' || taskId === 'money-dog' || taskId === 'mozoai' || taskId === 'nomiz' || taskId === 'time-farm' || taskId === 'vertus' || taskId === 'hot' || taskId === 'athene' || taskId === 'simple' || taskId === 'cex' || taskId === 'match-quest' || taskId === 'blum') {
             const url = {
                 'followw-btn': 'https://twitter.com/softcoinproject',
+                'match-quest': 'https://t.me/MatchQuestBot/start?startapp=b0e03025b2ca2160315e2ebcacf4da52',
+                'blum': 'https://t.me/BlumCryptoBot/app?startapp=ref_f1LDj4pzs5',
+                'cex': 'https://t.me/cexio_tap_bot?start=1716270247236481',
+                'simple': 'https://t.me/Simple_Tap_Bot/app?startapp=1716360435372',
+                'athene': 'https://t.me/athene_official_bot/app?startapp=7575c96cae4c',
                 'join-btn': 'https://t.me/softcoinupdates',
                 'farm-btn': 'https://t.me/Tomarket_ai_bot/app?startapp=00001S56',
                 'major': 'https://t.me/major/start?startapp=1170015722',
