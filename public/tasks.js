@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         "mine20-btn": { name: "Complete 20 mining sessions", target: 20, reward: 100000 },
         "mine100-btn": { name: "Complete 100 mining sessions", target: 100, reward: 1000000 },
         "post-btn": { name: "Make a post on X", target: 1, reward: 10000, action: "Post" },
+        "satoshi": { name: "Join Satoshi", target: 1, reward: 10000, action: "Join" },
+        "eden": { name: "Join Eden", target: 1, reward: 10000, action: "Join" },
         "truecoin": { name: "Start Mining Truecoin", target: 1, reward: 10000, action: "Start" },
         "athene": { name: "Start Mining Athene", target: 1, reward: 10000, action: "Start" },
         "simple": { name: "Join Simple Tap", target: 1, reward: 10000, action: "Join" },
@@ -221,9 +223,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const fetchProgress = taskId.startsWith('refer') ? fetchReferralCount : fetchMiningSessionCount;
-        if (taskId === 'followw-btn' || taskId === 'join-btn' || taskId === 'post-btn'  || taskId === 'farm-btn' || taskId === 'seed-btn' || taskId === 'sunwave' || taskId === 'call' || taskId === 'lost-dog' || taskId === 'major' || taskId === 'money-dog' || taskId === 'mozoai' || taskId === 'nomiz' || taskId === 'time-farm' || taskId === 'vertus' || taskId === 'hot' || taskId === 'athene' || taskId === 'simple' || taskId === 'cex' || taskId === 'match-quest' || taskId === 'blum' || taskId === 'earnbitmoon' || taskId === 'truecoin') {
+        if (taskId === 'followw-btn' || taskId === 'join-btn' || taskId === 'post-btn'  || taskId === 'farm-btn' || taskId === 'seed-btn' || taskId === 'sunwave' || taskId === 'call' || taskId === 'lost-dog' || taskId === 'major' || taskId === 'money-dog' || taskId === 'mozoai' || taskId === 'nomiz' || taskId === 'time-farm' || taskId === 'vertus' || taskId === 'hot' || taskId === 'athene' || taskId === 'simple' || taskId === 'cex' || taskId === 'match-quest' || taskId === 'blum' || taskId === 'earnbitmoon' || taskId === 'truecoin' || taskId === 'satoshi' || taskId === 'eden') {
             const url = {
                 'followw-btn': 'https://twitter.com/softcoinproject',
+                'eden': 'https://globaleden.net/invite/758544',
+                'satoshi': 'https://invite.satoshiapp.xyz/7j5qq',
                 'truecoin': 'https://t.me/true_coin_bot?start=1170015722',
                 'earnbitmoon': 'https://earnbitmoon.club/?ref=125258',
                 'match-quest': 'https://t.me/MatchQuestBot/start?startapp=b0e03025b2ca2160315e2ebcacf4da52',
