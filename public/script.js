@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             clearInterval(timerInterval);
             timerEl.textContent = "00:00:00";
             updateStatusMessage("Mining complete!");
+            
             toggleBarsAnimation(false);
             mineBtn.disabled = false;
 
@@ -103,6 +104,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             updateCoinBalance();
             miningSessionCount += 1;
             updateMiningSessionCount();
+            
         } else {
             const hours = Math.floor((remainingTime / (1000 * 60 * 60)) % 24);
             const minutes = Math.floor((remainingTime / (1000 * 60)) % 60);
@@ -144,10 +146,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             } else if (data.miningComplete) {
                 coinBalance = data.coinBalance;
                 currentLevel = data.level;
+                spinTickets = data.spinTickets;
                 miningSessionCount = data.miningSessionCount;
                 updateCoinBalance();
                 updateMiningLevel();
                 updateMiningSessionCount();
+                updateSpinTicketsDisplay();
                 updateStatusMessage("Mining complete!");
                 mineBtn.disabled = false;
                 toggleBarsAnimation(false);

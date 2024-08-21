@@ -51,9 +51,9 @@ async function spinWheel() {
     // Retrieve probability progress from localStorage
     let probabilityProgress = JSON.parse(localStorage.getItem('probabilityProgress')) || {
         ranges: [
-            { min: 162, max: 197, probability: 0.3},
-            { min: 90, max: 125, probability: 0.3 },
-            { min: 54, max: 90, probability: 0.3 },
+            { min: 162, max: 197, probability: 0.7},
+            { min: 90, max: 125, probability: 0.1 },
+            { min: 54, max: 90, probability: 0.1 },
             { min: 18, max: 54, probability: 0.05 },
             { min: 306, max: 342, probability: 0.025 },
             { min: 235, max: 270, probability: 0.0245 },
@@ -88,7 +88,7 @@ async function spinWheel() {
     wheel.offsetWidth; // This forces the browser to reflow, applying the previous line instantly
     
     // Now apply the actual spin with an even more dramatic cubic-bezier transition for a much slower end
-    wheel.style.transition = 'transform 8s cubic-bezier(0.1, 0.9, 0.1, 1)';  // Custom easing function for a very slow finish
+    wheel.style.transition = 'transform 3s cubic-bezier(0.1, 0.9, 0.1, 1)';  // Custom easing function for a very slow finish
     wheel.style.transform = `rotate(${randomDegree}deg)`;  // Spin the wheel
 
     // Determine the prize after the spin ends
@@ -96,7 +96,7 @@ async function spinWheel() {
         determinePrize(finalDegree);
         // Save the updated probability progress to localStorage
         localStorage.setItem('probabilityProgress', JSON.stringify(probabilityProgress));
-    }, 8000); // Same as transition duration
+    }, 3000); // Same as transition duration
         // Update the server to deduct 1 spin ticket
     const username = localStorage.getItem('username');
     fetch('/api/updateSpinTickets', {
@@ -155,7 +155,12 @@ function determinePrize(degree) {
     const prizeDisplay = document.getElementById('prize-display');
     const prizeText = document.getElementById('prize-text');
     prizeText.textContent = `You won ${prize} ${rewardType === 'tickets' ? 'Spin Tickets' : rewardType.toUpperCase()}!`;
+    
+    // Show the prize display
     prizeDisplay.style.display = 'block';
+
+    // Trigger confetti when the prize display appears
+    startConfettiAnimation();
 
     // Send the prize details to the server to update the user's balance
     const username = localStorage.getItem('username');
@@ -175,11 +180,100 @@ function determinePrize(degree) {
     });
 }
 
+function startConfettiAnimation() {
+    var canvas = document.getElementById('confetti-canvas');
+    var ctx = canvas.getContext('2d');
+    
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+
+    var confettiParticles = [];
+    for (var i = 0; i < 150; i++) {
+        confettiParticles.push({
+            x: canvas.width / 2, // Start at the center
+            y: canvas.height / 2, // Start at the center
+            r: Math.random() * 6 + 2, // Random size
+            d: Math.random() * Math.PI * 2, // Random direction
+            color: `hsl(${Math.random() * 360}, 100%, 50%)`, // Random color
+            tilt: Math.random() * 10 - 5,
+            tiltAngle: Math.random() * Math.PI * 2,
+            tiltAngleIncrement: (Math.random() * 0.07) + 0.05,
+            speed: Math.random() * 4 + 2, // Speed of burst
+            gravity: 0.02, // Gravity to slow them down
+            opacity: 1, // Start fully opaque
+            fadeOut: false // To trigger the fade out effect
+        });
+    }
+
+    let animationFrameId;
+
+    function drawConfetti() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        confettiParticles.forEach((particle) => {
+            // If fadeOut is true, increase speed and reduce opacity
+            if (particle.fadeOut) {
+                particle.speed += 0.1; // Accelerate
+                particle.opacity -= 0.02; // Fade out
+
+                if (particle.opacity <= 0) {
+                    particle.opacity = 0; // Ensure opacity doesn't go below 0
+                }
+            }
+
+            // Update the particle's position
+            particle.y += Math.sin(particle.d) * particle.speed; // Move outwards
+            particle.x += Math.cos(particle.d) * particle.speed;
+            particle.y += particle.gravity * particle.r; // Apply gravity
+            particle.tiltAngle += particle.tiltAngleIncrement;
+            particle.tilt = Math.sin(particle.tiltAngle) * 15;
+
+            // Draw the particle
+            ctx.save();
+            ctx.globalAlpha = particle.opacity; // Set the opacity
+            ctx.beginPath();
+            ctx.lineWidth = particle.r;
+            ctx.strokeStyle = particle.color;
+            ctx.moveTo(particle.x + particle.tilt + particle.r, particle.y);
+            ctx.lineTo(particle.x + particle.tilt, particle.y + particle.tilt + particle.r);
+            ctx.stroke();
+            ctx.restore();
+
+            // Reset particle if it goes off-screen
+            if (particle.y > canvas.height || particle.x > canvas.width || particle.x < 0 || particle.y < 0) {
+                particle.x = canvas.width / 2;
+                particle.y = canvas.height / 2;
+                particle.d = Math.random() * Math.PI * 2;
+                particle.speed = Math.random() * 4 + 2;
+            }
+        });
+
+        animationFrameId = requestAnimationFrame(drawConfetti);
+    }
+
+    drawConfetti();
+
+    // Trigger fade out and fly away after 5 seconds
+    setTimeout(function() {
+        confettiParticles.forEach((particle) => {
+            particle.fadeOut = true;
+        });
+
+        // Continue drawing until all particles have faded out
+        setTimeout(function() {
+            cancelAnimationFrame(animationFrameId); // Stop the animation loop after fade-out completes
+        }, 3000); // Allow 3 seconds for the fade-out effect
+    }, 200); // 5 seconds initial confetti duration
+}
+
 function resetWheel() {
     const wheel = document.getElementById('wheel');
     
     // Apply a transition to smoothly reset the wheel to the initial position
-    wheel.style.transition = 'transform 1s ease-out';
+    wheel.style.transition = 'transform 0.5s ease-out';
     wheel.style.transform = 'rotate(0deg)';
 }
 
@@ -195,4 +289,29 @@ function closePrizeDisplay() {
     
     // Re-enable the spin button
     spinButton.disabled = false;
+
+    // Re-fetch the updated spin tickets from the server
+    updateSpinTicketsDisplay();
+}
+
+// Function to fetch the latest spin ticket count and update the display
+async function updateSpinTicketsDisplay() {
+    try {
+        // Retrieve the username from localStorage
+        const username = localStorage.getItem('username');
+
+        if (!username) {
+            console.error('Username not found in localStorage.');
+            return;
+        }
+
+        // Fetch user data by username
+        const response = await fetch(`/api/users/${username}/spin-info`);
+        const data = await response.json();
+
+        // Update the spin tickets display
+        document.getElementById('spin-tickets').textContent = `${data.spinTickets}`;
+    } catch (error) {
+        console.error('Error fetching tickets:', error);
+    }
 }
