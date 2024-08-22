@@ -1,17 +1,22 @@
-// Listen to the install event
-self.addEventListener('install', function(event) {
-    // Skip the waiting phase, so the service worker activates immediately
-    self.skipWaiting();
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open('softcoin-cache').then(cache => {
+      return cache.addAll([
+        '/',
+        '/index.html',
+        '/styles.css',
+        '/server.js',
+        '/favicon.ico',
+        '/softcoin.png'
+      ]);
+    })
+  );
 });
 
-// Listen to the activate event
-self.addEventListener('activate', function(event) {
-    // Claim any clients immediately, so the service worker becomes active without reloading
-    event.waitUntil(self.clients.claim());
-});
-
-// Listen to the fetch event
-self.addEventListener('fetch', function(event) {
-    // Simply pass the request through to the network without caching
-    event.respondWith(fetch(event.request));
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request);
+    })
+  );
 });

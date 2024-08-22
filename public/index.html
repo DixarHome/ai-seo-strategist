@@ -13,6 +13,13 @@
     <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
 <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
 <link rel="manifest" href="/manifest.json">
+<script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').then(function() {
+        console.log('Service Worker Registered');
+      });
+    }
+  </script>
 
     <style>
         body {
@@ -627,16 +634,5 @@
             showSlides();
         });
     </script>
-<script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js')
-            .then(function(registration) {
-                console.log('Service Worker registered with scope:', registration.scope);
-            })
-            .catch(function(error) {
-                console.log('Service Worker registration failed:', error);
-            });
-    }
-</script>
 </body>
 </html>
