@@ -1,0 +1,30 @@
+{
+  "background_color": "#040263",
+  "dir": "ltr",
+  "display": "fullscreen",
+  "name": "Softcoin",
+  "orientation": "portrait",
+  "scope": "/",
+  "short_name": "Softcoin",
+  "start_url": "/",
+  "theme_color": "#06ff0f",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "type": "image/png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "/favicon.ico",
+      "type": "image/png",
+      "sizes": "72x72"
+    }
+  ],
+  "id": "Softcoin",
+  "description": "Join our crypto community for unparalleled earning opportunities.",
+  "lang": "en",
+  "display_override": [
+    "fullscreen",
+    "window-controls-overlay"
+  ]
+}
