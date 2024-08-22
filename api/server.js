@@ -10,15 +10,15 @@ const authRoutes = require('../routes/auth');
 const Notification = require('../models/Notification');
 require('dotenv').config();
 
+const app = express();
+const port = process.env.PORT || 3000;
+
 // Use helmet to set the HSTS header
 app.use(helmet.hsts({
   maxAge: 63072000, // 2 years in seconds
   includeSubDomains: true, // Applies to all subdomains as well
   preload: true // Preload into the HSTS preload list
 }));
-
-const app = express();
-const port = process.env.PORT || 3000;
 
 connectToDatabase().then(() => console.log('MongoDB connected'));
 
