@@ -1,6 +1,13 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const username = localStorage.getItem('username');
     if (!username) return window.location.href = '/login';
+    
+    const tasksContainer = document.getElementById('tasks-container');
+    const loadingSpinner = document.getElementById('loading-spinner');
+
+    // Show loading spinner
+    loadingSpinner.style.display = 'block';
+    tasksContainer.style.display = 'none';
 
     const taskDetails = {
         "followw-btn": { name: "Follow Softcoin on X", target: 1, reward: 10000, action: "Follow" },
@@ -260,4 +267,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             updateTaskButton(taskId, details.target, details.reward, fetchProgress);
         }
     }
+    // Hide loading spinner and show tasks
+    loadingSpinner.style.display = 'none';
+    tasksContainer.style.display = 'block';
 });
