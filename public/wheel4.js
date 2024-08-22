@@ -191,18 +191,18 @@ function startConfettiAnimation() {
     resizeCanvas();
 
     var confettiParticles = [];
-    for (var i = 0; i < 150; i++) {
+    for (var i = 0; i < 500; i++) { // Reduced number of particles
         confettiParticles.push({
             x: canvas.width / 2, // Start at the center
             y: canvas.height / 2, // Start at the center
-            r: Math.random() * 6 + 2, // Random size
+            r: Math.random() * 8 + 2, // Smaller size
             d: Math.random() * Math.PI * 2, // Random direction
             color: `hsl(${Math.random() * 360}, 100%, 50%)`, // Random color
             tilt: Math.random() * 10 - 5,
             tiltAngle: Math.random() * Math.PI * 2,
             tiltAngleIncrement: (Math.random() * 0.07) + 0.05,
-            speed: Math.random() * 4 + 2, // Speed of burst
-            gravity: 0.02, // Gravity to slow them down
+            speed: Math.random() * 500 + 2, // Speed of burst
+            gravity: 0.005, // Slightly increased gravity to make them fall faster
             opacity: 1, // Start fully opaque
             fadeOut: false // To trigger the fade out effect
         });
@@ -216,8 +216,8 @@ function startConfettiAnimation() {
         confettiParticles.forEach((particle) => {
             // If fadeOut is true, increase speed and reduce opacity
             if (particle.fadeOut) {
-                particle.speed += 0.1; // Accelerate
-                particle.opacity -= 0.02; // Fade out
+                particle.speed += 0.0001; // Accelerate
+                particle.opacity -= 0.0005; // Faster fade out
 
                 if (particle.opacity <= 0) {
                     particle.opacity = 0; // Ensure opacity doesn't go below 0
@@ -244,10 +244,7 @@ function startConfettiAnimation() {
 
             // Reset particle if it goes off-screen
             if (particle.y > canvas.height || particle.x > canvas.width || particle.x < 0 || particle.y < 0) {
-                particle.x = canvas.width / 2;
-                particle.y = canvas.height / 2;
-                particle.d = Math.random() * Math.PI * 2;
-                particle.speed = Math.random() * 4 + 2;
+                particle.fadeOut = true; // Start fading out if out of bounds
             }
         });
 
@@ -256,7 +253,7 @@ function startConfettiAnimation() {
 
     drawConfetti();
 
-    // Trigger fade out and fly away after 5 seconds
+    // Trigger fade out and fly away after 200ms
     setTimeout(function() {
         confettiParticles.forEach((particle) => {
             particle.fadeOut = true;
@@ -265,8 +262,8 @@ function startConfettiAnimation() {
         // Continue drawing until all particles have faded out
         setTimeout(function() {
             cancelAnimationFrame(animationFrameId); // Stop the animation loop after fade-out completes
-        }, 3000); // Allow 3 seconds for the fade-out effect
-    }, 200); // 5 seconds initial confetti duration
+        }, 5000); // Allow 1 second for the fade-out effect
+    }, 200); // 200ms initial confetti burst duration
 }
 
 function resetWheel() {

@@ -5,7 +5,10 @@ self.addEventListener('install', event => {
         '/',
         '/index.html',
         '/styles.css',
-        '/server.js',
+        '/script.js',
+        'nav.html',
+        'navigation.js',
+        'cherry.html',
         '/favicon.ico',
         '/softcoin.png'
       ]);
