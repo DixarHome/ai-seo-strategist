@@ -2,12 +2,20 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
 const connectToDatabase = require('../utils/db');
 const User = require('../models/User');
 const Transaction = require('../models/Transaction');
 const authRoutes = require('../routes/auth');
 const Notification = require('../models/Notification');
 require('dotenv').config();
+
+// Use helmet to set the HSTS header
+app.use(helmet.hsts({
+  maxAge: 63072000, // 2 years in seconds
+  includeSubDomains: true, // Applies to all subdomains as well
+  preload: true // Preload into the HSTS preload list
+}));
 
 const app = express();
 const port = process.env.PORT || 3000;
