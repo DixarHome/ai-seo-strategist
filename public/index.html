@@ -539,7 +539,7 @@
     document.addEventListener("DOMContentLoaded", () => {
     const username = localStorage.getItem('username');
     if (!username) {
-        window.location.href = '/login';
+        window.location.href = '/login.html';
     } else {
         const truncatedUsername = username.length > 15 ? username.substring(0, 15) + '...' : username;
         document.getElementById('user-name').textContent = truncatedUsername;

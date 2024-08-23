@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let spinTickets = 0; // Track the user's spin tickets
 
     const username = localStorage.getItem('username');
-    if (!username) return window.location.href = '/login';
+    if (!username) return window.location.href = '/login.html';
 
     const mineBtn = document.getElementById('mine-btn');
     const coinBalanceEl = document.getElementById('coin-balance');
@@ -181,7 +181,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 document.addEventListener("DOMContentLoaded", () => {
     const username = localStorage.getItem('username');
     if (!username) {
-        window.location.href = '/login';
+        window.location.href = '/login.html';
     } else {
         document.getElementById('user-name').textContent = username;
         fetchNotifications(username);
