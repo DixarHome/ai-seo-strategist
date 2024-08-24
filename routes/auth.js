@@ -218,7 +218,7 @@ router.post('/login', async (req, res) => {
         }
 
         if (!user.isVerified) {
-            return res.status(400).json({ message: 'Please verify your email to log in', isVerified: false });
+            return res.status(400).json({ message: 'Please verify your email to log in. Click the link below to resend verification link', isVerified: false });
         }
 
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
