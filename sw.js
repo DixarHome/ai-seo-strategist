@@ -7,6 +7,7 @@ self.addEventListener('install', event => {
         '/styles.css',
         '/script.js',
         'nav.html',
+        'tasks.js',
         'navigation.js',
         'cherry.html',
         '/favicon.ico',
