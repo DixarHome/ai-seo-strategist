@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softcoin Tasks</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+        }
+        
+        h2 {
+            text-align: center;
+        }
+
+        #tasks-container {
+            width: 80%;
+            margin: 10px 0;
+            padding: 20px;
+            padding-top: 5px;
+            border-radius: 8px;
+            padding-bottom: 80px;
+            display: none;
+        }
+
+        .tasks {
+            color: #ffffff;
+        }
+        p {
+            color: #ffffff;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+            margin-top: 35px;
+            
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin: 20px 0 10px;
+            text-align: left;
+            width: 80%;
+        }
+
+        #main-div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(45deg, #4c004f, #bf0692);
+            background-color: #730477;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        
+        #task-item-div {
+            width: 75%;
+        }
+
+        #task-item-div span {
+            font-size: 13px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        #task-item-div p.reward {
+            font-size: 11px;
+            color: #b0b0b0;
+            margin: 5px 0;
+        }
+        #task-item-div .reward span {
+            color: #0bda13;
+        }
+
+        #action-div {
+            width: 25%;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        #action-div button {
+            padding: 10px;
+            background-color: #0bda13;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 80px; /* Set a fixed width for consistency */
+        }
+        
+        #action-div button.in-motion {
+    background-color: #95eb95; /* Faint green */
+    color: #fff;
+    cursor: not-allowed;
+}
+
+#action-div button.ready-to-claim {
+    background-color: #0bda13; /* Green */
+    color: #fff;
+    cursor: pointer;
+}
+
+#action-div button.claimed {
+    background-color: #ddd; /* Grey */
+    color: #999;
+    cursor: not-allowed;
+}
+
+
+        #loading-spinner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 200px;
+            height: 100vh; /* Full height of the viewport */
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #00ff33;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+
+
+        .custom-alert {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            color: #333;
+            align-items: center;
+            padding: 20px;
+            width: 50%;
+            padding-top: 0;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        #custom-alert-message {
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 90%;
+            color: #231f1f;
+        }
+
+        .custom-alert button {
+            margin-top: 10px;
+            background-color: green;
+            border: none;
+            padding: 10px 20px;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+            align-items: center;
+        }
+        .custom-alert button:hover {
+            background-color: #0b4c15;
+        }
+        #disclaimer {
+            width: 90%;
+            background-color: #26262669;
+            text-align: center;
+            padding: 5px 15px;
+            margin: 40px auto;
+            border-radius: 20px;
+        }
+        #disclaimer h2 {
+            color: #989898;
+            font-size: 15px;
+        }
+        #disclaimer p {
+            color: #787878;
+            font-size: 12px;
+        }
+        
+    </style>
+    <!-- Matomo -->
+<script>
+  var _paq = window._paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+  _paq.push(["setCookieDomain", "*.softcoin.world"]);
+  _paq.push(["setDomains", ["*.softcoin.world","*.app.softcoin.world"]]);
+  _paq.push(["enableCrossDomainLinking"]);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="https://softcoin.matomo.cloud/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '2']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='https://cdn.matomo.cloud/softcoin.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img referrerpolicy="no-referrer-when-downgrade" src="https://softcoin.matomo.cloud/matomo.php?idsite=2&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+<!-- End Matomo Code -->
+
+</head>
+<body>
+          <h1>Tasks</h1>
+              <!-- Loading spinner -->
+    <div id="loading-spinner">
+        <div class="spinner"></div>
+        <p style="text-align: center;">Please wait...</p>
+    </div>
+    <div id="tasks-container">
+
+
+        <div id="active-tasks">
+            <h2 class="section-title">Active</h2>
+            <!-- Active tasks will be inserted here -->
+        </div>
+        <div id="completed-tasks">
+            <h2 class="section-title">Completed</h2>
+            <!-- Completed tasks will be inserted here -->
+        </div>
+    <div id="disclaimer">
+       <h2>Disclaimer!</h2>
+       <p>Projects promoted here are paid advertisements and not a recommendation. Kindly do your due diligence before investing.</p>
+    </div>
+    </div>
+    
+    <div id="custom-alert" class="custom-alert">
+        <p id="custom-alert-message"></p>
+        <button onclick="closeCustomAlert()">Ok</button>
+    </div>
+    <div id="nav-placeholder"></div>
+    <div id="cherry-placeholder"></div>
+    <script src="cherry.js"></script>
+    <script src="navigation2.js" defer></script>
+    <script src="tasks.js?v=2"></script>
+</body>
+</html>
