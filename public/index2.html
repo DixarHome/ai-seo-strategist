@@ -12,15 +12,6 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
 <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
-<link rel="manifest" href="/manifest.json">
-<script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').then(function() {
-        console.log('Service Worker Registered');
-      });
-    }
-  </script>
-
     <style>
         body {
 
@@ -504,7 +495,7 @@
             <img src="design/home.svg" alt="Home">
             <span>Home</span>
         </a>
-        <a href="/tasks" class="nav-item" id="tasks" data-step="3">
+        <a href="/tasksv2" class="nav-item" id="tasks" data-step="3">
             <img src="design/tasks.svg" alt="Tasks">
             <span>Tasks</span>
         </a>
@@ -526,7 +517,7 @@
     <div id="cherry-placeholder"></div>
     <script src="cherry.js"></script>
 
-    <script src="navigation.js" defer></script>
+    <script src="navigation2.js" defer></script>
     <script src="script.js" defer></script>
 
 <script>

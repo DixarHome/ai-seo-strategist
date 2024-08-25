@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to load the navigation menu
     function loadNavMenu() {
-        fetch("nav.html")
+        fetch("nav2.html")
             .then(response => response.text())
             .then(data => {
                 document.getElementById("nav-placeholder").innerHTML = data;
