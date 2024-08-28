@@ -97,10 +97,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        const apiEndpoint = window.location.hostname.includes('localhost')
+            ? 'http://localhost:5000/api/payments'
+            : 'https://admin.softcoin.world/api/payments';
+
         showLoading();
 
         try {
-            const response = await fetch('/api/payments', {
+            const response = await fetch(apiEndpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

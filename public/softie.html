@@ -177,7 +177,7 @@
             padding: 0;
             width: 80%;
             text-align: center;
-            background: linear-gradient(180deg, #4b227e, #1a1e2b);
+            background: linear-gradient(180deg, #4b227e53, #1a1e2b53);
             padding-bottom: 20px;
             border-radius: 20px;
         }
@@ -308,8 +308,14 @@
 .leaderboard-item .details .commitment, .leaderboard-item .details .earnings {
     font-size: 10px;
     color: #b2b2b2;
+    font-weight: bold;
 }
 
+.leaderboard-item .details .cash-out {
+  font-size: 10px;
+  font-weight: bold;
+  color: #d3cece;
+}
 .rank-indicator {
     font-size: 20px;
     font-weight: bold;
@@ -535,15 +541,20 @@ async function loadLeaderboard() {
 
             const commitmentSpan = document.createElement('span');
             commitmentSpan.classList.add('commitment');
-            commitmentSpan.textContent = `Commitment: $${leader.commitmentBalance}`;
+            commitmentSpan.textContent = `Commitment:  $${leader.commitmentBalance}`;
 
             const earningsSpan = document.createElement('span');
             earningsSpan.classList.add('earnings');
-            earningsSpan.textContent = `Earnings: $${leader.earningBalance.toFixed(2)}`;
+            earningsSpan.textContent = `Earnings:  $${leader.earningBalance.toFixed(2)}`;
+            
+            const cashOutSpan = document.createElement('span');
+            cashOutSpan.classList.add('cash-out');
+            cashOutSpan.textContent = `Cashed Out:  $${leader.totalWithdrawal}`;
 
             detailsDiv.appendChild(usernameSpan);
             detailsDiv.appendChild(commitmentSpan);
             detailsDiv.appendChild(earningsSpan);
+            detailsDiv.appendChild(cashOutSpan);
 
             listItem.appendChild(detailsDiv);
 

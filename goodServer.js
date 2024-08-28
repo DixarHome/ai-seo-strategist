@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
 const connectToDatabase = require('../utils/db');
 const User = require('../models/User');
 const Transaction = require('../models/Transaction');
@@ -11,6 +12,13 @@ require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Use helmet to set the HSTS header
+app.use(helmet.hsts({
+  maxAge: 63072000, // 2 years in seconds
+  includeSubDomains: true, // Applies to all subdomains as well
+  preload: true // Preload into the HSTS preload list
+}));
 
 connectToDatabase().then(() => console.log('MongoDB connected'));
 
@@ -23,6 +31,109 @@ const sendEmail = require('../utils/mailer');  // Adjust the path as needed
 
 app.get('/ping', (req, res) => {
   res.send('OK');
+});
+
+app.get('/api/leaderboard/:username', async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        // Fetch all users with a commitmentBalance greater than 0
+        const users = await User.find({ commitmentBalance: { $gt: 0 } })
+            .sort({ commitmentBalance: -1 })  // Sort by commitmentBalance in descending order
+            .select('username commitmentBalance earningBalance');  // Select only the needed fields
+
+        if (!users || users.length === 0) {
+            return res.status(404).json({ message: 'No users found for the leaderboard' });
+        }
+
+        // Find the rank of the user requesting the leaderboard
+        const userIndex = users.findIndex(user => user.username === username);
+        const userRank = userIndex >= 0 ? userIndex + 1 : null;  // Rank starts at 1
+
+        // Respond with the top 10 users and the rank of the requested user
+        res.status(200).json({
+            leaders: users.slice(0, 10),  // Top 10 users
+            userRank: userRank ? userRank : 'Not Ranked'  // Show rank or 'Not Ranked' if user isn't in the leaderboard
+        });
+    } catch (error) {
+        console.error('Error fetching leaderboard:', error);
+        res.status(500).json({ message: 'Error fetching leaderboard' });
+    }
+});
+
+app.post('/api/updateSpinTickets', async (req, res) => {
+    const { username, spinTickets } = req.body; // `spinTickets` will be -1 for deduction
+
+    try {
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Check if the user has enough spin tickets
+        if (user.spinTickets + spinTickets < 0) {
+            return res.status(400).json({ error: 'Not enough spin tickets' });
+        }
+
+        // Update the user's spin ticket count
+        user.spinTickets += spinTickets;
+        await user.save();
+
+        res.status(200).json({ success: true, spinTickets: user.spinTickets });
+    } catch (error) {
+        console.error('Error updating spin tickets:', error);
+        res.status(500).json({ error: 'Failed to update spin tickets' });
+    }
+});
+
+app.post('/api/updatePrize', async (req, res) => {
+    const { username, prize, rewardType } = req.body;
+
+    try {
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Update user balance based on the rewardType
+        switch (rewardType) {
+            case 'usd':
+                user.earningBalance += prize;
+                break;
+            case 'sft':
+                user.coinBalance += prize;
+                break;
+            case 'tickets':
+                user.spinTickets += prize;
+                break;
+            default:
+                return res.status(400).json({ error: 'Invalid reward type' });
+        }
+
+        await user.save();
+        res.status(200).json({ success: true, message: 'Prize successfully added' });
+    } catch (error) {
+        console.error('Error updating prize:', error);
+        res.status(500).json({ error: 'Failed to update prize' });
+    }
+});
+
+// Adjust the spin-info route to accept the username from the request
+app.get('/api/users/:username/spin-info', async (req, res) => {
+    try {
+        const { username } = req.params;
+        const user = await User.findOne({ username }).select('spinTickets coinBalance earningBalance');
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.json({ spinTickets: user.spinTickets, coinBalance: user.coinBalance, earningBalance: user.earningBalance });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch spin info.' });
+    }
 });
 
 app.post('/api/withdraw', async (req, res) => {
@@ -204,15 +315,38 @@ app.post('/api/startMining', async (req, res) => {
 
         user.isMining = true;
         user.miningStartTime = new Date();
+
+        // Define rewards based on the user's level
+        const rewards = [15000, 30000, 60000, 120000, 240000]; // These should correspond to your levels
+        const minedAmount = rewards[user.level - 1]; // Calculate the reward based on the current level
+
+        // Handle referral bonus immediately when mining starts
+        if (user.referredBy) {
+            const referrer = await User.findById(user.referredBy);
+            if (referrer) {
+                const referralBonus = minedAmount * 0.2; // 20% of the mined amount
+                referrer.coinBalance += referralBonus;
+                referrer.totalReferralBonus = (referrer.totalReferralBonus || 0) + referralBonus;
+                await referrer.save();
+            }
+        }
+        
+        // Determine spin tickets based on user level
+        const spinTicketsByLevel = [2, 4, 8, 16, 32]; // Tickets for levels 1 to 5
+        const spinTickets = spinTicketsByLevel[user.level - 1] || 0; // Default to 0 if level is outside range
+
+        // Reward the user with spin tickets
+        user.spinTickets += spinTickets;
+
         await user.save();
 
-        // Don't add referral bonuses to coinBalance
         res.status(200).json({
-            miningStartTime: user.miningStartTime,
-            coinBalance: user.coinBalance,
-            level: user.level,
-            miningSessionCount: user.miningSessionCount || 0
-        });
+    miningStartTime: user.miningStartTime,
+    coinBalance: user.coinBalance,
+    level: user.level,
+    miningSessionCount: user.miningSessionCount || 0,
+    spinTickets: user.spinTickets // Include spinTickets in the response
+});
     } catch (error) {
         res.status(500).json({ message: 'Error starting mining' });
     }
@@ -236,17 +370,6 @@ app.post('/api/miningStatus', async (req, res) => {
             user.miningStartTime = null;
             user.miningSessionCount = (user.miningSessionCount || 0) + 1;
 
-            // Handle referral bonus
-            if (user.referredBy) {
-                const referrer = await User.findById(user.referredBy);
-                if (referrer) {
-                    const referralBonus = minedAmount * 0.2;
-                    referrer.coinBalance += referralBonus;
-                    referrer.totalReferralBonus = (referredBy.totalReferralBonus || 0) + referralBonus;
-                    await referrer.save();
-                }
-            }
-
             await user.save();
         }
 
@@ -255,7 +378,8 @@ app.post('/api/miningStatus', async (req, res) => {
             coinBalance: user.coinBalance,
             level: user.level,
             miningSessionCount: user.miningSessionCount || 0,
-            miningComplete: !user.isMining
+            miningComplete: !user.isMining,
+            spinTickets: user.spinTickets
         });
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving mining status' });
@@ -371,14 +495,14 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Internal server error.' });
 });
 
-['friends', 'tasks', 'softie', 'more', 'upgrades', 'login', 'register', 'reset-password', 'verification', 'home', 'payment','whitepaper', 'withdraw', 'learn-more', 'market' ].forEach(file => {
+['friends', 'tasks', 'softie', 'more', 'upgrades', 'login', 'register', 'reset-password', 'verification', 'home', 'payment','whitepaper', 'withdraw', 'learn-more', 'market', 'wheelv2', 'game-info' ].forEach(file => {
     app.get(`/${file}`, (req, res) => {
         res.sendFile(path.join(__dirname, '../public', `${file}.html`));
     });
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public', 'index.html'));
+    res.sendFile(path.join(__dirname, '../public', 'index2.html'));
 });
 
 app.listen(port, () => {

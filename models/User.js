@@ -24,9 +24,11 @@ const userSchema = new mongoose.Schema({
     },
     notifications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Notification' }],
     transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }], 
+    withdrawals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Withdrawal' }],
     commitmentBalance: { type: Number, default: 0 },
     earningBalance: { type: Number, default: 0 },
     totalReferralBonus: { type: Number, default: 0 },
+    totalWithdrawal: { type: Number, default: 0 },
     spinTickets: {
         type: Number,
         default: 0

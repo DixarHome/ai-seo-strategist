@@ -6,12 +6,25 @@ const helmet = require('helmet');
 const connectToDatabase = require('../utils/db');
 const User = require('../models/User');
 const Transaction = require('../models/Transaction');
+const Withdrawal = require('../models/Withdrawal');
+const nodemailer = require('nodemailer');
 const authRoutes = require('../routes/auth');
 const Notification = require('../models/Notification');
 require('dotenv').config();
 
+
 const app = express();
 const port = process.env.PORT || 3000;
+
+const adminEmail = 'support@softcoin.world';
+
+const transporter = nodemailer.createTransport({
+    service: 'Zoho',
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
+    }
+});
 
 // Use helmet to set the HSTS header
 app.use(helmet.hsts({
@@ -33,6 +46,25 @@ app.get('/ping', (req, res) => {
   res.send('OK');
 });
 
+app.get('/api/users/:username/withdrawals', async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        const user = await User.findOne({ username }).populate('withdrawals').exec();
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const withdrawals = user.withdrawals.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by most recent
+        const totalWithdrawal = user.totalWithdrawal || 0;
+
+        res.status(200).json({ withdrawals, totalWithdrawal });
+    } catch (error) {
+        console.error('Error fetching withdrawals:', error);
+        res.status(500).json({ error: 'Failed to fetch withdrawals' });
+    }
+});
+
 app.get('/api/leaderboard/:username', async (req, res) => {
     const { username } = req.params;
 
@@ -40,7 +72,7 @@ app.get('/api/leaderboard/:username', async (req, res) => {
         // Fetch all users with a commitmentBalance greater than 0
         const users = await User.find({ commitmentBalance: { $gt: 0 } })
             .sort({ commitmentBalance: -1 })  // Sort by commitmentBalance in descending order
-            .select('username commitmentBalance earningBalance');  // Select only the needed fields
+            .select('username commitmentBalance earningBalance totalWithdrawal');  // Select only the needed fields
 
         if (!users || users.length === 0) {
             return res.status(404).json({ message: 'No users found for the leaderboard' });
@@ -136,6 +168,8 @@ app.get('/api/users/:username/spin-info', async (req, res) => {
     }
 });
 
+// server.js
+
 app.post('/api/withdraw', async (req, res) => {
     const { username, amount, method, walletAddress } = req.body;
 
@@ -151,6 +185,20 @@ app.post('/api/withdraw', async (req, res) => {
         }
 
         user.earningBalance -= amount;
+        await user.save();
+
+        // Create a new withdrawal document
+        const withdrawal = new Withdrawal({
+            username: user.username,
+            amount,
+            walletAddress,
+            currency: method // Assuming 'method' refers to currency
+        });
+
+        await withdrawal.save();
+
+        // Add withdrawal reference to the user's withdrawals array
+        user.withdrawals.push(withdrawal._id);
         await user.save();
 
         // Send email to support
@@ -182,6 +230,7 @@ app.post('/api/withdraw', async (req, res) => {
     }
 });
 
+
 const cron = require('node-cron');
 const calculateAndUpdateReturns = require('../utils/returns');
 
@@ -194,6 +243,68 @@ cron.schedule('0 0 * * *', async () => {
     timezone: "Etc/GMT"
 });
 
+app.post('/api/payments', async (req, res) => {
+    try {
+        const { username, amount, transactionId, cryptoType } = req.body;
+
+        if (!username || !amount || !transactionId || !cryptoType) {
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const newTransaction = new Transaction({
+            username,
+            amount,
+            transactionId,
+            cryptoType
+        });
+
+        await newTransaction.save();
+
+        user.transactions.push(newTransaction._id);
+        await user.save();
+
+        const userMailOptions = {
+            from: process.env.EMAIL,
+            to: user.email,
+            subject: 'Transaction Received',
+            text: `Dear ${user.fullName},\n\nYour deposit is being processed. You will receive a status message within 2 to 24 hours.\n\nThank you,\nSoftcoin Team`
+        };
+
+        transporter.sendMail(userMailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending email to user:', error);
+                return res.status(500).json({ message: 'Internal server error' });
+            }
+            console.log('Email sent to user:', info.response);
+
+            // Send email to admin
+            const adminMailOptions = {
+                from: process.env.EMAIL,
+                to: adminEmail,
+                subject: 'New Transaction Submitted',
+                text: `A new transaction has been submitted by ${username}.\n\nAmount: ${amount} USD\nTransaction ID: ${transactionId}\nCrypto Type: ${cryptoType}\n\nPlease review the transaction.\n\nThank you,\nSoftcoin Team`
+            };
+
+            transporter.sendMail(adminMailOptions, (error, info) => {
+                if (error) {
+                    console.error('Error sending email to admin:', error);
+                    return res.status(500).json({ message: 'Internal server error' });
+                }
+                console.log('Email sent to admin:', info.response);
+                res.status(201).json({ message: 'Payment data received and stored', transaction: newTransaction });
+            });
+        });
+
+    } catch (error) {
+        console.error('Error saving payment data:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 app.get('/api/users/:username/commitmentBalance', async (req, res) => {
     const { username } = req.params;

@@ -19,10 +19,12 @@
             padding: 8px;
             border-radius: 10px;
             padding-bottom: 100px;
+            margin-top: 2px;
         }
         h1, h2 {
             text-align: center;
             color: #fff;
+            
         }
         .crypto-options {
             display: flex;
@@ -33,7 +35,8 @@
         .crypto-option {
             flex: 1;
             text-align: center;
-            padding: 10px;
+            padding: 5px;
+            padding-bottom: 0px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
@@ -44,7 +47,7 @@
             padding: 5px;
         }
         .crypto-option.selected {
-            background-color: #63f871;
+            background-color: #009b00;
             border-radius: 5px;
         }
         .amount-input, .wallet-address, .conversion-result {
@@ -69,13 +72,15 @@
             flex: 1;
         }
         .wallet-address button {
-            margin-left: 10px;
             padding: 10px;
             font-size: 16px;
             cursor: pointer;
-            background-color: #63f871;
+            background-color: #009b00;
             border: none;
             border-radius: 8px;
+            width: 100%;
+            margin-top: 10px;
+            color: white;
         }
         .deposit-history {
             margin-top: 30px;
@@ -88,12 +93,13 @@
             justify-content: space-between;
             padding: 10px;
             border-bottom: 1px solid #ddd;
+            font-size: 10px;
         }
         .submit-btn {
             width: 100%;
             padding: 10px;
             font-size: 18px;
-            background-color: green;
+            background-color: #009b00;
             color: white;
             border: none;
             border-radius: 8px;
@@ -107,6 +113,13 @@
             text-align: left;
             align-items: center;
             margin: 2.5em auto;
+            background: linear-gradient(180deg, #01196a, #80057c);
+            padding: 15px;
+            border-radius: 15px;
+        }
+        .instructions h3 {
+          margin-top: 5px;
+          font-size: 20px;
         }
         #prehamble {
             color: #00f300;
@@ -115,9 +128,12 @@
         .instructions p {
             text-align: left;
             font-size: 12px;
+            font-weight: bold;
         }
         .instructions li {
             font-size: 12px;
+            margin-bottom: 10px;
+            width: 90%;
         }
         h3 {
             text-align: center;
@@ -163,7 +179,7 @@
         /* Loading animation styles */
         .loading-spinner {
             border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: #000;
+            border-left-color: #00f300;
             border-radius: 50%;
             width: 36px;
             height: 36px;
@@ -182,6 +198,11 @@
             margin: 15px;
             margin-top: 18px;
         }
+        .bread {
+          display: flex;
+          margin-top: 40px;
+        }
+        
     </style>
     <!-- Matomo -->
 <script>
@@ -207,9 +228,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>Deposit Into Your Commitment Account</h1>
-        <p>Choose Your Preferred Payment Option</p>
-        <h2 id="crypto-name"></h2>
+        <h1>Make A Commitment</h1>
+
+        <div class="bread">
+        <p style="font-size: 12px; margin-top: 15px; text-align: left;">Choose Your Preferred Payment Option</p>
+        
         <div class="crypto-options">
             <div class="crypto-option" data-crypto="USDT" data-wallet="0xE03F7773FC37E674B65A812667dC945382cE9A6b">
                 <img src="crypto/usdt.png" alt="USDT">
@@ -218,6 +241,8 @@
                 <img src="crypto/bnb.png" alt="BNB">
             </div>
         </div>
+        </div>
+                <h2 id="crypto-name"></h2>
         
         <div id="custom-alert"></div>
         
@@ -226,14 +251,14 @@
             <input type="number" id="usd-amount" placeholder="Enter amount in USD" min="5">
         </div>
         
-        <div class="conversion-result">
+        <div class="conversion-result" style="text-align: center; font-size: 12px;">
             Send Exactly  <span id="crypto-amount">0.00</span> <span id="selected-crypto">Cryptocurrency</span> to the wallet address provided.
         </div>
 
         <div class="wallet-address">
             <label for="wallet">Wallet Address:</label>
-            <div id="bull"><input type="text" id="wallet" readonly>
-            <button id="copy-wallet-btn">Copy</button></div>
+            <input type="text" id="wallet" readonly>
+            <button id="copy-wallet-btn">Copy</button>
         </div>
         
         <div class="amount-input">
@@ -246,11 +271,11 @@
             <p id="prehamble">Read these instructions carefully before submission</p>
             <ul>
             <li>Deposits can be made with either USDT(BEP20) or BNB(BEP20)</li>
-            <li>Click on the icon of your preffered crypto option, and the wallet address will appear in the box below.</li>
+            <li>Click on the icon of your preffered crypto option, and the wallet address will appear in the wallet address box.</li>
             <li>Enter the amount you want to deposit in USD, and the equivalent amount in the crypto you chose will be displayed.</li>
             <li>Copy the wallet address provided, and send the exact amount displayed to the wallet address you copied.</li>
-            <li>After the crypto is transfered successfully, copy the transaction ID, and paste it in the box provided.</li>
-            <li>Only Click the "Submit Payment" button after you have successfully made the transfer and pasted your transaction ID</li>
+            <li>After the crypto is transfered successfully, copy the transaction ID, and paste it in the Transaction ID box.</li>
+            <li>Only click the "Submit Payment" button after you have successfully made the transfer and pasted your transaction ID.</li>
             <li>After submission, your transaction will be confirmed by the team and your commitment account will be credited. This might take between 2 to 24 hours, please be patient.</li>
             <li>Your earning begins immediately your deposit is confirmed. Cheers!</li>
             </ul>

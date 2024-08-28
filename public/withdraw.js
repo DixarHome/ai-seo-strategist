@@ -46,6 +46,41 @@ document.addEventListener('DOMContentLoaded', function() {
             showAlert('Error fetching earning balance');
         });
 
+    // Fetch withdrawals and totalWithdrawal
+    fetch(`/api/users/${username}/withdrawals`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                showAlert('Error fetching withdrawals');
+            } else {
+                // Display total withdrawal
+                const totalWithdrawal = data.totalWithdrawal || 0;
+                document.getElementById('total-withdrawal').innerText = `${totalWithdrawal.toFixed(2)} USD`;
+
+                // Display withdrawals
+                const withdrawalList = document.getElementById('withdrawal-list');
+                withdrawalList.innerHTML = ''; // Clear any existing entries
+
+                data.withdrawals.forEach(withdrawal => {
+                    const formattedDate = new Date(withdrawal.createdAt).toLocaleDateString();
+                    const withdrawalItem = document.createElement('div');
+                    withdrawalItem.className = 'withdrawal-item';
+                    withdrawalItem.innerHTML = `
+                        <div>${formattedDate}</div>
+                        <div>${withdrawal.amount} USD</div>
+                        <div>${withdrawal.currency}</div>
+                        <div>${withdrawal.status}</div>
+                    `;
+                    // Prepend the most recent withdrawal at the top
+                    withdrawalList.prepend(withdrawalItem);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching withdrawals:', error);
+            showAlert('Error fetching withdrawals');
+        });
+
     // Handle form submission
     document.getElementById('withdrawal-form').addEventListener('submit', function(event) {
         event.preventDefault();

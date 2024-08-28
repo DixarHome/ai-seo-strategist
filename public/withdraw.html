@@ -10,8 +10,18 @@
             margin: 0;
             font-family: Arial, sans-serif;
             top: 0;
+            overflow: auto;
         }
-
+        h2, h3 {
+          text-align: center;
+        }
+        h2 {
+          margin-bottom: 40px;
+          font-size: 15px;
+        }
+        h3 {
+          margin-top: 40px;
+        }
         .container {
             width: 80%;
             max-width: 500px;
@@ -21,15 +31,26 @@
             margin-top: 8px;
             border-radius: 8px;
         }
+        select {
+           width: 100%;
+           padding: 8px;
+            margin: 4px 0;
+            border: none;
+            border-radius: 4px;
+            background-color: #fff;
+            color: #333;
+            outline: none;
+        }
 
         header {
             text-align: center;
             margin-bottom: 50px;
+            margin-top: 3px;
         }
 
         header h1 {
-            font-size: 24px;
-            margin-top: 15px;
+            font-size: 20px;
+            
             color: #fff;
             margin: 0;
         }
@@ -44,7 +65,7 @@
             font-weight: bold;
         }
 
-        input, select, textarea {
+        input, textarea {
             width: calc(100% - 16px);
             padding: 8px;
             margin: 4px 0;
@@ -134,6 +155,28 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+.withdrawal-item {
+    display: flex;
+    justify-content: space-between; /* Distribute space evenly */
+    padding: 10px;
+    border-bottom: 1px solid #ddd; /* Optional: Add a separator line */
+    font-size: 10px; /* Optional: Adjust font size */
+}
+
+.withdrawal-item > div {
+    flex: 1; /* Each div will take equal space */
+    text-align: left; /* Align text to the left */
+    padding: 0 10px; /* Add padding between items */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.withdrawal-item > div:last-child {
+    text-align: right; /* Align the last item (status) to the right */
+}
+.bottom {
+  padding-bottom: 60px;
+}
     </style>
     <!-- Matomo -->
 <script>
@@ -163,6 +206,7 @@
             <h1>Withdraw Earnings</h1>
         </header>
         <div id="alert-box" class="alert-box"></div>
+        <h2>Total Withdrawn: <span id="total-withdrawal"></span></h2>
 
         <main>
             <form id="withdrawal-form">
@@ -171,11 +215,11 @@
                     <input type="number" id="amount" name="amount" required>
                     <div class="balance-info">Available Balance: <span id="earning-balance">0.00 USD</span></div>
                 </div>
-                <div class="form-group">
-                    <label for="method">Currency</label>
+                <div class="form-group select">
+                    <label for="method">Preferred Currency</label>
                     <select id="method" name="method" required>
-                        <option value="usdt">USDT (BEP20)</option>
-                        <option value="bnb">BNB (BEP20)</option>
+                        <option value="USDT">USDT (BEP20)</option>
+                        <option value="BNB">BNB (BEP20)</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -184,8 +228,13 @@
                 </div>
                 <button type="submit">Submit Request</button>
             </form>
+    <div class="withdrawal-summary">
+        <h3>Withdrawal History</h3>
+        <div id="withdrawal-list"></div>
+    </div>
         </main>
     </div>
+    <div class="bottom">-</div>
     <div id="cherry-placeholder"></div>
     <div id="nav-placeholder"></div>
     <script src="navigation2.js"></script>
