@@ -221,9 +221,10 @@ p {
 
 /* Slideshow Container */
 #slideshow-container {
-    width: 300px;
+    width: 320px;
     height: 120px;
     margin: 0 auto;
+    padding: auto;
     overflow: hidden;
     position: relative;
     display: flex;
@@ -235,17 +236,17 @@ p {
 
 .slide {
     display: none;
-    flex: 0 0 100%; /* Ensure each slide takes full width */
-    transition: transform 1s ease;
+    transition: transform 2s ease;
     
 }
 
 .slide img, .slide video {
-    width: 100%;
+    width: 300px;
     height: 100%;
     display: block;
     margin: 0;
     border-radius: 15px;
+    margin: 0 auto;
 }
 
 /* Add active class to the first slide */
