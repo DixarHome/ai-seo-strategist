@@ -49,7 +49,6 @@ body {
     padding: 10px 20px;
     margin-left: 10px;
     background: linear-gradient(45deg, #028900, #3bab01, #028900);
-    background-color: #028900;
     color: white;
     border: none;
     border-radius: 10px; /* Curved corners */
@@ -153,17 +152,6 @@ body {
     background-color: #ccc;
     cursor: not-allowed;
     animation: none;
-}
-
-#mine-btn.loading::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.1);
-    animation: loadingBar 7200s linear forwards; /* 2 hours (7200 seconds) */
 }
 
 #timer {

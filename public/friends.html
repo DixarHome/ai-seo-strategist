@@ -17,8 +17,9 @@
         }
 
         h1 {
-            font-size: 2em;
+            font-size: 1.5em;
             margin-bottom: 10px;
+            margin-top: 25px;
         }
 
         p {
@@ -79,6 +80,7 @@
             background-color: #268403;
             color: #fff;
             padding: 12px 24px;
+            margin:0 auto;
             text-decoration: none;
             border-radius: 5px;
             margin-top: 20px;
@@ -86,13 +88,15 @@
             bottom: 100px;
             left: calc(50% - 70px);
             z-index: 999;
+            border: solid 1px #74f974;
+            margin-left: -8px;
         }
 
         .custom-alert {
             display: none;
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 40%;
+            left: 20%;
             padding: 15px;
             border-radius: 5px;
             color: white;
@@ -190,7 +194,7 @@
         </table>
     </div>
     <div class="empty">-</div>
-    <button class="button" id="invite-btn">Invite a Friend</button>
+    <button class="button" id="invite-btn">Copy Referral Link</button>
     
     <div id="cherry-placeholder"></div>
     <script src="cherry.js" defer></script>
