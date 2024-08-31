@@ -14,10 +14,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         "join-btn": { name: "Join Softcoin Telegram Channel", target: 1, reward: 10000, action: "Join" },
         "earnbitmoon": { name: "Join EarnBitMoon", target: 1, reward: 10000, action: "Join" },
         "refer2-btn": { name: "Invite 2 friends", target: 2, reward: 30000 },
+        "pocket": { name: "Join PocketFi", target: 1, reward: 10000, action: "Join" },
         "refer5-btn": { name: "Invite 5 friends", target: 5, reward: 50000 },
         "refer10-btn": { name: "Invite 10 friends", target: 10, reward: 100000 },
+        "freebitcoin": { name: "Start Earning Free Bitcoin", target: 1, reward: 10000, action: "Start" },
         "mine2-btn": { name: "Complete 2 mining sessions", target: 2, reward: 10000 },
         "mine20-btn": { name: "Complete 20 mining sessions", target: 20, reward: 100000 },
+        "coinpayu": { name: "Start Earning On Coinpayu", target: 1, reward: 10000, action: "Start" },
         "mine100-btn": { name: "Complete 100 mining sessions", target: 100, reward: 1000000 },
         "post-btn": { name: "Make a post on X", target: 1, reward: 10000, action: "Post" },
         "cats": { name: "Join the CatsGang", target: 1, reward: 10000, action: "Join" },
@@ -231,9 +234,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const fetchProgress = taskId.startsWith('refer') ? fetchReferralCount : fetchMiningSessionCount;
-        if (taskId === 'followw-btn' || taskId === 'join-btn' || taskId === 'post-btn'  || taskId === 'farm-btn' || taskId === 'seed-btn' || taskId === 'sunwave' || taskId === 'call' || taskId === 'lost-dog' || taskId === 'major' || taskId === 'money-dog' || taskId === 'mozoai' || taskId === 'nomiz' || taskId === 'time-farm' || taskId === 'vertus' || taskId === 'hot' || taskId === 'athene' || taskId === 'simple' || taskId === 'cex' || taskId === 'match-quest' || taskId === 'blum' || taskId === 'earnbitmoon' || taskId === 'truecoin' || taskId === 'satoshi' || taskId === 'sauce' || taskId === 'cats') {
+        if (taskId === 'followw-btn' || taskId === 'join-btn' || taskId === 'post-btn'  || taskId === 'farm-btn' || taskId === 'seed-btn' || taskId === 'sunwave' || taskId === 'call' || taskId === 'lost-dog' || taskId === 'major' || taskId === 'money-dog' || taskId === 'mozoai' || taskId === 'nomiz' || taskId === 'time-farm' || taskId === 'vertus' || taskId === 'hot' || taskId === 'athene' || taskId === 'simple' || taskId === 'cex' || taskId === 'match-quest' || taskId === 'blum' || taskId === 'earnbitmoon' || taskId === 'truecoin' || taskId === 'satoshi' || taskId === 'sauce' || taskId === 'cats' || taskId === 'pocket' || taskId === 'freebitcoin' || taskId === 'coinpayu') {
             const url = {
                 'followw-btn': 'https://twitter.com/softcoinproject',
+                'freebitcoin': 'https://freebitco.in/?r=41656831',
+                'coinpayu': 'https://www.coinpayu.com/?r=Davidnelson',
+                'pocket': 'https://t.me/pocketfi_bot/Mining?startapp=1731371837',
                 'sauce': 'https://sauces.world/@davidnelson',
                 'cats': 'https://t.me/catsgang_bot/join?startapp=rLwerPH0TY6fTsuSKrikC',
                 'satoshi': 'https://invite.satoshiapp.xyz/7j5qq',
