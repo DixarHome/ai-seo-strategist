@@ -49,16 +49,16 @@ async function spinWheel() {
     // Disable the button while the wheel is spinning
     spinButton.disabled = true;
     // Retrieve probability progress from localStorage
-    let probabilityProgress = JSON.parse(localStorage.getItem('probabilityProgress')) || {
+    let probabilityProgress = {
         ranges: [
             { min: 162, max: 197, probability: 0.7},
             { min: 90, max: 125, probability: 0.17485 },
             { min: 54, max: 90, probability: 0.05 },
             { min: 18, max: 54, probability: 0.05 },
             { min: 306, max: 342, probability: 0.025 },
-            { min: 235, max: 270, probability: 0.0001 },
-            { min: 0, max: 18, probability: 0.00005 },
-            { min: 270, max: 306, probability: 0.0000 }
+            { min: 235, max: 270, probability: 0.00015 },
+            { min: 0, max: 18, probability: 0 },
+            { min: 270, max: 306, probability: 0 }
         ]
     };
 
