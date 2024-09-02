@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const username = localStorage.getItem('username');
-    if (!username) return window.location.href = '/login';
+  //  if (!username) return window.location.href = '/login';
     
     const tasksContainer = document.getElementById('tasks-container');
     const loadingSpinner = document.getElementById('loading-spinner');

@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const username = localStorage.getItem('username');
-    if (!username) {
-        window.location.href = '/login';
-    } 
+  //  if (!username) {
+    //    window.location.href = '/login';
+ //   } 
 
     const cryptoOptions = document.querySelectorAll('.crypto-option');
     const walletInput = document.getElementById('wallet');

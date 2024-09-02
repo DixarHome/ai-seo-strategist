@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const username = localStorage.getItem('username');
-    if (!username) return window.location.href = '/login';
+   // if (!username) return window.location.href = '/login';
 
     try {
         const response = await fetch(`/api/miningStatus`, {

@@ -575,9 +575,7 @@
 <script defer>
     document.addEventListener("DOMContentLoaded", () => {
     const username = localStorage.getItem('username');
-    if (!username) {
-        window.location.href = '/login.html';
-    } else {
+    if (username) {
         const truncatedUsername = username.length > 15 ? username.substring(0, 15) + '...' : username;
         document.getElementById('user-name').textContent = truncatedUsername;
     }
