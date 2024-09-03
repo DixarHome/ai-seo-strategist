@@ -545,9 +545,9 @@ async function loadLeaderboard() {
             commitmentSpan.classList.add('commitment');
             commitmentSpan.textContent = `Commitment:  $${leader.commitmentBalance}`;
 
-            const earningsSpan = document.createElement('span');
-            earningsSpan.classList.add('earnings');
-            earningsSpan.textContent = `Earnings:  $${leader.earningBalance.toFixed(2)}`;
+        //    const earningsSpan = document.createElement('span');
+      //      earningsSpan.classList.add('earnings');
+    //        earningsSpan.textContent = `Earnings:  $${leader.earningBalance.toFixed(2)}`;
             
             const cashOutSpan = document.createElement('span');
             cashOutSpan.classList.add('cash-out');
@@ -555,7 +555,7 @@ async function loadLeaderboard() {
 
             detailsDiv.appendChild(usernameSpan);
             detailsDiv.appendChild(commitmentSpan);
-            detailsDiv.appendChild(earningsSpan);
+        //    detailsDiv.appendChild(earningsSpan);
             detailsDiv.appendChild(cashOutSpan);
 
             listItem.appendChild(detailsDiv);
