@@ -46,6 +46,23 @@ app.get('/ping', (req, res) => {
   res.send('OK');
 });
 
+app.post('/api/save-subscription', async (req, res) => {
+  try {
+    const subscription = req.body;
+    const username = req.body.username; // You should send the username along with the subscription
+
+    const user = await User.findOneAndUpdate(
+      { username: username },
+      { pushSubscription: subscription }
+    );
+
+    res.status(201).json({ message: 'Subscription saved.' });
+  } catch (error) {
+    console.error('Error saving subscription:', error);
+    res.status(500).json({ error: 'Failed to save subscription.' });
+  }
+});
+
 app.get('/api/users/:username/withdrawals', async (req, res) => {
     const { username } = req.params;
 
