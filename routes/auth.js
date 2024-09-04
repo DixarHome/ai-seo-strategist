@@ -42,7 +42,7 @@ async function sendWelcomeEmail(email, fullName) {
     <div style="font-family: Arial, sans-serif; line-height: 1.6;">
         <h2>Hello ${fullName}, welcome to Softcoin!</h2>
         <p>We're very excited to have you on board and we promise you, this is going to be a very rewarding experience.</p>
-        <p>You have been given a welcome bonus of 50,000 SFT, 20 WOF Spin Tickets, and $5 USD to start you up on this exciting journey, and there are lots more where that came from.</p>
+        <p>You have been given a welcome bonus of 50,000 SFT, and 10 Wheel of Fortune Spin Tickets, to start you up on this exciting journey, and there are lots more where that came from.</p>
         
         <p><a href="https://app.softcoin.world">Start Mining Softcoin</a></p>
         
@@ -155,8 +155,8 @@ router.get('/verify-email', async (req, res) => {
         user.isVerified = true;
         user.verificationToken = null;
         user.coinBalance = 50000; // Credit the user with their bonus after verification
-        user.spinTickets = 20;
-        user.earningBalance = 5;
+        user.spinTickets = 10;
+      //  user.earningBalance = 5;
         await user.save();
 
         // Send welcome email
@@ -166,7 +166,7 @@ router.get('/verify-email', async (req, res) => {
         const welcomeNotification = new Notification({
             user: user._id,
             title: 'Welcome to Softcoin!',
-            message: 'Your email has been verified, and you have received a welcome bonus of 50,000 SFT, 20 Spin Tickets, and $5 USD'
+            message: 'Your email has been verified, and you have received a welcome bonus of 50,000 SFT, and 20 Spin Tickets. Happy Mining'
         });
         await welcomeNotification.save();
 
@@ -180,7 +180,7 @@ router.get('/verify-email', async (req, res) => {
                 const referralBonus = 50000; // Bonus for the referrer
                 referrer.coinBalance += referralBonus;
                 referrer.totalReferralBonus += referralBonus; // Increment the totalReferralBonus
-                referrer.spinTickets += 20;
+                referrer.spinTickets += 10;
                 referrer.referralCount += 1;
                 referrer.referrals.push(user._id);
                 
