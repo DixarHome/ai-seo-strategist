@@ -262,7 +262,7 @@
             const alertBox = document.getElementById('alert-box');
 
             inviteBtn.addEventListener('click', () => {
-                const referralLink = `https://www.softcoin.world/register?ref=${username}`;
+                const referralLink = `https://app.softcoin.world/register?ref=${username}`;
                 navigator.clipboard.writeText(referralLink).then(() => {
                     showCustomAlert("Referral link copied to clipboard!", true);
                 }).catch(() => {
