@@ -153,6 +153,7 @@ body {
     background-color: #ccc;
     cursor: not-allowed;
     animation: none;
+    border: solid 3px #999999;
 }
 
 #timer {
