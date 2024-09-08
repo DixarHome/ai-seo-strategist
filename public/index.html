@@ -572,20 +572,6 @@
     }
 </script>
 
-<script defer>
-    document.addEventListener("DOMContentLoaded", () => {
-    const username = localStorage.getItem('username');
-    if (username) {
-        const truncatedUsername = username.length > 15 ? username.substring(0, 15) + '...' : username;
-        document.getElementById('user-name').textContent = truncatedUsername;
-    }
-});
-
-    function upgrades() {
-        window.location.href = '/upgrades';
-    }
-</script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
     // Function to check if the referrer is the login page

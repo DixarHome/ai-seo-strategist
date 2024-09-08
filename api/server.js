@@ -10,11 +10,12 @@ const Withdrawal = require('../models/Withdrawal');
 const nodemailer = require('nodemailer');
 const authRoutes = require('../routes/auth');
 const Notification = require('../models/Notification');
+const router = express.Router();
 require('dotenv').config();
 
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 10000;
 
 const adminEmail = 'support@softcoin.world';
 
@@ -44,6 +45,96 @@ const sendEmail = require('../utils/mailer');  // Adjust the path as needed
 
 app.get('/ping', (req, res) => {
   res.send('OK');
+});
+
+// Endpoint to get the user's trybeEarnings
+app.get('/api/users/:username/trybeEarnings', async (req, res) => {
+    try {
+        const user = await User.findOne({ username: req.params.username });
+        if (!user) return res.status(404).send('User not found');
+        res.json({ trybeEarnings: user.trybeEarnings });
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+});
+
+// Helper function to count referrals by level recursively
+async function countReferralsByLevel(user, level) {
+    if (level === 1) {
+        // Direct referrals (Level 1)
+        return user.referrals.filter(referral => referral.commitmentBalance > 0).length;
+    } else {
+        // For Level 2 and beyond
+        let previousLevelReferrals = await getReferralsByLevel(user, level - 1);
+        let currentLevelCount = 0;
+
+        for (let referral of previousLevelReferrals) {
+            let fullReferral = await User.findById(referral).populate('referrals');
+            currentLevelCount += fullReferral.referrals.filter(ref => ref.commitmentBalance > 0).length;
+        }
+
+        return currentLevelCount;
+    }
+}
+
+// Endpoint to count total referrals with commitmentBalance > 0
+app.get('/api/users/:username/total-referrals', async (req, res) => {
+    try {
+        const user = await User.findOne({ username: req.params.username }).populate('referrals');
+        if (!user) return res.status(404).send('User not found');
+
+        const level1Count = await countReferralsByLevel(user, 1);
+        const level2Count = await countReferralsByLevel(user, 2);
+        const level3Count = await countReferralsByLevel(user, 3);
+
+        const totalCount = level1Count + level2Count + level3Count;
+
+        res.json({ totalCount });
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+});
+
+// Helper function to fetch referrals by level
+async function getReferralsByLevel(user, level) {
+    if (level === 1) {
+        // Direct referrals (Level 1)
+        return user.referrals;
+    } else {
+        // For Level 2 and beyond
+        let previousLevelReferrals = await getReferralsByLevel(user, level - 1);
+        let currentLevelReferrals = [];
+        
+        for (let referral of previousLevelReferrals) {
+            let fullReferral = await User.findById(referral).populate('referrals');
+            currentLevelReferrals = currentLevelReferrals.concat(fullReferral.referrals);
+        }
+        
+        return currentLevelReferrals;
+    }
+}
+
+// Endpoint to get user's referrals by level and criteria
+app.get('/api/users/:username/referrals/:level', async (req, res) => {
+    try {
+        const user = await User.findOne({ username: req.params.username }).populate('referrals');
+        if (!user) return res.status(404).send('User not found');
+
+        const level = parseInt(req.params.level);
+        let referrals = await getReferralsByLevel(user, level);
+
+        referrals = referrals.filter(referral => referral.commitmentBalance > 0);
+
+        const formattedReferrals = referrals.map(referral => ({
+            username: referral.username,
+            commitmentBalance: referral.commitmentBalance,
+            earningBalance: referral.earningBalance
+        }));
+
+        res.json(formattedReferrals);
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
 });
 
 app.post('/api/save-subscription', async (req, res) => {
@@ -445,7 +536,7 @@ app.post('/api/startMining', async (req, res) => {
         user.miningStartTime = new Date();
 
         // Define rewards based on the user's level
-        const rewards = [15000, 30000, 60000, 120000, 240000]; // These should correspond to your levels
+        const rewards = [5000, 10000, 20000, 40000, 80000]; // These should correspond to your levels
         const minedAmount = rewards[user.level - 1]; // Calculate the reward based on the current level
 
         // Handle referral bonus immediately when mining starts
@@ -460,7 +551,7 @@ app.post('/api/startMining', async (req, res) => {
         }
         
         // Determine spin tickets based on user level
-        const spinTicketsByLevel = [2, 4, 8, 16, 32]; // Tickets for levels 1 to 5
+        const spinTicketsByLevel = [1, 2, 4, 8, 16]; // Tickets for levels 1 to 5
         const spinTickets = spinTicketsByLevel[user.level - 1] || 0; // Default to 0 if level is outside range
 
         // Reward the user with spin tickets
@@ -488,7 +579,7 @@ app.post('/api/miningStatus', async (req, res) => {
 
         const currentTime = Date.now();
         const rewardIntervals = [2 * 60 * 60 * 1000, 3 * 60 * 60 * 1000, 4 * 60 * 60 * 1000, 5 * 60 * 60 * 1000, 6 * 60 * 60 * 1000];
-        const rewards = [15000, 30000, 60000, 120000, 240000];
+        const rewards = [5000, 10000, 20000, 40000, 80000];
         const miningEndTime = new Date(user.miningStartTime).getTime() + rewardIntervals[user.level - 1];
 
         if (user.isMining && currentTime >= miningEndTime) {
@@ -623,7 +714,7 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Internal server error.' });
 });
 
-['friends', 'tasks', 'tasksv2', 'softie', 'more', 'upgrades', 'login', 'register', 'reset-password', 'verification', 'home', 'payment','whitepaper', 'withdraw', 'learn-more', 'market', 'wheelv2', 'game-info' ].forEach(file => {
+['friends', 'tasks', 'tasksv2', 'trybe', 'softie', 'more', 'upgrades', 'login', 'register', 'reset-password', 'verification', 'home', 'payment','whitepaper', 'withdraw', 'learn-more', 'market', 'wheelv2', 'game-info' ].forEach(file => {
     app.get(`/${file}`, (req, res) => {
         res.sendFile(path.join(__dirname, '../public', `${file}.html`));
     });

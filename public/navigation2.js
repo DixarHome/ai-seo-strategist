@@ -36,3 +36,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loadNavMenu();
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const hasClicked = localStorage.getItem("notificationClicked");
+  const badge = document.getElementById("notification-badge");
+
+  // Show the badge only if the link hasn't been clicked
+  if (!hasClicked) {
+    badge.style.display = "inline";
+  }
+});

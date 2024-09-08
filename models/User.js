@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema({
         token: String,
         expires: Date
     },
+    trybeEarnings: { type: Number, default: 0 },  // Add the new field
     notifications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Notification' }],
     transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }], 
     withdrawals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Withdrawal' }],
@@ -39,12 +40,12 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.calculateDailyReturns = async function () {
     if (this.commitmentBalance > 0) {
         const dailyRates = [
-            { min: 5, max: 30, rate: 0.03 },
-            { min: 31, max: 100, rate: 0.04 },
-            { min: 101, max: 500, rate: 0.05 },
-            { min: 501, max: 2000, rate: 0.06 },
-            { min: 2001, max: 5000, rate: 0.07 },
-            { min: 5001, max: Infinity, rate: 0.08 }
+            { min: 5, max: 30, rate: 0.015 },
+            { min: 31, max: 100, rate: 0.02 },
+            { min: 101, max: 500, rate: 0.025 },
+            { min: 501, max: 2000, rate: 0.03 },
+            { min: 2001, max: 5000, rate: 0.035 },
+            { min: 5001, max: Infinity, rate: 0.04 }
         ];
 
         const dailyRate = dailyRates.find(rate => this.commitmentBalance >= rate.min && this.commitmentBalance <= rate.max);

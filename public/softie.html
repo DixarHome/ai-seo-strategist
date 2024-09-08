@@ -175,7 +175,7 @@
 
         .many {
             color: #fff;
-            margin-top: 20px;
+            margin-top: 0px;
             padding: 0;
             width: 80%;
             text-align: center;
@@ -372,6 +372,36 @@
     text-overflow: ellipsis;
     
 }
+#trybe {
+  padding: 5px 10px;
+  margin: 10px auto;
+  text-align: center;
+  background-color: #7c0293;
+  border-radius: 10px;
+  width: 50%;
+  border: solid 1px #fff;
+  position: relative;
+  margin-top: 20px;
+}
+#trybe a {
+  text-decoration: none;
+  color: #fff;
+}
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+}
+
     </style>
     <!-- Matomo -->
 <script>
@@ -409,6 +439,7 @@
             <a href="/learn-more">Learn More</a>
             <a href="/payment">Deposit</a>
             <a href="/withdraw">Withdraw</a>
+            <a href="/trybe">Your Trybe</a>
         </nav>
     </header>
     <section class="balance-section">
@@ -431,11 +462,14 @@
             <p>Level: <span id="softie-level"></span></p>
             <p>Daily Profit: <span id="daily-profit">0 USD</span></p>
         </div>
-        
+        <div id="trybe">
+          <div id="notification-badge" style="display: none;" class="badge"></div>
+  <a href="trybe.html" id="notification-link" onclick="markAsRead()">Check Out Your Trybe</a>
+</div>
     </section>
     <section class="many">
         <h2>Make A Commitment</h2>
-        <p>Become a Softcoin Shareholder by Depositing at least $5 in your Commitment Account.</p><p>As a Shareholder, you get a daily return of up to 8% of your committed fund. And this return will be paid everyday until TGE. </p> <p>You also get a bonus of 5% of the amount deposited by your friends.</p><p>Commitments will be unlocked and fully refunded to Shareholders after Token Generation Event (TGE).</p>
+        <p>Become a Softcoin Shareholder by Depositing at least $5 in your Commitment Account.</p><p>As a Shareholder, you get a daily return of up to 4% of your committed fund. And this return will be paid everyday until TGE. </p> <p>You also get a bonus of 5% of the amount deposited by your friends.</p><p>Commitments will be unlocked and fully refunded to Shareholders after Token Generation Event (TGE).</p>
        
         <p>The minimum withdrawal is $10, and you can withdraw your earnings at anytime.</p>
         <p>Make your way up the levels and unlocked bigger returns.</p>
@@ -448,42 +482,42 @@
                 <img src="images/1.png" alt="Softie Level 1">
                 <h3>Rising Softie</h3>
                 <p style="font-size: 20px;">$5 - $30</p>
-                <p style="color: gold;">3% Daily Return</p>
-                <p>Up To $1/Day</p>
+                <p style="color: gold;">1.5% Daily Return</p>
+                <p>Up To $0.5/Day</p>
             </div>
             <div class="softie-card">
                 <img src="images/2.png" alt="Softie Level 2">
                 <h3>Junior Softie</h3>
                 <p style="font-size: 20px;">$31 - $100</p>
-                <p style="color: gold;">4% Daily Returns</p>
-                <p>Up To $4/Day</p>
+                <p style="color: gold;">2% Daily Returns</p>
+                <p>Up To $2/Day</p>
             </div>
             <div class="softie-card">
                 <img src="images/3.png" alt="Softie Level 3">
                 <h3>Pro Softie</h3>
                 <p style="font-size: 20px;">$101 - $500</p>
-                <p style="color: gold;">5% Daily Returns</p>
-                <p>Up To $25/Day</p>
+                <p style="color: gold;">2.5% Daily Returns</p>
+                <p>Up To $12.5/Day</p>
             </div>
             <div class="softie-card">
                 <img src="images/4.png" alt="Softie Level 4">
                 <h3>Expert Softie</h3>
                 <p style="font-size: 20px;">$501 - $2000</p>
-                <p style="color: gold;">6% Daily Returns</p>
-                <p>Up To $120/Day</p>
+                <p style="color: gold;">3% Daily Returns</p>
+                <p>Up To $60/Day</p>
             </div>
             <div class="softie-card">
                 <img src="images/5.png" alt="Softie Level 5">
                 <h3>Master Softie</h3>
                 <p style="font-size: 20px;">$2001 - $5000</p>
-                <p style="color: gold;">7% Daily Returns</p>
-                <p>Up To $350/Day</p>
+                <p style="color: gold;">3.5% Daily Returns</p>
+                <p>Up To $175/Day</p>
             </div>
             <div class="softie-card">
                 <img src="images/6.png" alt="Softie Level 6">
                 <h3>Legend Softie</h3>
                 <p style="font-size: 20px;">$5001+</p>
-                <p style="color: gold;">8% Daily Returns</p>
+                <p style="color: gold;">4% Daily Returns</p>
                 <p>Unlimited Earnings</p>
             </div>
         </div>
@@ -504,6 +538,22 @@
     <script src="cherry.js"></script>
     <script src="navigation2.js" defer></script>
     <script src="softie.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+  const hasClicked = localStorage.getItem("notificationClicked");
+  const badge = document.getElementById("notification-badge");
+
+  // Show the badge only if the link hasn't been clicked
+  if (!hasClicked) {
+    badge.style.display = "inline";
+  }
+});
+
+function markAsRead() {
+  localStorage.setItem("notificationClicked", true);
+  document.getElementById("notification-badge").style.display = "none";
+}
+    </script>
     <script>
         // JavaScript to toggle menu visibility
         const hamburgerMenu = document.getElementById('hamburger-menu');
@@ -600,3 +650,4 @@ loadLeaderboard();
     </script>
 </body>
 </html>
+

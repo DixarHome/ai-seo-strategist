@@ -5,13 +5,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentLevel = 1;
     let miningSessionCount = 0;
     const rewardIntervals = [2 * 60 * 60 * 1000, 3 * 60 * 60 * 1000, 4 * 60 * 60 * 1000, 5 * 60 * 60 * 1000, 6 * 60 * 60 * 1000];
-    const rewards = [15000, 30000, 60000, 120000, 240000];
+    const rewards = [5000, 10000, 20000, 40000, 80000];
     let timerInterval;
     let referralBonus = 0;
     let spinTickets = 0; // Track the user's spin tickets
 
     const username = localStorage.getItem('username');
-    //if (!username) return window.location.href = '/login.html'; 
+   if (!username) return window.location.href = '/login'; 
 
     const mineBtn = document.getElementById('mine-btn');
     const coinBalanceEl = document.getElementById('coin-balance');

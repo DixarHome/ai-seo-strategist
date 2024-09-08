@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trybe</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      body {
+        overflow: hidden;
+      }
+      .blast {
+        margin: 0 auto;
+        margin-top: 30px;
+        width: 80%;
+        font-size: 50px;
+        padding: 10px;
+        background: linear-gradient(90deg, #ffffff20, #5a585841);
+        border: solid 1px #616161;
+        text-align: center;
+        color: #fff;
+        position: fixed;
+        font-weight: bold;
+      }
+      .trybe-explain {
+        margin: 0 auto;
+        padding: 0px;
+        
+        width: 80%;
+        color: lightgray;
+        text-align: center;
+        background-color: #ffffff08;
+        padding-top: 0;
+        padding-bottom: 20px;
+      }
+      .trybe-explain p {
+        font-size: 12px;
+        width: 90%;
+        margin: 10px auto;
+      }
+      .trybe-explain button {
+        width: 100%;
+        font-size: 15px;
+        padding: 10px;
+        background: linear-gradient(90deg, #01196a, #80057c);
+        color: white;
+      }
+      .hidden {
+        display: none;
+      }
+      .trybe-earnings {
+        margin: 0 auto;
+        padding: 5px;
+        width: 70%;
+        text-align: center;
+        color: lightgray;
+      }
+      #trybe-earnings {
+        color: white;
+        font-weight: bold;
+      }
+      .trybe-members {
+        margin: 0 auto;
+        width: 86%;
+        background: #ffffff23;
+        border: solid 0.5px #616161;
+        margin-bottom: 50px;
+      }
+      .trybe-buttons {
+        display: flex;
+        justify-content: space-between;
+        background: linear-gradient(90deg, #ffffff20, #5a585841);
+        border: solid 1px #616161;
+        margin: 0;
+        padding: 0;
+      }
+      .trybe-buttons button {
+        font-size: 15px;
+        background: none;
+        border: none;
+        padding: 10px;
+        width: 33%;
+        text-align: center;
+        color: #fff;
+      }
+      .trybe-buttons button.active {
+        background: linear-gradient(90deg, #01196a, #80057c);
+        color: #fff;
+      }
+      .trybe-list {
+        width: 95%;
+        text-align: center;
+        margin: 0 auto;
+        max-height: 220px;
+        overflow: hidden;
+        overflow-y: auto;
+        padding: 10px;
+        padding-top: 0;
+        padding-bottom: 20px;
+        margin-left: -2px;
+        
+      }
+      #tribe-list p {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: solid 1px #ffffff24;
+        padding: 10px 15px;
+        margin: 0;
+      }
+      #tribe-list #username {
+        display: inline-block;
+        width: 60px; /* Adjust the width as needed */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      #tribe-list span {
+        text-align: left;
+      }
+      .heading {
+        display: flex;
+        justify-content: space-between;
+        width: 90%;
+        margin: 0 auto;
+        padding: 5px 15px;
+        background-color: #76fd8823;
+        color: gray;
+      }
+      .trybe-count {
+        margin: 0 auto;
+        width: 80%;
+        display: flex;
+        justify-content: space-between;
+      }
+      .trybe-count p {
+        margin-left: -2px;
+        margin: 5px;
+      }
+      #trybe-count {
+        color: lightblue;
+        margin-left: -5px;
+        font-weight: bold;
+      }
+      .custom-alert {
+            display: none;
+            position: fixed;
+            top: 40%;
+            left: 20%;
+            padding: 15px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .custom-alert.success {
+            background-color: #575757;
+        }
+
+        .button {
+            display: block;
+            background: linear-gradient(90deg, #01196a, #80057c);
+            color: #fff;
+            padding: 12px 24px;
+            margin:0 auto;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            position: fixed;
+            bottom: 100px;
+            left: calc(50% - 70px);
+            z-index: 999;
+            margin-left: -8px;
+        }
+        #main {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          margin-top: 125px;
+          height: 465px;
+          overflow: hidden;
+          overflow-y: auto;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="blast">TRYBE</div>
+    <div id="main">
+    <div class="trybe-explain">
+      <button id="toggle-button">What's Trybe?</button>
+      <p class="hidden">Build a strong trybe to increase your Softie earnings!</p>
+      <p class="hidden">Your trybe includes your friends, their friends, and their friends' friends who are shareholders(Softies).</p>
+      <p class="hidden">As a Trybe Leader, you earn a portion of your trybe members' daily returns: 10% from your direct referrals, 5% from their referrals, and 2% from their referrals' referrals.</p>
+      <p class="hidden">Copy your referral link to start building the ultimate Softie Trybe one member at a time, and create a powerful stream of passive income!</p>
+    </div>
+     <div id="alert-box" class="custom-alert"></div>
+    <div class="trybe-earnings">
+      <p>Trybe Earnings: <span id="trybe-earnings">0.00</span> USD</p>
+    </div>
+    <div class="trybe-count"><p>Trybe Members</p><p id="trybe-count">0</p></div>
+    <div class="trybe-members">
+      <div class="trybe-buttons">
+      <button>Level 1</button>
+      <button>Level 2</button>
+      <button>Level 3</button>
+      </div>
+      <div class="heading"><span>Username</span><span>Commitment</span><span>Earnings</span></div>
+      <div class="trybe-list" id="tribe-list"></div>
+    </div>
+    </div>
+    <button class="button" id="invite-btn">Copy Referral Link</button>
+    <div id="nav-placeholder"></div>
+    <div id="cherry-placeholder"></div>
+    <script src="cherry.js"></script>
+    <script src="navigation2.js" defer></script>
+        <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const username = localStorage.getItem('username');
+          //  if (!username) return window.location.href = '/register';
+
+            const inviteBtn = document.getElementById('invite-btn');
+            const alertBox = document.getElementById('alert-box');
+
+            inviteBtn.addEventListener('click', () => {
+                const referralLink = `https://app.softcoin.world/register?ref=${username}`;
+                navigator.clipboard.writeText(referralLink).then(() => {
+                    showCustomAlert("Referral link copied to clipboard!", true);
+                }).catch(() => {
+                    showCustomAlert("Failed to copy referral link.", false);
+                });
+            });
+
+            function showCustomAlert(message, success) {
+                alertBox.textContent = message;
+                alertBox.className = 'custom-alert';
+                if (success) {
+                    alertBox.classList.add('success');
+                }
+                alertBox.style.display = 'block';
+                setTimeout(() => {
+                    alertBox.style.display = 'none';
+                }, 3000);
+            }
+        });
+    </script>
+    <script>
+      document.getElementById("toggle-button").addEventListener("click", function() {
+        const paragraphs = document.querySelectorAll(".trybe-explain p");
+        paragraphs.forEach(paragraph => {
+          paragraph.classList.toggle("hidden");
+        });
+      });
+    </script>
+<script>
+  document.addEventListener("DOMContentLoaded", async function() {
+    const username = localStorage.getItem('username'); // Get the logged-in username from local storage
+
+    if (!username) {
+      console.error('No username found in local storage');
+      return;
+    }
+
+    // Function to fetch and display Trybe Earnings
+    async function fetchTrybeEarnings() {
+      try {
+        const response = await fetch(`/api/users/${username}/trybeEarnings`);
+        const data = await response.json();
+        document.getElementById('trybe-earnings').textContent = data.trybeEarnings.toFixed(2);
+      } catch (error) {
+        console.error('Error fetching trybe earnings:', error);
+      }
+    }
+
+    // Function to fetch and display total referral count
+    async function fetchTotalReferrals() {
+      try {
+        const response = await fetch(`/api/users/${username}/total-referrals`);
+        const data = await response.json();
+        document.getElementById('trybe-count').textContent = data.totalCount;
+      } catch (error) {
+        console.error('Error fetching total referrals:', error);
+      }
+    }
+
+    // Function to fetch and display referrals based on level
+    async function fetchReferrals(level) {
+      try {
+        const response = await fetch(`/api/users/${username}/referrals/${level}`);
+        const referrals = await response.json();
+        const tribeList = document.getElementById('tribe-list');
+        
+        // Clear the list
+        tribeList.innerHTML = '';
+
+        if (referrals.length === 0) {
+          // Display a message if no referrals are found for the selected level
+          let message;
+          if (level === 1) {
+            message = "You don't have a Level 1 trybe member yet. Copy your referral link and start building your trybe.";
+          } else if (level === 2) {
+            message = "You have no Level 2 trybe member.";
+          } else if (level === 3) {
+            message = "You have no Level 3 trybe member.";
+          }
+          tribeList.innerHTML = `<p>${message}</p>`;
+        } else {
+          // Populate the list with referral data
+          tribeList.innerHTML = referrals.map(referral => 
+            `<p><span id="username">${referral.username}</span><span>${referral.commitmentBalance.toFixed(2)}</span><span>${referral.earningBalance.toFixed(2)}</span></p>`
+          ).join('');
+        }
+      } catch (error) {
+        console.error(`Error fetching level ${level} referrals:`, error);
+      }
+    }
+
+    // Fetch and display Trybe Earnings on page load
+    fetchTrybeEarnings();
+
+    // Fetch and display total referral count on page load
+    fetchTotalReferrals();
+
+    // Fetch and display Level 1 referrals on page load
+    fetchReferrals(1);
+
+    // Add event listeners to level buttons
+    document.querySelectorAll('.trybe-buttons button').forEach((button, index) => {
+      button.addEventListener('click', function() {
+        document.querySelectorAll('.trybe-buttons button').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        fetchReferrals(index + 1);
+      });
+    });
+
+    // Set Level 1 button as active by default
+    document.querySelector('.trybe-buttons button').classList.add('active');
+  });
+</script>
+
+  </body>
+</html>

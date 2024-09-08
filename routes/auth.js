@@ -189,7 +189,7 @@ router.get('/verify-email', async (req, res) => {
                 const referrerNotification = new Notification({
                     user: referrer._id,
                     title: 'Referral Verified!',
-                    message: `${user.username} has verified their email, and you have been rewarded with 50,000 SFT, and 20 Spin Tickets.`
+                    message: `${user.username} has verified their email, and you have been rewarded with 50,000 SFT, and 10 Spin Tickets.`
                 });
 
                 await referrerNotification.save();
