@@ -19,22 +19,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 let softieLevel = '';
 
                 if (commitmentBalance >= 5 && commitmentBalance <= 30) {
-                    dailyProfit = commitmentBalance * 0.03;
+                    dailyProfit = commitmentBalance * 0.015;
                     softieLevel = 'Rising Softie';
                 } else if (commitmentBalance >= 31 && commitmentBalance <= 100) {
-                    dailyProfit = commitmentBalance * 0.04;
+                    dailyProfit = commitmentBalance * 0.02;
                     softieLevel = 'Junior Softie';
                 } else if (commitmentBalance >= 101 && commitmentBalance <= 500) {
-                    dailyProfit = commitmentBalance * 0.05;
+                    dailyProfit = commitmentBalance * 0.025;
                     softieLevel = 'Pro Softie';
                 } else if (commitmentBalance >= 501 && commitmentBalance <= 2000) {
-                    dailyProfit = commitmentBalance * 0.06;
+                    dailyProfit = commitmentBalance * 0.03;
                     softieLevel = 'Expert Softie';
                 } else if (commitmentBalance >= 2001 && commitmentBalance <= 5000) {
-                    dailyProfit = commitmentBalance * 0.07;
+                    dailyProfit = commitmentBalance * 0.035;
                     softieLevel = 'Master Softie';
                 } else if (commitmentBalance >= 5001) {
-                    dailyProfit = commitmentBalance * 0.08;
+                    dailyProfit = commitmentBalance * 0.04;
                     softieLevel = 'Legend Softie';
                 }
 
