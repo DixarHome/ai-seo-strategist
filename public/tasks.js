@@ -12,9 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const taskDetails = {
         "followw-btn": { name: "Follow Softcoin on X", target: 1, reward: 10000, action: "Follow" },
         "join-btn": { name: "Join Softcoin Telegram Channel", target: 1, reward: 10000, action: "Join" },
-        "earnbitmoon": { name: "Join EarnBitMoon", target: 1, reward: 10000, action: "Join" },
         "refer2-btn": { name: "Invite 2 friends", target: 2, reward: 30000 },
-        "pocket": { name: "Join PocketFi", target: 1, reward: 10000, action: "Join" },
         "refer5-btn": { name: "Invite 5 friends", target: 5, reward: 50000 },
         "refer10-btn": { name: "Invite 10 friends", target: 10, reward: 100000 },
         "freebitcoin": { name: "Start Earning Free Bitcoin", target: 1, reward: 10000, action: "Start" },
@@ -22,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "mine20-btn": { name: "Complete 20 mining sessions", target: 20, reward: 100000 },
         "coinpayu": { name: "Start Earning On Coinpayu", target: 1, reward: 10000, action: "Start" },
         "mine100-btn": { name: "Complete 100 mining sessions", target: 100, reward: 1000000 },
-        "post-btn": { name: "Make a post on X", target: 1, reward: 10000, action: "Post" },
+         "post-btn": { name: "Make a post on X", target: 1, reward: 10000, action: "Post" },
         "cats": { name: "Join the CatsGang", target: 1, reward: 10000, action: "Join" },
         "sauce": { name: "Get some Sauce", target: 1, reward: 10000, action: "Go" },
         "satoshi": { name: "Join Satoshi", target: 1, reward: 10000, action: "Join" },
@@ -47,6 +45,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         "wonton": { name: "Earn some $WONTON", target: 1, reward: 10000, action: "Earn" },
         "sidefan": { name: "Join SideFan", target: 1, reward: 10000, action: "Join" },
         "agent": { name: "Join Agent301", target: 1, reward: 10000, action: "Join" },
+        "earnbitmoon": { name: "Join EarnBitMoon", target: 1, reward: 10000, action: "Join" },
+        "pocket": { name: "Join PocketFi", target: 1, reward: 10000, action: "Join" },
+
     };
 
     async function fetchReferralCount() {
@@ -240,12 +241,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (taskId === 'followw-btn' || taskId === 'join-btn' || taskId === 'post-btn'  || taskId === 'farm-btn' || taskId === 'seed-btn' || taskId === 'sunwave' || taskId === 'call' || taskId === 'lost-dog' || taskId === 'major' || taskId === 'money-dog' || taskId === 'mozoai' || taskId === 'nomiz' || taskId === 'time-farm' || taskId === 'vertus' || taskId === 'hot' || taskId === 'athene' || taskId === 'simple' || taskId === 'cex' || taskId === 'match-quest' || taskId === 'blum' || taskId === 'earnbitmoon' || taskId === 'truecoin' || taskId === 'satoshi' || taskId === 'sauce' || taskId === 'cats' || taskId === 'pocket' || taskId === 'freebitcoin' || taskId === 'coinpayu' || taskId === 'wonton' || taskId === 'sidefan' || taskId === 'agent') {
             const url = {
                 'followw-btn': 'https://twitter.com/softcoinproject',
-                'agent': 'https://t.me/Agent301Bot/app?startapp=onetime1170015722',
                 'freebitcoin': 'https://freebitco.in/?r=41656831',
-                'sidefan': 'https://t.me/sidekick_fans_bot?start=1170015722',
-                'wonton': 'https://t.me/WontonOrgBot/gameapp?startapp=referralCode=ZQU4FUL6',
                 'coinpayu': 'https://www.coinpayu.com/?r=Davidnelson',
-                'pocket': 'https://t.me/pocketfi_bot/Mining?startapp=1731371837',
+                'join-btn': 'https://t.me/softcoinupdates',
+                'sidefan': 'https://t.me/sidekick_fans_bot?start=1170015722',
+        'wonton': 'https://t.me/WontonOrgBot/gameapp?startapp=referralCode=ZQU4FUL6',
+        'pocket': 'https://t.me/pocketfi_bot/Mining?startapp=1731371837',
                 'sauce': 'https://sauces.world/@davidnelson',
                 'cats': 'https://t.me/catsgang_bot/join?startapp=rLwerPH0TY6fTsuSKrikC',
                 'satoshi': 'https://invite.satoshiapp.xyz/7j5qq',
@@ -256,7 +257,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 'cex': 'https://t.me/cexio_tap_bot?start=1716270247236481',
                 'simple': 'https://t.me/Simple_Tap_Bot/app?startapp=1716360435372',
                 'athene': 'https://t.me/athene_official_bot/app?startapp=7575c96cae4c',
-                'join-btn': 'https://t.me/softcoinupdates',
                 'farm-btn': 'https://t.me/Tomarket_ai_bot/app?startapp=00001S56',
                 'major': 'https://t.me/major/start?startapp=1170015722',
                 'lost-dog': 'https://t.me/lost_dogs_bot/lodoapp?startapp=ref-u_1170015722__s_578244',
@@ -269,7 +269,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 'time-farm': 'https://t.me/TimeFarmCryptoBot?start=52dNTEOsZ344hdH9',
                 'vertus': 'https://t.me/vertus_app_bot/app?startapp=1170015722',
                 'hot': 'https://t.me/herewalletbot/app?startapp=1496880-village-27134',
-                'post-btn': `https://twitter.com/intent/tweet?text=%F0%9F%93%88%20Ready%20to%20maximize%20your%20crypto%20potential%3F%0A%0ASoftcoin%20offers%20unparalleled%20opportunities%20with%20our%20referral%20and%20mining%20rewards.%0A%0AJoin%20us%20at%20softcoin.world%20and%20start%20earning%20today!%0A%0A%23CryptoLife%20%23CryptoRewards%20%23SoftCoin`
+                'post-btn': `https://twitter.com/intent/tweet?text=%F0%9F%93%88%20Ready%20to%20maximize%20your%20crypto%20potential%3F%0A%0ASoftcoin%20offers%20unparalleled%20opportunities%20with%20our%20referral%20and%20mining%20rewards.%0A%0AJoin%20us%20at%20softcoin.world%20and%20start%20earning%20today!%0A%0A%23CryptoLife%20%23CryptoRewards%20%23SoftCoin`,
+                'agent': 'https://t.me/Agent301Bot/app?startapp=onetime1170015722',
             }[taskId];
             handleSocialMediaTask(taskId, url);
             checkSocialMediaTask(taskId);
