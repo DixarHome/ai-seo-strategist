@@ -150,10 +150,14 @@ body {
 
 #mine-btn:disabled {
     background: linear-gradient(60deg, #ccc, #666565);
-    background-color: #ccc;
+    background-color: #666565;
     cursor: not-allowed;
     animation: none;
     border: solid 3px #999999;
+}
+
+#mine-btn:disabled p {
+    color: #999999;
 }
 
 #timer {
