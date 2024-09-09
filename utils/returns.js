@@ -1,16 +1,15 @@
-// returns.js
-
 const User = require('../models/User');
 const sendEmail = require('../utils/mailer');
 
 async function calculateAndUpdateReturns() {
     const users = await User.find({ commitmentBalance: { $gt: 0 } }).populate('referredBy');
 
-    users.forEach(async (user) => {
+    for (const user of users) {
         const commitmentBalance = user.commitmentBalance;
         let dailyReturn = 0;
         let softieLevel = '';
 
+        // Calculate daily return based on commitmentBalance
         if (commitmentBalance >= 5 && commitmentBalance <= 30) {
             dailyReturn = commitmentBalance * 0.015;
             softieLevel = 'Amateur';
@@ -31,6 +30,7 @@ async function calculateAndUpdateReturns() {
             softieLevel = 'Legend';
         }
 
+        // Update user's earnings and save
         user.earningBalance += dailyReturn;
         user.lastReturnUpdate = new Date();
         await user.save();
@@ -41,27 +41,25 @@ async function calculateAndUpdateReturns() {
             // 10% to referrer
             const referrerBonus = dailyReturn * 0.10;
             referrer.earningBalance += referrerBonus;
-            referrer.trybeEarnings += referrerBonus;  // Increment trybeEarnings instead of totalReferralBonus
+            referrer.trybeEarnings += referrerBonus;
             await referrer.save();
 
-            // Check for referrer's referrer
+            // Check for referrer's referrer and give 5%
             if (referrer.referredBy) {
                 const referrerReferrer = await User.findById(referrer.referredBy);
                 if (referrerReferrer) {
-                    // 5% to referrer's referrer
                     const referrerReferrerBonus = dailyReturn * 0.05;
                     referrerReferrer.earningBalance += referrerReferrerBonus;
-                    referrerReferrer.trybeEarnings += referrerReferrerBonus;  // Increment trybeEarnings
+                    referrerReferrer.trybeEarnings += referrerReferrerBonus;
                     await referrerReferrer.save();
 
-                    // Check for next level referrer
+                    // Check for next level referrer and give 2%
                     if (referrerReferrer.referredBy) {
                         const nextLevelReferrer = await User.findById(referrerReferrer.referredBy);
                         if (nextLevelReferrer) {
-                            // 2% to next level referrer
                             const nextLevelBonus = dailyReturn * 0.02;
                             nextLevelReferrer.earningBalance += nextLevelBonus;
-                            nextLevelReferrer.trybeEarnings += nextLevelBonus;  // Increment trybeEarnings
+                            nextLevelReferrer.trybeEarnings += nextLevelBonus;
                             await nextLevelReferrer.save();
                         }
                     }
@@ -73,7 +71,7 @@ async function calculateAndUpdateReturns() {
         const emailSubject = 'Your Daily Return Update';
         const emailText = `Dear ${user.fullName},\n\nYour daily return of ${dailyReturn} USD has been added to your earnings.\n\nBest regards,\nSoftcoin Team`;
         await sendEmail(user.email, emailSubject, emailText);
-    });
+    }
 }
 
 module.exports = calculateAndUpdateReturns;

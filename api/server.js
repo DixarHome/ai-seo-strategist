@@ -342,14 +342,15 @@ app.post('/api/withdraw', async (req, res) => {
 const cron = require('node-cron');
 const calculateAndUpdateReturns = require('../utils/returns');
 
-// Schedule the job to run at 12am GMT every day
-cron.schedule('0 0 * * *', async () => {
+// Schedule the job to run at 4am GMT every day
+cron.schedule('0 4 * * *', async () => {
     console.log('Calculating and updating returns...');
     await calculateAndUpdateReturns();
 }, {
     scheduled: true,
     timezone: "Etc/GMT"
 });
+
 
 app.post('/api/payments', async (req, res) => {
     try {
