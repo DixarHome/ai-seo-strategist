@@ -9,7 +9,6 @@ body {
     align-items: center;
     height: 100vh;
     overflow: hidden;
-    overflow-y: auto;
     transition: background-color 0.3s, color 0.3s;
     justify-content: flex-start;
     overflow-y: auto;
@@ -184,12 +183,13 @@ p {
   padding: 10px 0;
   display: flex;
   justify-content: space-around;
-  background: rgba(44, 58, 77, 0.8);
+  background: #041f4c8d;
   backdrop-filter: blur(10px);
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  border-top: 1px solid #444;
+  border-top: 1px solid #c1c1c1;
   z-index: 1000;
+  box-shadow: #c1c1c1;
 }
 
 #bottom-nav .nav-item {

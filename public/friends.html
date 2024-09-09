@@ -12,7 +12,7 @@
             margin: 0;
             padding: 20px;
             padding-top: 10px;
-            overflow-y: auto;
+            overflow: hidden;
             
         }
 
@@ -23,7 +23,7 @@
         }
 
         p {
-            font-size: 1.2em;
+            font-size: 0.9em;
             margin-top: 5px;
             color: #b7b7b7;
             text-align: center;
@@ -49,9 +49,6 @@
             color: white;
             text-align: center;
         }
-        .empty {
-            padding-bottom: 150px;
-        }
 
         table {
             width: 100%;
@@ -63,12 +60,12 @@
         th, td {
             padding: 10px;
             text-align: left;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid #ffffff42;
         }
 
         th {
-            background-color: white;
-            color: #2C3A4D;
+            background-color: #ffffff42;
+            color: #fff;
         }
 
         #referrals-table {
@@ -119,10 +116,10 @@
         }
 
         #shalaye {
-            width: 70%;
+            width: 86%;
             background: linear-gradient(45deg, #bf0692, #730477);
             background-color: #650361;
-            padding: 30px;
+            padding: 20px;
             margin-top: 20px;
             border-radius: 20px;
         }
@@ -135,15 +132,38 @@
             background: linear-gradient(45deg, #bf0692, #730477);
             background-color: #650361;
             border-radius: 20px;
+            font-size: 10px;
+            width: 86%;
         }
-        .username-cell {
+ .friends-container .username-cell {
     max-width: 80px; /* Adjust width as needed */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align: left;
 }
-
-
+.balance {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  margin: 5px auto;
+  width: 90%;
+}
+.balance h2 {
+  font-size: 18px;
+}
+.blade {
+  margin: 0;
+  padding: 0 30px;
+  width: 90%;
+  height: 480px;
+  overflow: hidden;
+  overflow-y: auto;
+  padding-bottom: 60px;
+}
+.friends-container td {
+  text-align: center;
+}
     </style>
     <!-- Matomo -->
 <script>
@@ -169,13 +189,17 @@
 </head>
 <body>
     <h1>Your Friends</h1>
+    <div class="blade">
     <div id="shalaye">
         <p>Invite your friends and get 20% of their mining rewards as bonus.</p>
         <p>You will also get 50,000 SFT and 10 Spin Tickets for each invite, and your friend will get a welcome bonus of 50,000 SFT and 20 Spin Tickets too.</p>
     </div>
     <p id="earning-text">You've earned</p>
+    <div class="balance">
     <h2 class="earnings">0 SFT</h2>
+    <h2 class="earnings" style="color: #3efa12;">&</h2>
     <h2 class="softie-bonus">0 USD</h2>
+    </div>
     <p id="from">from your friends</p>
     <div id="alert-box" class="custom-alert"></div>
     <div class="friends-container">
@@ -193,7 +217,7 @@
             </tbody>
         </table>
     </div>
-    <div class="empty">-</div>
+    </div>
     <button class="button" id="invite-btn">Copy Referral Link</button>
     
     <div id="cherry-placeholder"></div>

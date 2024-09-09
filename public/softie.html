@@ -13,6 +13,8 @@
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
+            overflow: hidden;
+            overflow-y: auto;
         }
         
         header {
@@ -63,11 +65,14 @@
             display: none;
             position: absolute;
             top: 60px;
-            right: 20px;
-            background-color: rgb(44,58,77);
+            right: 0px;
+            background-color: #041f4c80;
+            backdrop-filter: blur(10px);
             border-radius: ;
             z-index: 1000;
-            width: 50%;
+            width: 100%;
+            align-items: center;
+            padding: 30px 0px;
         }
         .menu a {
             display: block;
@@ -75,10 +80,11 @@
             color: #e0e1dd;
             text-decoration: none;
             transition: background 0.3s;
+            text-align: center;
         }
         .menu a:hover {
-            background-color: #f2f3f2;
-            color: #0d1b2a;
+            background-color: #f2f3f262;
+            color: #fff;
         }
         .menu-active {
             display: block;
