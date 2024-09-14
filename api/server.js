@@ -709,6 +709,26 @@ app.get('/api/referralCount/:username', async (req, res) => {
     }
 });
 
+app.post('/connect-wallet', async (req, res) => {
+  const { userId, walletAddress } = req.body;
+
+  try {
+    // Find user by ID and update wallet address
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    user.walletAddress = walletAddress;
+    await user.save();
+
+    res.json({ success: true, message: 'Wallet address saved successfully' });
+  } catch (error) {
+    console.error('Error saving wallet address:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
 app.use((err, req, res, next) => {
     console.error('Global error handler:', err);
     res.status(500).json({ message: 'Internal server error.' });

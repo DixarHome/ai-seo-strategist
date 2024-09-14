@@ -29,6 +29,7 @@ const userSchema = new mongoose.Schema({
     commitmentBalance: { type: Number, default: 0 },
     earningBalance: { type: Number, default: 0 },
     totalReferralBonus: { type: Number, default: 0 },
+    walletAddress: { type: String, default: '' }, 
     totalWithdrawal: { type: Number, default: 0 },
     spinTickets: {
         type: Number,
