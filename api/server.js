@@ -710,11 +710,11 @@ app.get('/api/referralCount/:username', async (req, res) => {
 });
 
 app.post('/api/connect-wallet', async (req, res) => {
-  const { userId, walletAddress } = req.body;
+  const { username, walletAddress } = req.body;
 
   try {
-    // Find user by ID and update wallet address
-    const user = await User.findById(userId);
+    // Find user by username and update wallet address
+    const user = await User.findOne({ username });
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
