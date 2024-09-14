@@ -709,7 +709,7 @@ app.get('/api/referralCount/:username', async (req, res) => {
     }
 });
 
-app.post('/connect-wallet', async (req, res) => {
+app.post('/api/connect-wallet', async (req, res) => {
   const { userId, walletAddress } = req.body;
 
   try {
