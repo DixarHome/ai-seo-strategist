@@ -729,6 +729,25 @@ app.post('/api/connect-wallet', async (req, res) => {
   }
 });
 
+app.get('/api/walletAddress/:username', async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    // Find the user by username
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Return the wallet address
+    res.status(200).json({ walletAddress: user.walletAddress || '' });
+  } catch (error) {
+    console.error('Error fetching wallet address:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 app.use((err, req, res, next) => {
     console.error('Global error handler:', err);
     res.status(500).json({ message: 'Internal server error.' });
