@@ -12,6 +12,8 @@ const authRoutes = require('../routes/auth');
 const Notification = require('../models/Notification');
 const router = express.Router();
 require('dotenv').config();
+const CryptoPrice = require('../models/CryptoPrice');
+const axios = require('axios');
 
 
 const app = express();
@@ -349,6 +351,32 @@ cron.schedule('0 0 * * *', async () => {
 }, {
     scheduled: true,
     timezone: "Etc/GMT"
+});
+
+// Function to fetch crypto prices
+async function fetchCryptoPrices() {
+  const apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,binancecoin,solana,usd-coin,xrp,toncoin,dogecoin,cardano,tron,wrapped-bitcoin,shiba-inu,avalanche-2,polkadot,chainlink,bitcoin-cash,near,uniswap,polygon,litecoin,dai,leo-token,pepe,kaspa,internet-computer,ethereum-classic,aptos,monero,hedera,render-token,cosmos,stellar,mantle,first-digital-usd,okb,fetch-ai,immutable-x,pancakeswap-token,eth-2-staking-by-pooltogether,binance-usd,usde,aave,elrond-erd-2,helium,chiliz,quant-network,celo,curve-dao-token,theta-token&vs_currencies=usd';
+  const response = await axios.get(apiUrl);
+  return response.data;
+}
+
+// Save prices in the database
+async function saveCryptoPrices() {
+  const prices = await fetchCryptoPrices();
+  const newPrice = new CryptoPrice({
+    date: new Date(),
+    prices: prices
+  });
+  await newPrice.save();
+}
+
+// Schedule task to run at 1pm GMT every day
+cron.schedule('0 13 * * *', async () => {
+  console.log('Fetching and saving prices at 1pm GMT');
+  await saveCryptoPrices();
+}, {
+  scheduled: true,
+  timezone: "Etc/UTC"
 });
 
 app.post('/api/payments', async (req, res) => {
@@ -726,6 +754,32 @@ app.post('/api/connect-wallet', async (req, res) => {
   } catch (error) {
     console.error('Error saving wallet address:', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
+// Endpoint to fetch current and previous day's prices
+app.get('/api/crypto-prices', async (req, res) => {
+  const currentPrices = await fetchCryptoPrices();
+
+  // Fetch last saved price (from 1pm GMT)
+  const lastSavedPrice = await CryptoPrice.findOne().sort({ date: -1 });
+
+  if (lastSavedPrice) {
+    const percentageChanges = {};
+    for (const crypto in currentPrices) {
+      const currentPrice = currentPrices[crypto].usd;
+      const previousPrice = lastSavedPrice.prices[crypto].usd;
+
+      const percentageChange = ((currentPrice - previousPrice) / previousPrice) * 100;
+      percentageChanges[crypto] = percentageChange;
+    }
+    
+    res.json({
+      currentPrices,
+      percentageChanges
+    });
+  } else {
+    res.json({ currentPrices, percentageChanges: {} });
   }
 });
 
