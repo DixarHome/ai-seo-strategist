@@ -376,19 +376,26 @@ async function fetchCryptoPrices() {
   return response.data;
 }
 
-// Save prices in the database
 async function saveCryptoPrices() {
   const prices = await fetchCryptoPrices();
+  
+  // Map the prices from the API response to the schema format
+  const formattedPrices = prices.reduce((acc, crypto) => {
+    acc[crypto.id] = { usd: crypto.current_price };
+    return acc;
+  }, {});
+  
   const newPrice = new CryptoPrice({
     date: new Date(),
-    prices: prices
+    prices: formattedPrices
   });
+  
   await newPrice.save();
 }
 
-// Schedule task to run at 1pm GMT every day
-cron.schedule('0 13 * * *', async () => {
-  console.log('Fetching and saving prices at 1pm GMT');
+// Schedule task to run at 4:40pm GMT every day
+cron.schedule('40 16 * * *', async () => {
+  console.log('Fetching and saving prices at 4:40pm GMT');
   await saveCryptoPrices();
 }, {
   scheduled: true,
