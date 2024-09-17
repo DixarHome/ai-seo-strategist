@@ -10,6 +10,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     tasksContainer.style.display = 'block';
 
     const taskDetails = {
+        "tada": { name: "Join Tada!", target: 1, reward: 10000, action: "Join" },
+        "gra-wallet": { name: "Join Gra Wallet", target: 1, reward: 10000, action: "Join" },
+        "goat": { name: "Join Goat", target: 1, reward: 10000, action: "Join" },
         "hamster": { name: "Become a CEO on HamsterKombat", target: 1, reward: 10000, action: "Go" },
         "sealsend": { name: "Join SealSend", target: 1, reward: 10000, action: "Start" },
         "memelab": { name: "Start Earning on MemeLab", target: 1, reward: 10000, action: "Start" },
@@ -243,9 +246,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const fetchProgress = taskId.startsWith('refer') ? fetchReferralCount : fetchMiningSessionCount;
-        if (taskId === 'followw-btn' || taskId === 'join-btn' || taskId === 'post-btn'  || taskId === 'farm-btn' || taskId === 'seed-btn' || taskId === 'sunwave' || taskId === 'call' || taskId === 'lost-dog' || taskId === 'major' || taskId === 'money-dog' || taskId === 'mozoai' || taskId === 'nomiz' || taskId === 'time-farm' || taskId === 'vertus' || taskId === 'hot' || taskId === 'athene' || taskId === 'simple' || taskId === 'cex' || taskId === 'match-quest' || taskId === 'blum' || taskId === 'earnbitmoon' || taskId === 'truecoin' || taskId === 'satoshi' || taskId === 'sauce' || taskId === 'cats' || taskId === 'pocket' || taskId === 'freebitcoin' || taskId === 'coinpayu' || taskId === 'wonton' || taskId === 'sidefan' || taskId === 'agent' || taskId === 'hamster' || taskId === 'sealsend' || taskId === 'memelab' || taskId === 'memefi' || taskId === 'litecoin') {
+        if (taskId === 'followw-btn' || taskId === 'join-btn' || taskId === 'post-btn'  || taskId === 'farm-btn' || taskId === 'seed-btn' || taskId === 'sunwave' || taskId === 'call' || taskId === 'lost-dog' || taskId === 'major' || taskId === 'money-dog' || taskId === 'mozoai' || taskId === 'nomiz' || taskId === 'time-farm' || taskId === 'vertus' || taskId === 'hot' || taskId === 'athene' || taskId === 'simple' || taskId === 'cex' || taskId === 'match-quest' || taskId === 'blum' || taskId === 'earnbitmoon' || taskId === 'truecoin' || taskId === 'satoshi' || taskId === 'sauce' || taskId === 'cats' || taskId === 'pocket' || taskId === 'freebitcoin' || taskId === 'coinpayu' || taskId === 'wonton' || taskId === 'sidefan' || taskId === 'agent' || taskId === 'hamster' || taskId === 'sealsend' || taskId === 'memelab' || taskId === 'memefi' || taskId === 'litecoin' || taskId === 'tada' || taskId === 'gra-wallet' || taskId === 'goat') {
             const url = {
                 'followw-btn': 'https://twitter.com/softcoinproject',
+                'goat': 'https://t.me/realgoats_bot/run?startapp=fe2dde2f-6ffa-4269-9de2-0a14e587a6ed',
+                'tada': 'https://t.me/TADA_Ride_Bot/join?startapp=ref_gCyQ-hIuxn',
+                'gra-wallet': 'https://t.me/herewalletbot/grafun?startapp=D9EVkxPxnT0edsXAGPdA1odSz2n',
                 'litecoin': 'https://free-litecoin.com/login?referer=1639438',
                 'memefi': 'https://t.me/memefi_coin_bot?start=r_c77f1b1767',
                 'memelab': 'https://t.me/MemesLabBot?start=B77UIR',
