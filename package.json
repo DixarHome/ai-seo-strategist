@@ -23,7 +23,8 @@
     "nodemailer": "^6.9.14",
     "redis": "^4.6.15",
     "util": "^0.12.5",
-    "web-push": "^3.6.7"
+    "web-push": "^3.6.7",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"

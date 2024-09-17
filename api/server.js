@@ -14,10 +14,20 @@ const router = express.Router();
 require('dotenv').config();
 const CryptoPrice = require('../models/CryptoPrice');
 const axios = require('axios');
+const http = require('http');
+const WebSocket = require('ws'); // Import the WebSocket library
 
 
 const app = express();
+const server = http.createServer(app); // Create an HTTP server
+const wss = new WebSocket.Server({ server }); // Attach WebSocket server to the HTTP server
 const port = process.env.PORT || 10000;
+
+// CoinGecko API base URL
+const COINGECKO_API_URL = 'https://pro-api.coingecko.com/api/v3';
+
+// Your CoinGecko API key
+const API_KEY = 'CG-XjGsv9kZftZmPsuPrTKii2Pe';
 
 const adminEmail = 'support@softcoin.world';
 
@@ -353,10 +363,16 @@ cron.schedule('0 0 * * *', async () => {
     timezone: "Etc/GMT"
 });
 
-// Function to fetch crypto prices
+// Function to fetch crypto prices including market cap and 24hr volume
 async function fetchCryptoPrices() {
-  const apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,binancecoin,solana,usd-coin,xrp,toncoin,dogecoin,cardano,tron,wrapped-bitcoin,shiba-inu,avalanche-2,polkadot,chainlink,bitcoin-cash,near,uniswap,polygon,litecoin,dai,leo-token,pepe,kaspa,internet-computer,ethereum-classic,aptos,monero,hedera,render-token,cosmos,stellar,mantle,first-digital-usd,okb,fetch-ai,immutable-x,pancakeswap-token,eth-2-staking-by-pooltogether,binance-usd,usde,aave,elrond-erd-2,helium,chiliz,quant-network,celo,curve-dao-token,theta-token&vs_currencies=usd';
-  const response = await axios.get(apiUrl);
+  const apiUrl = 'https://api.coingecko.com/api/v3/coins/markets';
+  const response = await axios.get(apiUrl, {
+    params: {
+      vs_currency: 'usd',
+      ids: 'bitcoin,ethereum,tether,binancecoin,solana,usd-coin,xrp,toncoin,dogecoin,cardano,tron,wrapped-bitcoin,shiba-inu,avalanche-2,polkadot,chainlink,bitcoin-cash,near,uniswap,polygon,litecoin,dai,leo-token,pepe,kaspa,internet-computer,ethereum-classic,aptos,monero,hedera,render-token,cosmos,stellar,mantle,first-digital-usd,okb,fetch-ai,immutable-x,pancakeswap-token,eth-2-staking-by-pooltogether,binance-usd,usde,aave,elrond-erd-2,helium,chiliz,quant-network,celo,curve-dao-token,theta-token',
+      x_cg_demo_api_key: 'CG-XjGsv9kZftZmPsuPrTKii2Pe'
+    }
+  });
   return response.data;
 }
 
@@ -757,30 +773,67 @@ app.post('/api/connect-wallet', async (req, res) => {
   }
 });
 
-// Endpoint to fetch current and previous day's prices
-app.get('/api/crypto-prices', async (req, res) => {
-  const currentPrices = await fetchCryptoPrices();
+let cachedPrices = {}; // Store current prices with additional details
+let percentageChanges = {}; // Store percentage changes
+let totalMarketCap = 0; // Total market cap
+let totalVolume24h = 0; // Total 24-hour trading volume
 
-  // Fetch last saved price (from 1pm GMT)
-  const lastSavedPrice = await CryptoPrice.findOne().sort({ date: -1 });
+// Function to update prices every 60 seconds
+async function updateCryptoPrices() {
+  try {
+    const cryptoData = await fetchCryptoPrices();
 
-  if (lastSavedPrice) {
-    const percentageChanges = {};
-    for (const crypto in currentPrices) {
-      const currentPrice = currentPrices[crypto].usd;
-      const previousPrice = lastSavedPrice.prices[crypto].usd;
+    // Fetch last saved price from MongoDB (from the daily 1pm saved price)
+    const lastSavedPrice = await CryptoPrice.findOne().sort({ date: -1 });
 
-      const percentageChange = ((currentPrice - previousPrice) / previousPrice) * 100;
-      percentageChanges[crypto] = percentageChange;
+    let currentTotalMarketCap = 0;
+    let currentTotalVolume24h = 0;
+
+    if (lastSavedPrice) {
+      for (const crypto of cryptoData) {
+        const currentPrice = crypto.current_price;
+        const previousPrice = lastSavedPrice.prices[crypto.id]?.usd || currentPrice;
+
+        // Calculate percentage change
+        const percentageChange = ((currentPrice - previousPrice) / previousPrice) * 100;
+        percentageChanges[crypto.id] = percentageChange;
+
+        // Add up total market cap and 24hr volume
+        currentTotalMarketCap += crypto.market_cap;
+        currentTotalVolume24h += crypto.total_volume;
+      }
     }
-    
-    res.json({
-      currentPrices,
-      percentageChanges
-    });
-  } else {
-    res.json({ currentPrices, percentageChanges: {} });
+
+    // Store the total market cap and volume
+    totalMarketCap = currentTotalMarketCap;
+    totalVolume24h = currentTotalVolume24h;
+
+    // Update cached prices with market cap and 24hr volume
+    cachedPrices = cryptoData.reduce((acc, crypto) => {
+      acc[crypto.id] = {
+        usd: crypto.current_price,
+        marketCap: crypto.market_cap,
+        volume24h: crypto.total_volume
+      };
+      return acc;
+    }, {});
+
+  } catch (error) {
+    console.error('Error updating crypto prices:', error);
   }
+}
+
+// Start updating prices every 60 seconds
+setInterval(updateCryptoPrices, 60000);
+
+// API endpoint to serve current prices, percentage changes, total market cap, and total volume
+app.get('/api/crypto-prices', (req, res) => {
+  res.json({
+    currentPrices: cachedPrices,
+    percentageChanges: percentageChanges,
+    totalMarketCap: totalMarketCap,
+    totalVolume24h: totalVolume24h
+  });
 });
 
 app.get('/api/walletAddress/:username', async (req, res) => {
