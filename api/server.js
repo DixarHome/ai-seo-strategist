@@ -393,15 +393,6 @@ async function saveCryptoPrices() {
   await newPrice.save();
 }
 
-// Schedule task to run at 4:40pm GMT every day
-cron.schedule('40 16 * * *', async () => {
-  console.log('Fetching and saving prices at 4:40pm GMT');
-  await saveCryptoPrices();
-}, {
-  scheduled: true,
-  timezone: "Etc/UTC"
-});
-
 app.post('/api/payments', async (req, res) => {
     try {
         const { username, amount, transactionId, cryptoType } = req.body;
